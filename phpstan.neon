@@ -9,6 +9,7 @@ parameters:
         - database/factories
         - routes
     level: max
+    checkOctaneCompatibility: true
 
 #    ignoreErrors:
 #        - '#PHPDoc tag @var#'
