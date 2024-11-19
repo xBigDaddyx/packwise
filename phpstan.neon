@@ -10,7 +10,10 @@ parameters:
         - routes
     level: max
     checkOctaneCompatibility: true
-
+    excludePaths:
+        - '**/ide-helper.php'
+        - '**/ide_helper_models.php'
+        - '**/phpstorm.meta.php'
 #    ignoreErrors:
 #        - '#PHPDoc tag @var#'
 #
