@@ -11,6 +11,7 @@ parameters:
         - config
     level: max
     checkOctaneCompatibility: true
+    checkModelProperties: true
     excludePaths:
         - '**/ide-helper.php'
         - '**/ide_helper_models.php'
