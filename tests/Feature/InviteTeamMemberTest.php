@@ -3,8 +3,8 @@
 declare(strict_types=1);
 
 use App\Models\User;
-use Illuminate\Support\Facades\Mail;
 use Laravel\Jetstream\Features;
+use Illuminate\Support\Facades\Mail;
 use Laravel\Jetstream\Mail\TeamInvitation;
 
 test('team members can be invited to team', function () {

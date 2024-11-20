@@ -3,10 +3,9 @@
 declare(strict_types=1);
 
 use App\Models\User;
-use Illuminate\Auth\Events\Verified;
-use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\URL;
 use Laravel\Fortify\Features;
+use Illuminate\Auth\Events\Verified;
+use Illuminate\Support\Facades\{Event, URL};
 
 test('email verification screen can be rendered', function () {
     $user = User::factory()->withPersonalTeam()->create([

@@ -4,19 +4,16 @@ declare(strict_types=1);
 
 namespace App\Actions\Jetstream;
 
-use App\Models\Team;
-use App\Models\User;
 use Closure;
-use Illuminate\Database\Query\Builder;
-use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
-use Laravel\Jetstream\Contracts\InvitesTeamMembers;
-use Laravel\Jetstream\Events\InvitingTeamMember;
 use Laravel\Jetstream\Jetstream;
-use Laravel\Jetstream\Mail\TeamInvitation;
 use Laravel\Jetstream\Rules\Role;
+use Illuminate\Database\Query\Builder;
+use Laravel\Jetstream\Mail\TeamInvitation;
+use Laravel\Jetstream\Events\InvitingTeamMember;
+use Laravel\Jetstream\Contracts\InvitesTeamMembers;
+use Illuminate\Support\Facades\{Gate, Mail, Validator};
+use Illuminate\Validation\{Rule, Validator as ValidatorAlias};
+use App\Models\{Team, TeamInvitation as TeamInvitationModel, User};
 
 final class InviteTeamMember implements InvitesTeamMembers
 {
@@ -31,6 +28,7 @@ final class InviteTeamMember implements InvitesTeamMembers
 
         InvitingTeamMember::dispatch($team, $email, $role);
 
+        /** @var TeamInvitationModel $invitation */
         $invitation = $team->teamInvitations()->create([
             'email' => $email,
             'role' => $role,
@@ -57,7 +55,7 @@ final class InviteTeamMember implements InvitesTeamMembers
     /**
      * Get the validation rules for inviting a team member.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\Rule|array|string>
+     * @return array<string, mixed>
      */
     private function rules(Team $team): array
     {
@@ -79,7 +77,7 @@ final class InviteTeamMember implements InvitesTeamMembers
      */
     private function ensureUserIsNotAlreadyOnTeam(Team $team, string $email): Closure
     {
-        return function ($validator) use ($team, $email) {
+        return function (ValidatorAlias $validator) use ($team, $email) {
             $validator->errors()->addIf(
                 $team->hasUserWithEmail($email),
                 'email',

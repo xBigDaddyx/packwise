@@ -4,16 +4,14 @@ declare(strict_types=1);
 
 namespace App\Actions\Jetstream;
 
-use App\Models\Team;
-use App\Models\User;
 use Closure;
-use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Validator;
-use Laravel\Jetstream\Contracts\AddsTeamMembers;
-use Laravel\Jetstream\Events\AddingTeamMember;
-use Laravel\Jetstream\Events\TeamMemberAdded;
+use App\Models\{Team, User};
 use Laravel\Jetstream\Jetstream;
 use Laravel\Jetstream\Rules\Role;
+use Laravel\Jetstream\Contracts\AddsTeamMembers;
+use Illuminate\Support\Facades\{Gate, Validator};
+use Illuminate\Validation\Validator as ValidatorAlias;
+use Laravel\Jetstream\Events\{AddingTeamMember, TeamMemberAdded};
 
 final class AddTeamMember implements AddsTeamMembers
 {
@@ -55,7 +53,7 @@ final class AddTeamMember implements AddsTeamMembers
     /**
      * Get the validation rules for adding a team member.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\Rule|array|string>
+     * @return array<string, \Illuminate\Contracts\Validation\Rule|array<mixed>|string>
      */
     private function rules(): array
     {
@@ -73,6 +71,7 @@ final class AddTeamMember implements AddsTeamMembers
     private function ensureUserIsNotAlreadyOnTeam(Team $team, string $email): Closure
     {
         return function ($validator) use ($team, $email) {
+            /** @var ValidatorAlias $validator */
             $validator->errors()->addIf(
                 $team->hasUserWithEmail($email),
                 'email',

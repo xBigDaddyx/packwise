@@ -2,10 +2,8 @@
 
 declare(strict_types=1);
 
-use Monolog\Handler\NullHandler;
-use Monolog\Handler\StreamHandler;
-use Monolog\Handler\SyslogUdpHandler;
 use Monolog\Processor\PsrLogMessageProcessor;
+use Monolog\Handler\{NullHandler, StreamHandler, SyslogUdpHandler};
 
 return [
 

@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Models\Team;
-use App\Models\User;
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use App\Models\{Team, User};
 use Laravel\Jetstream\Features;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
+ * @extends Factory<User>
  */
 final class UserFactory extends Factory
 {
@@ -24,7 +23,7 @@ final class UserFactory extends Factory
     /**
      * Define the model's default state.
      *
-     * @return array<string, mixed>
+     * @return array<model-property<User>, mixed>
      */
     public function definition(): array
     {
@@ -44,7 +43,7 @@ final class UserFactory extends Factory
     /**
      * Indicate that the model's email address should be unverified.
      */
-    public function unverified(): static
+    public function unverified(): self
     {
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
@@ -54,7 +53,7 @@ final class UserFactory extends Factory
     /**
      * Indicate that the user should have a personal team.
      */
-    public function withPersonalTeam(?callable $callback = null): static
+    public function withPersonalTeam(?callable $callback = null): self
     {
         if (! Features::hasTeamFeatures()) {
             return $this->state([]);
@@ -62,6 +61,7 @@ final class UserFactory extends Factory
 
         return $this->has(
             Team::factory()
+                /* @phpstan-ignore-next-line */
                 ->state(fn (array $attributes, User $user) => [
                     'name' => $user->name.'\'s Team',
                     'user_id' => $user->id,

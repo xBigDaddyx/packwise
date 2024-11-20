@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace App\Actions\Jetstream;
 
-use App\Models\Team;
-use App\Models\User;
+use App\Models\{Team, User};
 use Illuminate\Support\Facades\DB;
-use Laravel\Jetstream\Contracts\DeletesTeams;
-use Laravel\Jetstream\Contracts\DeletesUsers;
+use Laravel\Jetstream\Contracts\{DeletesTeams, DeletesUsers};
 
 final class DeleteUser implements DeletesUsers
 {
