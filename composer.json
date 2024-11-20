@@ -1,10 +1,11 @@
 {
-    "name": "laravel/laravel",
+    "name": "pushpak1300/larasonic",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
+    "description": "The Simple, Fast & Smart Laravel Fullstack Kit. 🚀",
     "keywords": [
-        "laravel",
-        "framework"
+        "sass",
+        "starter kit",
+        "laeavel"
     ],
     "license": "MIT",
     "require": {
