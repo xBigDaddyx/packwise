@@ -70,7 +70,7 @@ final class AddTeamMember implements AddsTeamMembers
      */
     private function ensureUserIsNotAlreadyOnTeam(Team $team, string $email): Closure
     {
-        return function ($validator) use ($team, $email) {
+        return function ($validator) use ($team, $email): void {
             /** @var ValidatorAlias $validator */
             $validator->errors()->addIf(
                 $team->hasUserWithEmail($email),

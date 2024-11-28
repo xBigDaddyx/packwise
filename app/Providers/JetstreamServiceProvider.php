@@ -43,7 +43,7 @@ final class JetstreamServiceProvider extends ServiceProvider
     /**
      * Configure the roles and permissions that are available within the application.
      */
-    protected function configurePermissions(): void
+    private function configurePermissions(): void
     {
         Jetstream::defaultApiTokenPermissions(['read']);
 
