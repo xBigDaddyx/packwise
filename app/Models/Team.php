@@ -6,6 +6,7 @@ namespace App\Models;
 
 use Illuminate\Support\Carbon;
 use Database\Factories\TeamFactory;
+use Illuminate\Database\Eloquent\Collection;
 use Laravel\Jetstream\Team as JetstreamTeam;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -19,10 +20,10 @@ use Laravel\Jetstream\Events\{TeamCreated, TeamDeleted, TeamUpdated};
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read User|null $owner
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\TeamInvitation> $teamInvitations
+ * @property-read Collection<int, TeamInvitation> $teamInvitations
  * @property-read int|null $team_invitations_count
  * @property-read Membership|null $membership
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
+ * @property-read Collection<int, User> $users
  * @property-read int|null $users_count
  *
  * @method static TeamFactory factory($count = null, $state = [])
@@ -36,10 +37,10 @@ use Laravel\Jetstream\Events\{TeamCreated, TeamDeleted, TeamUpdated};
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Team whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Team whereUserId($value)
  *
- * @mixin \Eloquent
- *
  * @noinspection PhpFullyQualifiedNameUsageInspection
  * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
+ *
+ * @mixin \Eloquent
  */
 final class Team extends JetstreamTeam
 {

@@ -25,10 +25,10 @@ use Laravel\Jetstream\Membership as JetstreamMembership;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Membership whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Membership whereUserId($value)
  *
- * @mixin \Eloquent
- *
  * @noinspection PhpFullyQualifiedNameUsageInspection
  * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
+ *
+ * @mixin \Eloquent
  */
 final class Membership extends JetstreamMembership
 {

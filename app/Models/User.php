@@ -5,15 +5,16 @@ declare(strict_types=1);
 namespace App\Models;
 
 use Illuminate\Support\Carbon;
-use Laravel\Sanctum\HasApiTokens;
 use Database\Factories\UserFactory;
-use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Collection;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Laravel\Jetstream\{HasProfilePhoto, HasTeams};
 use Illuminate\Database\Eloquent\Relations\{HasMany};
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Sanctum\{HasApiTokens, PersonalAccessToken};
+use Illuminate\Notifications\{DatabaseNotification, DatabaseNotificationCollection, Notifiable};
 
 /**
  * @property int $id
@@ -30,15 +31,15 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property string|null $two_factor_recovery_codes
  * @property string|null $two_factor_confirmed_at
  * @property-read Team|null $currentTeam
- * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
+ * @property-read DatabaseNotificationCollection<int, DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Team> $ownedTeams
+ * @property-read Collection<int, Team> $ownedTeams
  * @property-read int|null $owned_teams_count
  * @property-read string $profile_photo_url
  * @property-read Membership|null $membership
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Team> $teams
+ * @property-read Collection<int, Team> $teams
  * @property-read int|null $teams_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
+ * @property-read Collection<int, PersonalAccessToken> $tokens
  * @property-read int|null $tokens_count
  *
  * @method static UserFactory factory($count = null, $state = [])
@@ -59,10 +60,13 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereTwoFactorSecret($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereUpdatedAt($value)
  *
- * @mixin \Eloquent
- *
  * @noinspection PhpFullyQualifiedNameUsageInspection
  * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
+ *
+ * @property-read Collection<int, Team> $ownedTeamsBase
+ * @property-read int|null $owned_teams_base_count
+ *
+ * @mixin \Eloquent
  */
 final class User extends Authenticatable implements MustVerifyEmail
 {
@@ -73,7 +77,7 @@ final class User extends Authenticatable implements MustVerifyEmail
 
     use HasProfilePhoto;
     use HasTeams  {
-        ownedTeams as protected ownedTeamsBase;
+        ownedTeams as public ownedTeamsBase;
     }
     use Notifiable;
     use TwoFactorAuthenticatable;

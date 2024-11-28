@@ -27,10 +27,10 @@ use Laravel\Jetstream\TeamInvitation as JetstreamTeamInvitation;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|TeamInvitation whereTeamId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|TeamInvitation whereUpdatedAt($value)
  *
- * @mixin \Eloquent
- *
  * @noinspection PhpFullyQualifiedNameUsageInspection
  * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
+ *
+ * @mixin \Eloquent
  */
 final class TeamInvitation extends JetstreamTeamInvitation
 {

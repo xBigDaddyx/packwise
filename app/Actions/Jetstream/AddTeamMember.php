@@ -8,6 +8,7 @@ use Closure;
 use App\Models\{Team, User};
 use Laravel\Jetstream\Jetstream;
 use Laravel\Jetstream\Rules\Role;
+use Illuminate\Contracts\Validation\Rule;
 use Laravel\Jetstream\Contracts\AddsTeamMembers;
 use Illuminate\Support\Facades\{Gate, Validator};
 use Illuminate\Validation\Validator as ValidatorAlias;
@@ -53,7 +54,7 @@ final class AddTeamMember implements AddsTeamMembers
     /**
      * Get the validation rules for adding a team member.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\Rule|array<mixed>|string>
+     * @return array<string, Rule|array<mixed>|string>
      */
     private function rules(): array
     {
