@@ -1,6 +1,6 @@
 <script setup>
+import { Label } from '@/Components/shadcn/ui/label'
 import { cn } from '@/lib/utils'
-import { Label } from 'resources/js/Components/shadcn/ui/label'
 import { useFormField } from './useFormField'
 
 const props = defineProps({

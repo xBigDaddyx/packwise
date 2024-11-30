@@ -73,7 +73,7 @@ defineProps({
                   rel="noopener"
                   class="flex items-center gap-2"
                 >
-                <GithubIcon class="size-4" />Star Repo
+                  <GithubIcon class="size-4" />Star Repo
                 </Link>
               </Button>
             </div>

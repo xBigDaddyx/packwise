@@ -12,7 +12,7 @@
   },
   "framework": "laravel",
   "aliases": {
-    "components": "resources/js/Components/shadcn",
+    "components": "@/Components/shadcn",
     "utils": "@/lib/utils"
   }
 }
