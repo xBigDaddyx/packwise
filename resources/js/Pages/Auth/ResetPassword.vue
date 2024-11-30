@@ -1,8 +1,8 @@
 import { inject } from 'vue'
 
 <script setup>
-import AuthenticationCardLogo from '@/Components/AuthenticationCardLogo.vue'
 import InputError from '@/Components/InputError.vue'
+import AuthenticationCardLogo from '@/Components/LogoRedirect.vue'
 import Button from '@/Components/shadcn/ui/button/Button.vue'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/Components/shadcn/ui/card'
 import Input from '@/Components/shadcn/ui/input/Input.vue'

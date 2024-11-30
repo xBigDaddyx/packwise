@@ -1,5 +1,5 @@
 <script setup>
-import AuthenticationCardLogo from '@/Components/AuthenticationCardLogo.vue'
+import AuthenticationCardLogo from '@/Components/LogoRedirect.vue'
 import Button from '@/Components/shadcn/ui/button/Button.vue'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/Components/shadcn/ui/card'
 import { Head, Link, useForm } from '@inertiajs/vue3'

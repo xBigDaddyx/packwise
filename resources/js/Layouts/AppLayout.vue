@@ -1,5 +1,5 @@
 <script setup>
-import ApplicationMark from '@/Components/ApplicationMark.vue'
+import ApplicationMark from '@/Components/ApplicationShortMark.vue'
 import { Avatar, AvatarFallback } from '@/Components/shadcn/ui/avatar'
 import AvatarImage from '@/Components/shadcn/ui/avatar/AvatarImage.vue'
 import { Button } from '@/Components/shadcn/ui/button'

@@ -1,6 +1,6 @@
 <script setup>
-import AuthenticationCardLogo from '@/Components/AuthenticationCardLogo.vue'
 import InputError from '@/Components/InputError.vue'
+import AuthenticationCardLogo from '@/Components/LogoRedirect.vue'
 import Button from '@/Components/shadcn/ui/button/Button.vue'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/Components/shadcn/ui/card'
 import Checkbox from '@/Components/shadcn/ui/checkbox/Checkbox.vue'
