@@ -1,30 +1,23 @@
 <script setup>
-import { cn } from '@/lib/utils'
-import { useVModel } from '@vueuse/core'
-import { ref } from 'vue'
+import { cn } from '@/lib/utils';
+import { useVModel } from '@vueuse/core';
 
 const props = defineProps({
   defaultValue: { type: [String, Number], required: false },
   modelValue: { type: [String, Number], required: false },
   class: { type: null, required: false },
-})
+});
 
-const emits = defineEmits(['update:modelValue'])
-const input = ref(null)
+const emits = defineEmits(['update:modelValue']);
 
 const modelValue = useVModel(props, 'modelValue', emits, {
   passive: true,
   defaultValue: props.defaultValue,
-})
-
-defineExpose({
-  focus: () => input.value?.focus(),
-})
+});
 </script>
 
 <template>
   <input
-    ref="input"
     v-model="modelValue"
     :class="
       cn(
@@ -32,5 +25,5 @@ defineExpose({
         props.class,
       )
     "
-  >
+  />
 </template>

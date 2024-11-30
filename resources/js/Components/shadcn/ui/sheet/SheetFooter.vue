@@ -1,9 +1,7 @@
 <script setup>
 import { cn } from '@/lib/utils';
 
-const props = defineProps({
-  class: { type: null, required: false },
-});
+const props = defineProps();
 </script>
 
 <template>
