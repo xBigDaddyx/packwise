@@ -1,6 +1,5 @@
 <script setup>
 import ApplicationMark from '@/Components/ApplicationMark.vue'
-import NavLink from '@/Components/NavLink.vue'
 import { Avatar, AvatarFallback } from '@/Components/shadcn/ui/avatar'
 import AvatarImage from '@/Components/shadcn/ui/avatar/AvatarImage.vue'
 import { Button } from '@/Components/shadcn/ui/button'
@@ -15,15 +14,6 @@ import CommandEmpty from '@/Components/shadcn/ui/command/CommandEmpty.vue'
 import CommandList from '@/Components/shadcn/ui/command/CommandList.vue'
 import CommandShortcut from '@/Components/shadcn/ui/command/CommandShortcut.vue'
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/Components/shadcn/ui/dialog'
-import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -33,15 +23,13 @@ import {
 } from '@/Components/shadcn/ui/dropdown-menu'
 import DropdownMenuGroup from '@/Components/shadcn/ui/dropdown-menu/DropdownMenuGroup.vue'
 import DropdownMenuShortcut from '@/Components/shadcn/ui/dropdown-menu/DropdownMenuShortcut.vue'
-import Input from '@/Components/shadcn/ui/input/Input.vue'
-import Label from '@/Components/shadcn/ui/label/Label.vue'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@/Components/shadcn/ui/popover'
 import { Icon } from '@iconify/vue'
-import { Head, Link, router, useForm } from '@inertiajs/vue3'
+import { Head, Link, router } from '@inertiajs/vue3'
 import { useColorMode, useMagicKeys } from '@vueuse/core'
 import { inject, ref, watch } from 'vue'
 
@@ -49,7 +37,13 @@ defineProps({
   title: String,
 })
 const route = inject('route')
-const mode = useColorMode()
+const mode = useColorMode({
+  attribute: 'class',
+  modes: {
+    light: '',
+    dark: 'dark',
+  },
+})
 
 const open = ref(false)
 
@@ -63,20 +57,6 @@ function switchToTeam(team) {
 
 function logout() {
   router.post(route('logout'))
-}
-
-const showNewTeamDialog = ref(false)
-
-const createTeamForm = useForm({
-  name: '',
-})
-
-function createTeam() {
-  createTeamForm.post(route('teams.store'), {
-    errorBag: 'createTeam',
-    preserveScroll: true,
-    onSuccess: () => showNewTeamDialog.value = false,
-  })
 }
 
 const keys = useMagicKeys()
@@ -100,16 +80,19 @@ watch(shiftCtrlL, (v) => {
             <div class="flex">
               <!-- Logo -->
               <div class="flex shrink-0 items-center">
-                <NavLink :href="route('dashboard')">
+                <Link :href="route('dashboard')">
                   <ApplicationMark class="block h-9 w-auto" />
-                </NavLink>
+                </Link>
               </div>
 
               <!-- Navigation Links -->
               <div class="flex space-x-8 sm:-my-px sm:ms-10">
-                <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
+                <Link
+                  :href="route('dashboard')" :active="route().current('dashboard')"
+                  class="inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium leading-5 focus:outline-none transition duration-150 ease-in-out"
+                >
                   Dashboard
-                </NavLink>
+                </Link>
               </div>
             </div>
 
@@ -147,108 +130,73 @@ watch(shiftCtrlL, (v) => {
               <!-- Teams Dropdown -->
               <div class="relative ms-3">
                 <!-- Teams Dropdown -->
-                <Dialog v-model:open="showNewTeamDialog">
-                  <Popover v-if="$page.props.jetstream.hasTeamFeatures" v-model:open="open">
-                    <PopoverTrigger as-child>
-                      <Button
-                        variant="outline" role="combobox" aria-expanded="open"
-                        class="justify-between"
-                      >
-                        Manage Team
-                        <Icon
-                          icon="lucide:chevrons-up-down"
-                          class="ml-auto size-4 shrink-0 opacity-50"
-                        />
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent class="p-0">
-                      <Command
-                        :filter-function="(list, term) => list.filter(i => i?.name?.toLowerCase()?.includes(term))"
-                      >
-                        <CommandList>
-                          <CommandInput placeholder="Search team..." />
-                          <CommandEmpty>No team found.</CommandEmpty>
-                          <CommandGroup
-                            v-if="$page.props.auth.user.all_teams.length > 1"
-                            heading="Switch Teams"
+                <Popover v-if="$page.props.jetstream.hasTeamFeatures" v-model:open="open">
+                  <PopoverTrigger as-child>
+                    <Button
+                      variant="outline" role="combobox" aria-expanded="open"
+                      class="justify-between"
+                    >
+                      Manage Team
+                      <Icon
+                        icon="lucide:chevrons-up-down"
+                        class="ml-auto size-4 shrink-0 opacity-50"
+                      />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent class="p-0">
+                    <Command
+                      :filter-function="(list, term) => list.filter(i => i?.name?.toLowerCase()?.includes(term))"
+                    >
+                      <CommandList>
+                        <CommandInput placeholder="Search team..." />
+                        <CommandEmpty>No team found.</CommandEmpty>
+                        <CommandGroup
+                          heading="Switch Teams"
+                        >
+                          <CommandItem
+                            v-for="team in $page.props.auth.user.all_teams"
+                            :key="team.value" :value="team" @select="() => {
+                              switchToTeam(team);
+                              open = false;
+                            }"
                           >
-                            <CommandItem
-                              v-for="team in $page.props.auth.user.all_teams"
-                              :key="team.value" :value="team" @select="() => {
-                                switchToTeam(team);
-                                open = false;
-                              }"
-                            >
-                              <Avatar class="mr-2 size-5">
-                                <AvatarFallback>
-                                  {{ team.name.charAt(0) }}
-                                </AvatarFallback>
-                              </Avatar>
-                              {{ team.name }}
-                              <Icon
-                                v-if="team.id === $page.props.auth.user.current_team_id"
-                                icon="lucide:check"
-                                class="ml-auto size-4"
-                              />
-                            </CommandItem>
-                          </CommandGroup>
-                        </CommandList>
-                        <CommandSeparator v-if="$page.props.auth.user.all_teams.length > 1" />
-                        <CommandGroup heading="Manage Team">
-                          <CommandItem value="team-settings">
-                            <Link
-                              :href="route('teams.show', $page.props.auth.user.current_team)"
-                            >
-                              Team Settings
-                            </Link>
-                            <CommandShortcut>⌘S</CommandShortcut>
+                            <Avatar class="mr-2 size-5">
+                              <AvatarFallback>
+                                {{ team.name.charAt(0) }}
+                              </AvatarFallback>
+                            </Avatar>
+                            {{ team.name }}
+                            <Icon
+                              v-if="team.id === $page.props.auth.user.current_team_id"
+                              icon="lucide:check"
+                              class="ml-auto size-4"
+                            />
                           </CommandItem>
-                          <DialogTrigger as-child>
-                            <CommandItem
-                              v-if="$page.props.jetstream.canCreateTeams"
-                              value="create-new-team" @click="showNewTeamDialog = true"
-                            >
-                              <Link :href="route('teams.create')">
-                                Create New Team
-                              </Link>
-                              <CommandShortcut>⌘T</CommandShortcut>
-                            </CommandItem>
-                          </DialogTrigger>
                         </CommandGroup>
-                      </Command>
-                    </PopoverContent>
-                  </Popover>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>Create team</DialogTitle>
-                      <DialogDescription>
-                        Create a new team to collaborate with your team members.
-                      </DialogDescription>
-                    </DialogHeader>
-                    <div>
-                      <div class="space-y-4 py-2 pb-4">
-                        <div class="space-y-2">
-                          <Label for="name">Team name</Label>
-                          <Input
-                            id="name" v-model="createTeamForm.name"
-                            placeholder="Acme Inc."
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <DialogFooter>
-                      <Button variant="outline" @click="showNewTeamDialog = false">
-                        Cancel
-                      </Button>
-                      <Button
-                        type="submit" :disabled="createTeamForm.processing"
-                        @click="createTeam"
-                      >
-                        Continue
-                      </Button>
-                    </DialogFooter>
-                  </DialogContent>
-                </Dialog>
+                      </CommandList>
+                      <CommandSeparator v-if="$page.props.auth.user.all_teams.length > 1" />
+                      <CommandGroup heading="Manage Team">
+                        <CommandItem value="team-settings">
+                          <Link
+                            :href="route('teams.show', $page.props.auth.user.current_team)"
+                          >
+                            Team Settings
+                          </Link>
+                          <CommandShortcut>⌘S</CommandShortcut>
+                        </CommandItem>
+                        <CommandItem
+                          v-if="$page.props.jetstream.canCreateTeams"
+                          value="create-new-team"
+                        >
+                          <Link :href="route('teams.create')">
+                            Create New Team
+                          </Link>
+                          <CommandShortcut>⌘T</CommandShortcut>
+                        </CommandItem>
+                      </CommandGroup>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
               </div>
 
               <!-- Settings Dropdown -->
@@ -285,14 +233,12 @@ watch(shiftCtrlL, (v) => {
                       <DropdownMenuLabel>
                         Manage Account
                       </DropdownMenuLabel>
-
-                      <DropdownMenuItem>
+                      <DropdownMenuItem as-child>
                         <Link :href="route('profile.show')">
                           Profile
                         </Link>
                       </DropdownMenuItem>
-
-                      <DropdownMenuItem v-if="$page.props.jetstream.hasApiFeatures">
+                      <DropdownMenuItem v-if="$page.props.jetstream.hasApiFeatures" as-child>
                         <Link :href="route('api-tokens.index')">
                           API Tokens
                         </Link>

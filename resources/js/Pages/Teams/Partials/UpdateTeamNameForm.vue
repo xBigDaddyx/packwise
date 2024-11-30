@@ -2,6 +2,9 @@
 import ActionMessage from '@/Components/ActionMessage.vue'
 import FormSection from '@/Components/FormSection.vue'
 import InputError from '@/Components/InputError.vue'
+import Avatar from '@/Components/shadcn/ui/avatar/Avatar.vue'
+import AvatarFallback from '@/Components/shadcn/ui/avatar/AvatarFallback.vue'
+import AvatarImage from '@/Components/shadcn/ui/avatar/AvatarImage.vue'
 import Button from '@/Components/shadcn/ui/button/Button.vue'
 import Input from '@/Components/shadcn/ui/input/Input.vue'
 
@@ -43,7 +46,7 @@ function updateTeamName() {
 
         <div class="mt-2 flex items-center">
           <Avatar>
-            <AvatarImage :src="team.owner.profile_photo_url" alt="profile photo" />
+            <AvatarImage :src="team.owner.profile_photo_url ?? ''" alt="profile photo" />
             <AvatarFallback class="rounded-full bg-secondary p-2">
               {{ team.name.charAt(0) }}
             </AvatarFallback>

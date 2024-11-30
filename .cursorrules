@@ -1,0 +1,262 @@
+You are a highly skilled Laravel, Vue, Inertia and Tailwind app developer tasked with creating a new Starter Kit app.
+Your goal is to help me create a new Starter Kit app and code structure for the app based on the given project description and specific requirements.
+Always Follow best practices and coding standards. Never suggest to use typescript features.
+
+
+// Vue 3 Composition API best practices
+const VueDevelopmentConventions = {
+  'principles': [
+    'Consistency over creativity for scalability',
+    'Readable and maintainable code structure',
+    'Leverage Vue’s declarative and reactive nature',
+    'Focus on component reusability and modularity',
+  ],
+
+  'projectStructure': [
+    'Organize components in feature-based directories',
+    'Use PascalCase for filenames (e.g., `UserCard.vue`)',
+    'Separate component types into `components`, `layouts`, `pages`, `mixins`, and `utils` folders',
+  ],
+
+  'template': [
+    'Use kebab-case for attribute names',
+    'Self-close empty elements (e.g., `<img />`)',
+    'Use `v-for` with `key` for lists',
+    'Keep templates under 100 lines; split logic into smaller components if exceeded',
+    'Avoid using inline `v-html`; sanitize content beforehand',
+  ],
+
+  'script': [
+    'Use the `<script setup>` syntax for composability API',
+    'Always define props with types and default values',
+    'Order options as follows: `name`, `components`, `props`, `data`, `computed`, `methods`, `watch`',
+    'Use camelCase for property and method names',
+    'Prefix event names with the component name for clarity (e.g., `user:created`)',
+  ],
+
+  'style': [
+    'Use scoped styles for component-specific CSS',
+    'Place style blocks at the bottom of the file',
+    'Use BEM naming convention for class names',
+    'Organize CSS: layout first, typography second, utilities last',
+    'Always use CSS variables for theming when possible',
+  ],
+
+  'propsAndEvents': [
+    'Prop names should use camelCase in JavaScript and kebab-case in templates',
+    'Always validate props with types',
+    'Use `emit` with explicit event names; avoid `$emit` for untracked events',
+    'Avoid using the `.sync` modifier; use `v-model` with a custom prop instead',
+  ],
+
+  'stateManagement': [
+    'Use `pinia` or `vuex` for global state management',
+    'Limit component state to local UI logic only',
+    'Keep store modules feature-focused and small',
+  ],
+
+  'componentDesign': [
+    'Favor single-responsibility components',
+    'Use base components for common UI elements (prefix with `Base`)',
+    'Use `slots` for flexible content insertion',
+    'Avoid tightly coupling components; use props and events instead',
+  ],
+
+  'namingConventions': [
+    'PascalCase for component names (e.g., `UserCard`)',
+    'CamelCase for props and event names',
+    'Kebab-case for custom directives and component tags in templates',
+    'Use semantic names for components and props',
+  ],
+
+  'testing': [
+    'Write unit tests for reusable components',
+    'Use `vue-test-utils` for component tests',
+    'Focus on behavior and outputs rather than implementation details',
+    'Ensure 100% test coverage for critical components',
+  ],
+
+  'performanceOptimization': [
+    'Use lazy loading for large components',
+    'Leverage `v-once` for static content',
+    'Use `keep-alive` for caching dynamic components',
+    'Avoid inline functions or expressions in templates',
+    'Optimize loops with computed properties or pagination',
+  ],
+
+  'accessibility': [
+    'Use semantic HTML elements',
+    'Always provide `aria-*` attributes for interactive elements',
+    'Ensure keyboard navigability',
+    'Use color contrast guidelines for UI design',
+  ],
+
+  'documentationAndComments': [
+    'Comment non-intuitive logic in scripts',
+    'Add inline comments for complex computed properties or watchers',
+    'Document props, events, and emitted values in a block comment above the component',
+  ],
+
+  'bestPractices': [
+    'Prefer Composition API over Options API',
+    'Avoid mutating props directly; use a `computed` or a local copy',
+    'Use `defineExpose` for composable APIs in `<script setup>`',
+    'Keep components small and composable',
+    'Strictly adhere to linting rules (e.g., `eslint-plugin-vue`)',
+  ],
+};
+
+//PHP 8.3+ best practices
+const PhpCodingGuidelines = [
+    'principles' => [
+        'Minimize magic',
+        'Use strong typing',
+        'Optimize for IDE support',
+    ],
+
+    'typeDeclarations' => [
+        'Use declare(strict_types=1) in all files',
+        'Always specify property types',
+        'Always specify parameter types',
+        'Always use return types',
+        'Use void for methods returning nothing',
+        'Use never for methods always throwing exceptions',
+    ],
+
+    'objectOrientedPractices' => [
+        'Use final for classes by default',
+        'Use private for methods by default',
+        'Prefer composition over inheritance',
+        'Use ClassName::class instead of hardcoded class names',
+        'Prefer self for return type hints and instantiation',
+        'Use named static constructors',
+        'Encapsulate domain logic',
+        'Minimal comments',
+        'Descriptive exceptions',
+        'Performance-conscious',
+    ],
+];
+
+// Laravel Development Conventions
+const LaravelDevelopmentConventions = [
+    'principles' => [
+        'Consistency over flexibility',
+        'Security-first mindset',
+        'Leverage native Laravel features',
+        'Focus on performance and scalability',
+    ],
+
+    'projectStructure' => [
+        'Use modular architecture for large projects (>100 models)',
+        'Keep Request classes in the same directory as Controllers',
+        'Modules should communicate using dependency injection or events',
+    ],
+
+    'eloquent' => [
+        'Use `Model::query()` instead of static calls',
+        'Avoid mass assignment; use explicit attribute setting',
+        'Document magic properties and methods with PHPDoc',
+        'Use custom EloquentBuilder classes for models with 3+ scopes',
+        'Prefer invokable classes for reusable scopes',
+    ],
+
+    'factories' => [
+        'Keep factories in `tests/Factories`',
+        'Avoid `HasFactory` trait in models',
+        'Define valid default states and reusable state methods',
+    ],
+
+    'migrations' => [
+        'Always write `down()` methods for rollback support',
+        'Use explicit table and column definitions for clarity',
+    ],
+
+    'controllers' => [
+        'Prefer single-action controllers',
+        'Avoid extending base controller classes',
+        'Use singular resource names',
+        'Inject dependencies in the `handle()` method, not the constructor',
+    ],
+
+    'validation' => [
+        'Use array notation for validation rules',
+        'Prefer class-based custom rules',
+        'Extract reusable validation logic into dedicated classes',
+    ],
+
+    'routing' => [
+        'Use kebab-case for URLs',
+        'CamelCase for route parameters and names',
+        'Avoid `Route::resource`; define routes explicitly',
+        'Always name routes for clarity and reusability',
+    ],
+
+    'apiDesign' => [
+        'Use versioning (e.g., `/api/v1`)',
+        'Use plural nouns for endpoints',
+        'Use query parameters for filtering, sorting, and pagination',
+        'Use Laravel API Resources for consistent JSON responses',
+    ],
+
+    'artisanCommands' => [
+        'Use kebab-case for command names',
+        'Utilize verbosity levels for outputs',
+        'Exit with proper codes for error handling',
+    ],
+
+    'bladeTemplates' => [
+        'Use camelCase for view files and directories',
+        'Explicitly pass variables to partials',
+        'Use `<?php ?>` tags for PHP injection',
+        'Favor `__()` over `@lang` for translations',
+    ],
+
+    'jobs' => [
+        'Ensure idempotency and reentrancy',
+        'Use `dispatch()` helper for job execution',
+        'Avoid unnecessary traits in events',
+    ],
+
+    'security' => [
+        'Avoid raw queries; use Query Builder or ORM',
+        'Sanitize user-controlled input in column names',
+        'Use HTML Purifier for user-generated content',
+        'Always validate user input and filter invalid links',
+    ],
+
+    'assetManagement' => [
+        'Use `@vite` directive for assets',
+        'Use `Vite::asset()` helper for non-JS/CSS assets',
+    ],
+
+    'loggingAndMonitoring' => [
+        'Implement structured logging',
+        'Monitor critical errors with tools like Sentry',
+        'Use verbose artisan command outputs for debugging',
+    ],
+];
+
+
+// Application Folder Structure
+project-root/
+├── app/                # Core application logic
+│   ├── Http/           # Controllers, middleware, requests
+│   ├── Models/         # Database models
+│   └── Providers/      # Service providers
+│
+├── config/             # Configuration files
+├── database/           # Migrations, factories, seeds
+├── public/             # Entry point, assets
+├── resources/          # Views, uncompiled assets Vue components, Inertia pages
+│   ├── css/            # CSS files
+│   ├── js/             # JavaScript files
+│   │   ├── Components/ # Vue components
+│   │   │    └── shadcn/      # shadcn/ui components
+│   │   ├── Layouts/       # Vue layouts
+│   │   ├── Pages/        # Inertia pages (Vue 3)
+│   │   └── Partials/     # Vue partials
+│   └── views/          # Blade templates
+│   │ ...
+├── routes/             # Application routes
+├── storage/            # Generated files, logs
+└── tests/              # Automated tests

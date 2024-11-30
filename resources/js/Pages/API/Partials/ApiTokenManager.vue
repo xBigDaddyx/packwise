@@ -2,11 +2,18 @@
 import ActionMessage from '@/Components/ActionMessage.vue'
 import ActionSection from '@/Components/ActionSection.vue'
 import ConfirmationModal from '@/Components/ConfirmationModal.vue'
-import DialogModal from '@/Components/DialogModal.vue'
 import FormSection from '@/Components/FormSection.vue'
 import InputError from '@/Components/InputError.vue'
 import Button from '@/Components/shadcn/ui/button/Button.vue'
 import Checkbox from '@/Components/shadcn/ui/checkbox/Checkbox.vue'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/Components/shadcn/ui/dialog'
 import Input from '@/Components/shadcn/ui/input/Input.vue'
 import Label from '@/Components/shadcn/ui/label/Label.vue'
 import Separator from '@/Components/shadcn/ui/separator/Separator.vue'
@@ -68,6 +75,10 @@ function deleteApiToken() {
     onSuccess: () => (apiTokenBeingDeleted.value = null),
   })
 }
+
+function hasPermission(permissions, permission) {
+  return permissions.includes(permission)
+}
 </script>
 
 <template>
@@ -101,8 +112,15 @@ function deleteApiToken() {
             <div v-for="permission in availablePermissions" :key="permission" class="flex items-center space-x-2">
               <Checkbox
                 :id="`create-${permission}`"
-                v-model:checked="createApiTokenForm.permissions"
-                :value="permission"
+                :checked="hasPermission(createApiTokenForm.permissions, permission)"
+                @update:checked="(checked) => {
+                  if (checked) {
+                    createApiTokenForm.permissions.push(permission)
+                  }
+                  else {
+                    createApiTokenForm.permissions = createApiTokenForm.permissions.filter(p => p !== permission)
+                  }
+                }"
               />
               <label
                 :for="`create-${permission}`"
@@ -179,15 +197,14 @@ function deleteApiToken() {
     </div>
 
     <!-- Token Value Modal -->
-    <DialogModal :show="displayingToken" @close="displayingToken = false">
-      <template #title>
-        API Token
-      </template>
-
-      <template #content>
-        <div>
-          Please copy your new API token. For your security, it won't be shown again.
-        </div>
+    <Dialog :open="displayingToken" @update:open="displayingToken = false">
+      <DialogContent class="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle>API Token</DialogTitle>
+          <DialogDescription>
+            Please copy your new API token. For your security, it won't be shown again.
+          </DialogDescription>
+        </DialogHeader>
 
         <div
           v-if="$page.props.jetstream.flash.token"
@@ -195,28 +212,38 @@ function deleteApiToken() {
         >
           {{ $page.props.jetstream.flash.token }}
         </div>
-      </template>
 
-      <template #footer>
-        <Button variant="secondary" @click="displayingToken = false">
-          Close
-        </Button>
-      </template>
-    </DialogModal>
+        <DialogFooter>
+          <Button variant="secondary" @click="displayingToken = false">
+            Close
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
 
     <!-- API Token Permissions Modal -->
-    <DialogModal :show="managingPermissionsFor != null" @close="managingPermissionsFor = null">
-      <template #title>
-        API Token Permissions
-      </template>
+    <Dialog :open="managingPermissionsFor != null" @update:open="(value) => !value && (managingPermissionsFor = null)">
+      <DialogContent class="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle>API Token Permissions</DialogTitle>
+          <DialogDescription>
+            Update the permissions for this API token.
+          </DialogDescription>
+        </DialogHeader>
 
-      <template #content>
         <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div v-for="permission in availablePermissions" :key="permission" class="flex items-center space-x-2">
             <Checkbox
               :id="`update-${permission}`"
-              v-model:checked="updateApiTokenForm.permissions"
-              :value="permission"
+              :checked="hasPermission(updateApiTokenForm.permissions, permission)"
+              @update:checked="(checked) => {
+                if (checked) {
+                  updateApiTokenForm.permissions.push(permission)
+                }
+                else {
+                  updateApiTokenForm.permissions = updateApiTokenForm.permissions.filter(p => p !== permission)
+                }
+              }"
             />
             <label
               :for="`update-${permission}`"
@@ -226,21 +253,22 @@ function deleteApiToken() {
             </label>
           </div>
         </div>
-      </template>
 
-      <template #footer>
-        <Button variant="secondary" @click="managingPermissionsFor = null">
-          Cancel
-        </Button>
+        <DialogFooter>
+          <Button variant="secondary" @click="managingPermissionsFor = null">
+            Cancel
+          </Button>
 
-        <Button
-          class="ms-3" :class="{ 'opacity-25': updateApiTokenForm.processing }"
-          :disabled="updateApiTokenForm.processing" @click="updateApiToken"
-        >
-          Save
-        </Button>
-      </template>
-    </DialogModal>
+          <Button
+            class="ms-3" :class="{ 'opacity-25': updateApiTokenForm.processing }"
+            :disabled="updateApiTokenForm.processing"
+            @click="updateApiToken"
+          >
+            Save
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
 
     <!-- Delete Token Confirmation Modal -->
     <ConfirmationModal :show="apiTokenBeingDeleted != null" @close="apiTokenBeingDeleted = null">
