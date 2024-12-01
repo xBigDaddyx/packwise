@@ -3,6 +3,7 @@ import ActionMessage from '@/Components/ActionMessage.vue'
 import ActionSection from '@/Components/ActionSection.vue'
 import FormSection from '@/Components/FormSection.vue'
 import InputError from '@/Components/InputError.vue'
+import { Avatar, AvatarFallback, AvatarImage } from '@/Components/shadcn/ui/avatar'
 import Button from '@/Components/shadcn/ui/button/Button.vue'
 import {
   Dialog,
@@ -13,8 +14,8 @@ import {
   DialogTitle,
 } from '@/Components/shadcn/ui/dialog'
 import Input from '@/Components/shadcn/ui/input/Input.vue'
-import Label from '@/Components/shadcn/ui/label/Label.vue'
 
+import Label from '@/Components/shadcn/ui/label/Label.vue'
 import Separator from '@/Components/shadcn/ui/separator/Separator.vue'
 import { router, useForm, usePage } from '@inertiajs/vue3'
 import { inject, ref } from 'vue'
@@ -148,7 +149,7 @@ function displayableRole(role) {
                   <!-- Role Name -->
                   <div class="flex items-center">
                     <div
-                      class="text-sm text-gray-600 dark:text-gray-400"
+                      class="text-sm text-primary"
                       :class="{ 'font-semibold': addTeamMemberForm.role === role.key }"
                     >
                       {{ role.name }}
@@ -250,11 +251,11 @@ function displayableRole(role) {
           <div class="space-y-6">
             <div v-for="user in team.users" :key="user.id" class="flex items-center justify-between">
               <div class="flex items-center">
-                <img
-                  class="size-8 rounded-full object-cover" :src="user.profile_photo_url"
-                  :alt="user.name"
-                >
-                <div class="ms-4 dark:text-white">
+                <Avatar size="sm" shape="circle">
+                  <AvatarImage :src="user.profile_photo_url ?? ''" :alt="user.name" />
+                  <AvatarFallback>{{ user.name.charAt(0) }}</AvatarFallback>
+                </Avatar>
+                <div class="ms-4">
                   {{ user.name }}
                 </div>
               </div>
@@ -263,12 +264,12 @@ function displayableRole(role) {
                 <!-- Manage Team Member Role -->
                 <button
                   v-if="userPermissions.canUpdateTeamMembers && availableRoles.length"
-                  class="ms-2 text-sm text-gray-400 underline" @click="manageRole(user)"
+                  class="ms-2 text-sm underline" @click="manageRole(user)"
                 >
                   {{ displayableRole(user.membership.role) }}
                 </button>
 
-                <div v-else-if="availableRoles.length" class="ms-2 text-sm text-gray-400">
+                <div v-else-if="availableRoles.length" class="ms-2 text-sm">
                   {{ displayableRole(user.membership.role) }}
                 </div>
 
@@ -300,21 +301,24 @@ function displayableRole(role) {
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Manage Role</DialogTitle>
+          <DialogDescription>
+            Manage the role of this team member.
+          </DialogDescription>
         </DialogHeader>
 
         <div v-if="managingRoleFor">
-          <div class="relative z-0 mt-1 cursor-pointer rounded-lg border border-gray-200 dark:border-gray-700">
+          <div class="relative z-0 mt-1 cursor-pointer rounded-lg border border-primary">
             <button
               v-for="(role, i) in availableRoles" :key="role.key" type="button"
-              class="relative inline-flex w-full rounded-lg px-4 py-3 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:border-indigo-600 dark:focus:ring-indigo-600"
-              :class="{ 'rounded-t-none border-t border-gray-200 focus:border-none dark:border-gray-700': i > 0, 'rounded-b-none': i !== Object.keys(availableRoles).length - 1 }"
+              class="relative inline-flex w-full rounded-lg px-4 py-3 focus:z-10 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary"
+              :class="{ 'rounded-t-none border-t focus:border-none': i > 0, 'rounded-b-none': i !== Object.keys(availableRoles).length - 1 }"
               @click="updateRoleForm.role = role.key"
             >
               <div :class="{ 'opacity-50': updateRoleForm.role && updateRoleForm.role !== role.key }">
                 <!-- Role Name -->
                 <div class="flex items-center">
                   <div
-                    class="text-sm text-gray-600 dark:text-gray-400"
+                    class="text-sm"
                     :class="{ 'font-semibold': updateRoleForm.role === role.key }"
                   >
                     {{ role.name }}
@@ -333,7 +337,7 @@ function displayableRole(role) {
                 </div>
 
                 <!-- Role Description -->
-                <div class="mt-2 text-xs text-gray-600 dark:text-gray-400">
+                <div class="mt-2 text-xs">
                   {{ role.description }}
                 </div>
               </div>
