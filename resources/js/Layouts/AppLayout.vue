@@ -150,6 +150,7 @@ function logout() {
               <SidebarMenuItem>
                 <SidebarMenuButton as-child>
                   <Link :href="route('dashboard')">
+                    <Icon icon="lucide:layout-dashboard" />
                     Dashboard
                   </Link>
                 </SidebarMenuButton>
@@ -178,7 +179,7 @@ function logout() {
                   >
                     <Avatar class="h-8 w-8 rounded-lg">
                       <AvatarImage
-                        :src="$page.props.auth.user.avatar"
+                        :src="$page.props.auth.user.avatar ?? ''"
                         :alt="$page.props.auth.user.name"
                       />
                       <AvatarFallback class="rounded-lg">
@@ -200,7 +201,7 @@ function logout() {
                     <div class="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                       <Avatar class="h-8 w-8 rounded-lg">
                         <AvatarImage
-                          :src="$page.props.auth.user.avatar"
+                          :src="$page.props.auth.user.avatar ?? ''"
                           :alt="$page.props.auth.user.name"
                         />
                         <AvatarFallback class="rounded-lg">
@@ -253,10 +254,10 @@ function logout() {
         >
           <div class="flex items-center gap-2 px-4">
             <SidebarTrigger class="-ml-1" />
-            <Separator orientation="vertical" class="mr-2 h-4" />
+            <Separator orientation="vertical" class="mr-2 h-4 hidden md:block" />
             <Breadcrumb>
               <BreadcrumbList>
-                <BreadcrumbItem class="hidden md:block">
+                <BreadcrumbItem class="hidden md:block ">
                   <BreadcrumbLink>
                     {{ title }}
                   </BreadcrumbLink>

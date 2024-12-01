@@ -8,18 +8,19 @@ const props = defineProps({
   variant: { type: String, default: 'default' },
   size: { type: String, default: 'default' },
   isActive: { type: Boolean, default: false },
-  class: { type: null, required: false }
+  class: { type: null, required: false },
+  asChild: { type: Boolean, default: false }
 });
 </script>
 
 <template>
   <Primitive
     data-sidebar="menu-button"
-    :data-size="size"
-    :data-active="isActive"
-    :class="cn(sidebarMenuButtonVariants({ variant, size }), props.class)"
-    :as="as"
-    :as-child="asChild"
+    :as-child="props.asChild"
+    :data-size="props.size"
+    :data-active="props.isActive"
+    :class="cn(sidebarMenuButtonVariants({ variant: props.variant, size: props.size }), props.class)"
+    :as="props.as"
     v-bind="$attrs"
   >
     <slot />

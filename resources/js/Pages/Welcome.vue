@@ -16,7 +16,7 @@ defineProps({
 </script>
 
 <template>
-  <Head title="Welcome" />
+  <Head title="Build Faster with Larasonic" />
   <div class="min-h-screen">
     <header class="sticky top-0 z-50 w-full border-b backdrop-blur">
       <div class="container flex h-16 items-center">
@@ -55,7 +55,7 @@ defineProps({
               The Ultimate Laravel <span>Starter Kit</span> for Modern SASS
             </h1>
             <p class="mt-4 text-xl">
-              Build production-ready applications 10x faster with our opinionated stack powered by
+              Build production-ready applications 10x faster with free opinionated starter kit powered by
               Laravel Jetstream, Inertia V2, and Shadcn/ui.
             </p>
             <div class="mt-8 flex">
@@ -119,20 +119,17 @@ defineProps({
         />
 
         <FeaturesCard
-          icon="lucide:palette"
-          title="Customizable UI"
+          icon="lucide:palette" title="Customizable UI"
           description="Built with shadcn/ui components, making UI customization a breeze. Easily modify themes, styles, and components to match your brand."
         />
 
         <FeaturesCard
-          icon="lucide:brain"
-          title="AI Integration Ready"
+          icon="lucide:brain" title="AI Integration Ready"
           description="Pre-configured LLM integrations for OpenAI, Anthropic, and more. Build AI-powered features into your app with minimal setup."
         />
 
         <FeaturesCard
-          icon="lucide:sparkles"
-          title="Evolving Features"
+          icon="lucide:sparkles" title="Evolving Features"
           description="This is just the beginning. Regular updates bring new features, integrations, and improvements to supercharge your development."
         />
       </div>
@@ -167,26 +164,23 @@ defineProps({
       <div class="container mx-auto px-4 py-8 sm:px-6 lg:px-8">
         <div class="flex flex-col items-center justify-between gap-4 sm:flex-row">
           <p class="text-sm text-muted-foreground">
-            © 2024 Laravel Starter Kit. Open source under MIT license.
+            © 2024 Larasonic. Crafted with ❤️ by <a
+              class="underline"
+              href="https://pushpak1300.me?ref=larasonic"
+            > Pushpak.</a>
           </p>
           <div class="flex gap-4">
             <a
-              href="https://github.com" target="_blank" rel="noopener"
+              href="https://github.com/pushpak1300/larasonic" target="_blank" rel="noopener"
               class="text-muted-foreground hover:text-foreground"
             >
               <Icon icon="lucide:github" class="h-5 w-5" />
             </a>
             <a
-              href="https://twitter.com" target="_blank" rel="noopener"
+              href="https://twitter.com/pushpak1300" target="_blank" rel="noopener"
               class="text-muted-foreground hover:text-foreground"
             >
               <Icon icon="lucide:twitter" class="h-5 w-5" />
-            </a>
-            <a
-              href="https://discord.com" target="_blank" rel="noopener"
-              class="text-muted-foreground hover:text-foreground"
-            >
-              <Icon icon="lucide:message-square" class="h-5 w-5" />
             </a>
           </div>
         </div>
