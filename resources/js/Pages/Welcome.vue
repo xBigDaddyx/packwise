@@ -1,234 +1,208 @@
 <script setup>
-import Button from '@/Components/shadcn/ui/button/Button.vue'
-import { Head, Link } from '@inertiajs/vue3'
+// Import components from the custom library
 import {
-  CodeIcon,
-  ContainerIcon,
-  CreditCardIcon,
-  GithubIcon,
-  KeyIcon,
-  LayoutDashboardIcon,
-  MessageSquareIcon,
-  RocketIcon,
-  TwitterIcon,
-} from 'lucide-vue-next'
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/Components/shadcn/ui/breadcrumb'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/Components/shadcn/ui/dropdown-menu'
 
-defineProps({
-  canLogin: {
-    type: Boolean,
-  },
-  canRegister: {
-    type: Boolean,
-  },
-})
+import { Label } from '@/Components/shadcn/ui/label'
+import { Separator } from '@/Components/shadcn/ui/separator'
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarInput,
+  SidebarInset,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarProvider,
+  SidebarRail,
+  SidebarTrigger,
+} from '@/Components/shadcn/ui/sidebar'
+import { Check, ChevronsUpDown, GalleryVerticalEnd, Search } from 'lucide-vue-next'
+import { ref } from 'vue'
+
+const data = {
+  versions: ['1.0.1', '1.1.0-alpha', '2.0.0-beta1'],
+  navMain: [
+    {
+      title: 'Getting Started',
+      url: '#',
+      items: [
+        { title: 'Installation', url: '#' },
+        { title: 'Project Structure', url: '#' },
+      ],
+    },
+    {
+      title: 'Building Your Application',
+      url: '#',
+      items: [
+        { title: 'Routing', url: '#' },
+        { title: 'Data Fetching', url: '#', isActive: true },
+        { title: 'Rendering', url: '#' },
+        { title: 'Caching', url: '#' },
+        { title: 'Styling', url: '#' },
+        { title: 'Optimizing', url: '#' },
+        { title: 'Configuring', url: '#' },
+        { title: 'Testing', url: '#' },
+        { title: 'Authentication', url: '#' },
+        { title: 'Deploying', url: '#' },
+        { title: 'Upgrading', url: '#' },
+        { title: 'Examples', url: '#' },
+      ],
+    },
+    {
+      title: 'API Reference',
+      url: '#',
+      items: [
+        { title: 'Components', url: '#' },
+        { title: 'File Conventions', url: '#' },
+        { title: 'Functions', url: '#' },
+        { title: 'next.config.js Options', url: '#' },
+        { title: 'CLI', url: '#' },
+        { title: 'Edge Runtime', url: '#' },
+      ],
+    },
+    {
+      title: 'Architecture',
+      url: '#',
+      items: [
+        { title: 'Accessibility', url: '#' },
+        { title: 'Fast Refresh', url: '#' },
+        { title: 'Next.js Compiler', url: '#' },
+        { title: 'Supported Browsers', url: '#' },
+        { title: 'Turbopack', url: '#' },
+      ],
+    },
+  ],
+}
+
+const selectedVersion = ref(data.versions[0])
+const dropdownOpen = ref(false)
+const search = ref('')
+
+function toggleDropdown() {
+  dropdownOpen.value = !dropdownOpen.value
+}
+
+function setSelectedVersion(version) {
+  selectedVersion.value = version
+}
 </script>
 
 <template>
-  <Head title="Welcome" />
-  <div class="min-h-screen">
-    <header class="sticky top-0 z-50 w-full border-b backdrop-blur">
-      <div class="container flex h-16 items-center">
-        <div class="mr-4 flex">
-          <a class="mr-6 flex items-center space-x-2" href="/">
-            <span class="hidden font-bold sm:inline-block">
-              🚀 Larasonic
-            </span>
-          </a>
-          <nav class="flex items-center space-x-6 text-sm font-medium">
-            <a class="transition-colors" href="#features">Github</a>
-          </nav>
-        </div>
-        <div class="flex flex-1 items-center justify-end space-x-4">
-          <nav class="flex items-center space-x-4">
-            <Link v-if="canLogin" href="/login" class="text-sm font-medium">
-              Login
-            </Link>
-            <Link v-if="canRegister" href="/register" class="text-sm font-medium">
-              Register
-            </Link>
-          </nav>
-        </div>
-      </div>
-    </header>
-
-    <!-- Hero Section -->
-    <section class="relative overflow-hidden border-b">
-      <div class="container mx-auto px-4 py-16 sm:px-6 lg:px-8">
-        <div class="grid gap-8 lg:grid-cols-2 lg:gap-16">
-          <div class="flex flex-col justify-center">
-            <div class="inline-block bg-primary/10 rounded-lg px-3 py-1 text-sm">
-              Using PHP 8.3+, Laravel 11, Inertia 2.0 and Tailwind CSS 4
-            </div>
-            <h1 class="mt-4 text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl">
-              The Ultimate Laravel <span>Starter Kit</span> for Modern SASS
-            </h1>
-            <p class="mt-4 text-xl">
-              Build production-ready applications 10x faster with our opinionated stack powered by
-              Laravel Jetstream, Inertia V2, and Shadcn/ui.
-            </p>
-            <div class="mt-8 flex">
-              <Button>
-                <Link
-                  href="https://github.com/pushpak1300/larasonic" target="_blank"
-                  rel="noopener"
-                  class="flex items-center gap-2"
+  <SidebarProvider>
+    <Sidebar>
+      <SidebarHeader>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <DropdownMenu>
+              <DropdownMenuTrigger as-child>
+                <SidebarMenuButton
+                  size="lg"
+                  :class="{ 'data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground': dropdownOpen }"
+                  @click="toggleDropdown"
                 >
-                  <GithubIcon class="size-4" />Star Repo
-                </Link>
-              </Button>
-            </div>
-          </div>
-          <div class="relative">
-            <div class="relative rounded-lg border bg-card p-2 shadow-2xl">
-              <img src="/images/dashboard.png" alt="Dashboard Preview" class="rounded-md">
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Features Grid -->
-    <section class="container mx-auto px-4 py-16 sm:px-6 lg:px-8">
-      <h2 class="text-center text-3xl font-bold tracking-tight sm:text-4xl">
-        Everything you need to ship faster 🚀
-      </h2>
-      <p class="mx-auto mt-4 max-w-2xl text-center text-muted-foreground">
-        Production-ready features that help you focus on what matters - building your product.
-      </p>
-
-      <div class="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-        <!-- Development Experience -->
-        <div class="rounded-lg border bg-card p-6 shadow-sm">
-          <RocketIcon class="h-12 w-12 text-primary" />
-          <h3 class="mt-4 text-xl font-semibold">
-            10x Dev Experience
-          </h3>
-          <p class="mt-2 text-muted-foreground">
-            Ships with opinionated Pint rules and maximum PHPStan support for enhanced code quality and
-            developer productivity.
-          </p>
-        </div>
-
-        <!-- Docker Ready -->
-        <div class="rounded-lg border bg-card p-6 shadow-sm">
-          <ContainerIcon class="h-12 w-12 text-primary" />
-          <h3 class="mt-4 text-xl font-semibold">
-            Production Docker Ready
-          </h3>
-          <p class="mt-2 text-muted-foreground">
-            Optimized Docker images with Laravel Octane and Sail for lightning-fast development and
-            deployment.
-          </p>
-        </div>
-
-        <!-- Authentication -->
-        <div class="rounded-lg border bg-card p-6 shadow-sm">
-          <KeyIcon class="h-12 w-12 text-primary" />
-          <h3 class="mt-4 text-xl font-semibold">
-            Advanced Authentication
-          </h3>
-          <p class="mt-2 text-muted-foreground">
-            Complete authentication system with social login, magic links, and role-based access
-            control.
-          </p>
-        </div>
-
-        <!-- Admin Panel -->
-        <div class="rounded-lg border bg-card p-6 shadow-sm">
-          <LayoutDashboardIcon class="h-12 w-12 text-primary" />
-          <h3 class="mt-4 text-xl font-semibold">
-            FilamentPHP Admin
-          </h3>
-          <p class="mt-2 text-muted-foreground">
-            Beautiful admin panel powered by FilamentPHP with CRUD operations, charts, and detailed
-            analytics.
-          </p>
-        </div>
-
-        <!-- Payment Integration -->
-        <div class="rounded-lg border bg-card p-6 shadow-sm">
-          <CreditCardIcon class="h-12 w-12 text-primary" />
-          <h3 class="mt-4 text-xl font-semibold">
-            Payment Ready
-          </h3>
-          <p class="mt-2 text-muted-foreground">
-            Integrated payment processing with Stripe and Paddle for subscriptions and one-time
-            payments.
-          </p>
-        </div>
-
-        <!-- API Ready -->
-        <div class="rounded-lg border bg-card p-6 shadow-sm">
-          <CodeIcon class="h-12 w-12 text-primary" />
-          <h3 class="mt-4 text-xl font-semibold">
-            API Ready
-          </h3>
-          <p class="mt-2 text-muted-foreground">
-            RESTful API endpoints with Laravel Sanctum authentication and comprehensive documentation.
-          </p>
-        </div>
-      </div>
-    </section>
-    <!-- CTA Section -->
-    <section class="border-t">
-      <div class="container mx-auto px-4 py-16 sm:px-6 lg:px-8">
-        <div class="rounded-2xl px-6 py-16 sm:p-16">
-          <div class="mx-auto max-w-2xl text-center">
-            <h2 class="text-3xl font-bold tracking-tight sm:text-4xl">
-              Ready to build faster?
-            </h2>
-            <p class="mx-auto mt-4 max-w-xl text-lg ">
-              Start building your next project with our production-ready starter kit.
-            </p>
-            <div class="mt-8 flex justify-center gap-4">
-              <a
-                href="/docs"
-                class="inline-flex items-center justify-center rounded-md bg-background px-6 py-3 text-sm font-medium text-foreground shadow transition-colors hover:bg-accent"
+                  <div
+                    class="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground"
+                  >
+                    <GalleryVerticalEnd class="size-4" />
+                  </div>
+                  <div class="flex flex-col gap-0.5 leading-none">
+                    <span class="font-semibold">Documentation</span>
+                    <span>v{{ selectedVersion }}</span>
+                  </div>
+                  <ChevronsUpDown class="ml-auto" />
+                </SidebarMenuButton>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                v-if="dropdownOpen" class="w-[--radix-dropdown-menu-trigger-width]"
+                align="start"
               >
-                Get Started
-              </a>
-              <Link
-                as="button" href="https://github.com/pushpak1300/larasonic" target="_blank"
-                rel="noopener"
-                class="inline-flex items-center justify-center rounded-md border border-primary-foreground/20 bg-transparent px-6 py-3 text-sm font-medium text-primary-foreground shadow-sm transition-colors hover:bg-primary-foreground/10"
-              >
-                View on GitHub
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+                <DropdownMenuItem
+                  v-for="version in data.versions" :key="version"
+                  @click="setSelectedVersion(version)"
+                >
+                  v{{ version }}
+                  <Check v-if="version === selectedVersion" class="ml-auto" />
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </SidebarMenuItem>
+        </SidebarMenu>
 
-    <!-- Footer -->
-    <footer class="border-t">
-      <div class="container mx-auto px-4 py-8 sm:px-6 lg:px-8">
-        <div class="flex flex-col items-center justify-between gap-4 sm:flex-row">
-          <p class="text-sm text-muted-foreground">
-            © 2024 Laravel Starter Kit. Open source under MIT license.
-          </p>
-          <div class="flex gap-4">
-            <a
-              href="https://github.com" target="_blank" rel="noopener"
-              class="text-muted-foreground hover:text-foreground"
-            >
-              <GithubIcon class="h-5 w-5" />
-            </a>
-            <a
-              href="https://twitter.com" target="_blank" rel="noopener"
-              class="text-muted-foreground hover:text-foreground"
-            >
-              <TwitterIcon class="h-5 w-5" />
-            </a>
-            <a
-              href="https://discord.com" target="_blank" rel="noopener"
-              class="text-muted-foreground hover:text-foreground"
-            >
-              <MessageSquareIcon class="h-5 w-5" />
-            </a>
-          </div>
+        <form @submit.prevent>
+          <SidebarGroup class="py-0">
+            <SidebarGroupContent class="relative">
+              <Label for="search" class="sr-only">Search</Label>
+              <SidebarInput id="search" v-model="search" placeholder="Search the docs..." class="pl-8" />
+              <Search
+                class="pointer-events-none absolute left-2 top-1/2 size-4 -translate-y-1/2 select-none opacity-50"
+              />
+            </SidebarGroupContent>
+          </SidebarGroup>
+        </form>
+      </SidebarHeader>
+
+      <SidebarContent>
+        <SidebarGroup v-for="item in data.navMain" :key="item.title">
+          <SidebarGroupLabel>{{ item.title }}</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <SidebarMenuItem v-for="subItem in item.items" :key="subItem.title">
+                <SidebarMenuButton :class="{ 'is-active': subItem.isActive }" as-child>
+                  <a :href="subItem.url">{{ subItem.title }}</a>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
+
+      <SidebarRail />
+    </Sidebar>
+
+    <SidebarInset>
+      <header class="flex h-16 shrink-0 items-center gap-2 border-b px-4">
+        <SidebarTrigger class="-ml-1" />
+        <Separator orientation="vertical" class="mr-2 h-4" />
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem class="hidden md:block">
+              <BreadcrumbLink href="#">
+                Building Your Application
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator class="hidden md:block" />
+            <BreadcrumbItem>
+              <BreadcrumbPage>Data Fetching</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+      </header>
+
+      <div class="flex flex-1 flex-col gap-4 p-4">
+        <div class="grid auto-rows-min gap-4 md:grid-cols-3">
+          <div class="aspect-video rounded-xl bg-muted/50" />
+          <div class="aspect-video rounded-xl bg-muted/50" />
+          <div class="aspect-video rounded-xl bg-muted/50" />
         </div>
+        <div class="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" />
       </div>
-    </footer>
-  </div>
+    </SidebarInset>
+  </SidebarProvider>
 </template>
