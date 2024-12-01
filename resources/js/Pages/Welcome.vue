@@ -1,17 +1,9 @@
 <script setup>
+import FeaturesCard from '@/Components/FeaturesCard.vue'
+import Badge from '@/Components/shadcn/ui/badge/Badge.vue'
 import Button from '@/Components/shadcn/ui/button/Button.vue'
+import { Icon } from '@iconify/vue'
 import { Head, Link } from '@inertiajs/vue3'
-import {
-  CodeIcon,
-  ContainerIcon,
-  CreditCardIcon,
-  GithubIcon,
-  KeyIcon,
-  LayoutDashboardIcon,
-  MessageSquareIcon,
-  RocketIcon,
-  TwitterIcon,
-} from 'lucide-vue-next'
 
 defineProps({
   canLogin: {
@@ -56,9 +48,9 @@ defineProps({
       <div class="container mx-auto px-4 py-16 sm:px-6 lg:px-8">
         <div class="grid gap-8 lg:grid-cols-2 lg:gap-16">
           <div class="flex flex-col justify-center">
-            <div class="inline-block bg-primary/10 rounded-lg px-3 py-1 text-sm">
-              Using PHP 8.3+, Laravel 11, Inertia 2.0 and Tailwind CSS 4
-            </div>
+            <Badge variant="outline" class="inline-block bg-primary/10 rounded-lg px-3 py-1 text-sm">
+              Using PHP 8.3+, Laravel 11, Inertia 2.0 and Tailwind CSS 3.4+
+            </Badge>
             <h1 class="mt-4 text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl">
               The Ultimate Laravel <span>Starter Kit</span> for Modern SASS
             </h1>
@@ -72,7 +64,7 @@ defineProps({
                   href="https://github.com/pushpak1300/larasonic" target="_blank" rel="noopener"
                   class="flex items-center gap-2"
                 >
-                  <GithubIcon class="size-4" />Star Repo
+                  <Icon icon="lucide:github" class="size-4" />Star Repo
                 </Link>
               </Button>
             </div>
@@ -96,76 +88,53 @@ defineProps({
       </p>
 
       <div class="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-        <!-- Development Experience -->
-        <div class="rounded-lg border bg-card p-6 shadow-sm">
-          <RocketIcon class="h-12 w-12 text-primary" />
-          <h3 class="mt-4 text-xl font-semibold">
-            10x Dev Experience
-          </h3>
-          <p class="mt-2 text-muted-foreground">
-            Ships with opinionated Pint rules and maximum PHPStan support for enhanced code quality and
-            developer productivity.
-          </p>
-        </div>
+        <FeaturesCard
+          icon="lucide:rocket" title="10x Dev Experience"
+          description="Ship faster with opinionated Laravel Pint, maximum PHPStan level, and Rector for enhanced code quality and developer productivity."
+        />
 
-        <!-- Docker Ready -->
-        <div class="rounded-lg border bg-card p-6 shadow-sm">
-          <ContainerIcon class="h-12 w-12 text-primary" />
-          <h3 class="mt-4 text-xl font-semibold">
-            Production Docker Ready
-          </h3>
-          <p class="mt-2 text-muted-foreground">
-            Optimized Docker images with Laravel Octane and Sail for lightning-fast development and
-            deployment.
-          </p>
-        </div>
+        <FeaturesCard
+          icon="lucide:container" title="Production Docker Ready"
+          description="Optimized Docker images with Laravel Octane and Sail for lightning-fast development and deployment."
+        />
 
-        <!-- Authentication -->
-        <div class="rounded-lg border bg-card p-6 shadow-sm">
-          <KeyIcon class="h-12 w-12 text-primary" />
-          <h3 class="mt-4 text-xl font-semibold">
-            Advanced Authentication
-          </h3>
-          <p class="mt-2 text-muted-foreground">
-            Complete authentication system with social login, magic links, and role-based access
-            control.
-          </p>
-        </div>
+        <FeaturesCard
+          icon="lucide:key" title="Advanced Authentication"
+          description="Complete authentication system with social login, magic links, and role-based access control."
+        />
 
-        <!-- Admin Panel -->
-        <div class="rounded-lg border bg-card p-6 shadow-sm">
-          <LayoutDashboardIcon class="h-12 w-12 text-primary" />
-          <h3 class="mt-4 text-xl font-semibold">
-            FilamentPHP Admin
-          </h3>
-          <p class="mt-2 text-muted-foreground">
-            Beautiful admin panel powered by FilamentPHP with CRUD operations, charts, and detailed
-            analytics.
-          </p>
-        </div>
+        <FeaturesCard
+          icon="lucide:layout-dashboard" title="FilamentPHP Admin"
+          description="Beautiful admin panel powered by FilamentPHP with CRUD operations, charts, and detailed analytics."
+        />
 
-        <!-- Payment Integration -->
-        <div class="rounded-lg border bg-card p-6 shadow-sm">
-          <CreditCardIcon class="h-12 w-12 text-primary" />
-          <h3 class="mt-4 text-xl font-semibold">
-            Payment Ready
-          </h3>
-          <p class="mt-2 text-muted-foreground">
-            Integrated payment processing with Stripe and Paddle for subscriptions and one-time
-            payments.
-          </p>
-        </div>
+        <FeaturesCard
+          icon="lucide:credit-card" title="Payment Ready"
+          description="Integrated Laravel Cashier for subscription billing and payment processing so you can focus on building your product."
+        />
 
-        <!-- API Ready -->
-        <div class="rounded-lg border bg-card p-6 shadow-sm">
-          <CodeIcon class="h-12 w-12 text-primary" />
-          <h3 class="mt-4 text-xl font-semibold">
-            API Ready
-          </h3>
-          <p class="mt-2 text-muted-foreground">
-            RESTful API endpoints with Laravel Sanctum authentication and comprehensive documentation.
-          </p>
-        </div>
+        <FeaturesCard
+          icon="lucide:code" title="API Ready"
+          description="RESTful API endpoints with Laravel Sanctum authentication and comprehensive documentation."
+        />
+
+        <FeaturesCard
+          icon="lucide:palette"
+          title="Customizable UI"
+          description="Built with shadcn/ui components, making UI customization a breeze. Easily modify themes, styles, and components to match your brand."
+        />
+
+        <FeaturesCard
+          icon="lucide:brain"
+          title="AI Integration Ready"
+          description="Pre-configured LLM integrations for OpenAI, Anthropic, and more. Build AI-powered features into your app with minimal setup."
+        />
+
+        <FeaturesCard
+          icon="lucide:sparkles"
+          title="Evolving Features"
+          description="This is just the beginning. Regular updates bring new features, integrations, and improvements to supercharge your development."
+        />
       </div>
     </section>
     <!-- CTA Section -->
@@ -174,25 +143,19 @@ defineProps({
         <div class="rounded-2xl px-6 py-16 sm:p-16">
           <div class="mx-auto max-w-2xl text-center">
             <h2 class="text-3xl font-bold tracking-tight sm:text-4xl">
-              Ready to build faster?
+              Ready to ship faster?
             </h2>
             <p class="mx-auto mt-4 max-w-xl text-lg ">
-              Start building your next project with our production-ready starter kit.
+              You're already blazing fast with Laravel.<br> Larasonic is about to make your shipping speed
+              supersonic. 🚀
             </p>
             <div class="mt-8 flex justify-center gap-4">
-              <a
-                href="/docs"
-                class="inline-flex items-center justify-center rounded-md bg-background px-6 py-3 text-sm font-medium text-foreground shadow transition-colors hover:bg-accent"
-              >
-                Get Started
-              </a>
-              <Link
-                as="button" href="https://github.com/pushpak1300/larasonic" target="_blank"
+              <Button
+                :as="Link" href="https://github.com/pushpak1300/larasonic" target="_blank"
                 rel="noopener"
-                class="inline-flex items-center justify-center rounded-md border border-primary-foreground/20 bg-transparent px-6 py-3 text-sm font-medium text-primary-foreground shadow-sm transition-colors hover:bg-primary-foreground/10"
               >
                 View on GitHub
-              </Link>
+              </Button>
             </div>
           </div>
         </div>
@@ -211,19 +174,19 @@ defineProps({
               href="https://github.com" target="_blank" rel="noopener"
               class="text-muted-foreground hover:text-foreground"
             >
-              <GithubIcon class="h-5 w-5" />
+              <Icon icon="lucide:github" class="h-5 w-5" />
             </a>
             <a
               href="https://twitter.com" target="_blank" rel="noopener"
               class="text-muted-foreground hover:text-foreground"
             >
-              <TwitterIcon class="h-5 w-5" />
+              <Icon icon="lucide:twitter" class="h-5 w-5" />
             </a>
             <a
               href="https://discord.com" target="_blank" rel="noopener"
               class="text-muted-foreground hover:text-foreground"
             >
-              <MessageSquareIcon class="h-5 w-5" />
+              <Icon icon="lucide:message-square" class="h-5 w-5" />
             </a>
           </div>
         </div>
