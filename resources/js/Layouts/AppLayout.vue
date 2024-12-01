@@ -217,16 +217,9 @@ function logout() {
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuGroup>
-                    <DropdownMenuItem>
-                      <Icon icon="lucide:sparkles" />
-                      Upgrade to Pro
-                    </DropdownMenuItem>
-                  </DropdownMenuGroup>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuGroup>
                     <DropdownMenuItem :as="Link" :href="route('profile.show')">
-                      <Icon icon="lucide:badge-check" />
-                      Profile
+                      <Icon icon="lucide:settings" />
+                      Settings
                     </DropdownMenuItem>
                     <DropdownMenuItem>
                       <Icon icon="lucide:credit-card" />
