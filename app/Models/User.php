@@ -65,6 +65,8 @@ use Illuminate\Notifications\{DatabaseNotification, DatabaseNotificationCollecti
  *
  * @property-read Collection<int, Team> $ownedTeamsBase
  * @property-read int|null $owned_teams_base_count
+ * @property-read Collection<int, OauthConnection> $oauthConnections
+ * @property-read int|null $oauth_connections_count
  *
  * @mixin \Eloquent
  */
@@ -113,6 +115,16 @@ final class User extends Authenticatable implements MustVerifyEmail
     public function ownedTeams(): HasMany
     {
         return $this->ownedTeamsBase();
+    }
+
+    /**
+     * Get the Oauth Connections for the user.
+     *
+     * @return HasMany<OauthConnection, covariant $this>
+     */
+    public function oauthConnections(): HasMany
+    {
+        return $this->hasMany(OauthConnection::class);
     }
 
     /**

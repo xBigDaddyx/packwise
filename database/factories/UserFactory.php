@@ -63,7 +63,7 @@ final class UserFactory extends Factory
             Team::factory()
                 /* @phpstan-ignore-next-line */
                 ->state(fn (array $attributes, User $user): array => [
-                    'name' => $user->name.'\'s Team',
+                    'name' => $user->name."'s Team",
                     'user_id' => $user->id,
                     'personal_team' => true,
                 ])

@@ -7,6 +7,7 @@ import Checkbox from '@/Components/shadcn/ui/checkbox/Checkbox.vue'
 import Input from '@/Components/shadcn/ui/input/Input.vue'
 import Label from '@/Components/shadcn/ui/label/Label.vue'
 import { cn } from '@/lib/utils'
+import { Icon } from '@iconify/vue'
 import { Head, Link, useForm } from '@inertiajs/vue3'
 import { inject } from 'vue'
 
@@ -90,6 +91,33 @@ function submit() {
               :disabled="form.processing"
             >
               Log in
+            </Button>
+            <div class="relative">
+              <div class="absolute inset-0 flex items-center">
+                <span class="w-full border-t" />
+              </div>
+              <div class="relative flex justify-center text-xs uppercase">
+                <span class="bg-background px-2 text-muted-foreground">
+                  Or continue with
+                </span>
+              </div>
+            </div>
+            <Button variant="outline" as="a" :disabled="isLoading" :href="route('oauth.redirect', { provider: 'github' })">
+              <Icon v-if="isLoading" icon="lucide:loader2" class="mr-2 h-4 w-4 animate-spin" />
+              <Icon v-else icon="lucide:github" class="mr-2 h-4 w-4" />
+              Sign In With GitHub
+            </Button>
+
+            <Button variant="outline" type="button" :disabled="isLoading">
+              <Icon v-if="isLoading" icon="lucide:loader2" class="mr-2 h-4 w-4 animate-spin" />
+              <Icon v-else icon="devicon:google" class="mr-2 h-4 w-4" />
+              Sign In With Google
+            </Button>
+
+            <Button variant="outline" type="button" :disabled="isLoading">
+              <Icon v-if="isLoading" icon="lucide:loader2" class="mr-2 h-4 w-4 animate-spin" />
+              <Icon v-else icon="lucide:mail" class="mr-2 h-4 w-4" />
+              Sign In With Magic Link
             </Button>
 
             <div class="text-center text-sm text-muted-foreground">

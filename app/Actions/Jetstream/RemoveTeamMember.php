@@ -32,10 +32,8 @@ final class RemoveTeamMember implements RemovesTeamMembers
      */
     private function authorize(User $user, Team $team, User $teamMember): void
     {
-        if (! Gate::forUser($user)->check('removeTeamMember', $team) &&
-            $user->id !== $teamMember->id) {
-            throw new AuthorizationException;
-        }
+        throw_if(! Gate::forUser($user)->check('removeTeamMember', $team) &&
+            $user->id !== $teamMember->id, new AuthorizationException);
     }
 
     /**
@@ -45,10 +43,8 @@ final class RemoveTeamMember implements RemovesTeamMembers
     {
         /** @var User $owner */
         $owner = $team->owner;
-        if ($teamMember->id === $owner->id) {
-            throw ValidationException::withMessages([
-                'team' => [__('You may not leave a team that you created.')],
-            ])->errorBag('removeTeamMember');
-        }
+        throw_if($teamMember->id === $owner->id, ValidationException::withMessages([
+            'team' => [__('You may not leave a team that you created.')],
+        ])->errorBag('removeTeamMember'));
     }
 }
