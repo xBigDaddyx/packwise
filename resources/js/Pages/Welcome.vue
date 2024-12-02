@@ -27,7 +27,9 @@ defineProps({
             </span>
           </a>
           <nav class="flex items-center space-x-6 text-sm font-medium">
-            <a class="transition-colors" href="#features">Github</a>
+            <a class="transition-colors" href="https://github.com/pushpak1300/larasonic" target="_blank" rel="noopener">
+              Github
+            </a>
           </nav>
         </div>
         <div class="flex flex-1 items-center justify-end space-x-4">
@@ -49,7 +51,7 @@ defineProps({
         <div class="grid gap-8 lg:grid-cols-2 lg:gap-16">
           <div class="flex flex-col justify-center">
             <Badge variant="outline" class="inline-block bg-primary/10 rounded-lg px-3 py-1 text-sm">
-              Using PHP 8.3+, Laravel 11, Inertia 2.0 and Tailwind CSS 3.4+
+              ✨ Using PHP 8.3+, Laravel 11, Inertia 2.0 and Tailwind CSS 3.4+
             </Badge>
             <h1 class="mt-4 text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl">
               The Ultimate Laravel <span>Starter Kit</span> for Modern SASS
