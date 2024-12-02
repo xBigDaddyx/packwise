@@ -26,12 +26,14 @@ final class CreateNewUser implements CreatesNewUsers
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => Arr::get($input, 'password') ? $this->passwordRules() : 'sometimes',
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['accepted', 'required'] : '',
+            'email_verified_at' => ['sometimes', 'accepted'],
         ])->validate();
 
         return DB::transaction(fn () => tap(User::query()->create([
             'name' => $input['name'],
             'email' => $input['email'],
             'password' => Arr::get($input, 'password') ? Hash::make($input['password']) : Str::random(12),
+            'email_verified_at' => Arr::get($input, 'email_verified_at') ? now() : null,
         ]), function (User $user): void {
             $this->createTeam($user);
         }));

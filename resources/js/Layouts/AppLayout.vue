@@ -179,7 +179,7 @@ function logout() {
                   >
                     <Avatar class="h-8 w-8 rounded-lg">
                       <AvatarImage
-                        :src="$page.props.auth.user.avatar ?? ''"
+                        :src="$page.props.auth.user. profile_photo_path ?? ''"
                         :alt="$page.props.auth.user.name"
                       />
                       <AvatarFallback class="rounded-lg">
@@ -201,7 +201,7 @@ function logout() {
                     <div class="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                       <Avatar class="h-8 w-8 rounded-lg">
                         <AvatarImage
-                          :src="$page.props.auth.user.avatar ?? ''"
+                          :src="$page.props.auth.user. profile_photo_path ?? ''"
                           :alt="$page.props.auth.user.name"
                         />
                         <AvatarFallback class="rounded-lg">

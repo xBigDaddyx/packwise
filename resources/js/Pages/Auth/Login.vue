@@ -9,11 +9,13 @@ import Label from '@/Components/shadcn/ui/label/Label.vue'
 import { cn } from '@/lib/utils'
 import { Icon } from '@iconify/vue'
 import { Head, Link, useForm } from '@inertiajs/vue3'
-import { inject } from 'vue'
+import { useChangeCase } from '@vueuse/integrations/useChangeCase'
+import { inject, ref } from 'vue'
 
-defineProps({
+const props = defineProps({
   canResetPassword: Boolean,
   status: String,
+  availableOauthProviders: Array,
 })
 const route = inject('route')
 const form = useForm({
@@ -30,6 +32,17 @@ function submit() {
     onFinish: () => form.reset('password'),
   })
 }
+
+const oauthProviders = [
+  { provider: 'github', icon: 'devicon:github' },
+  { provider: 'google', icon: 'devicon:google' },
+  { provider: 'x', icon: 'devicon:twitter' },
+  { provider: 'gitlab', icon: 'devicon:gitlab' },
+  { provider: 'bitbucket', icon: 'devicon:bitbucket' },
+  { provider: 'discord', icon: 'radix-icons:discord-logo' },
+]
+
+const filteredOauthProviders = oauthProviders.filter(provider => props.availableOauthProviders.includes(provider.provider))
 </script>
 
 <template>
@@ -102,22 +115,14 @@ function submit() {
                 </span>
               </div>
             </div>
-            <Button variant="outline" as="a" :disabled="isLoading" :href="route('oauth.redirect', { provider: 'github' })">
-              <Icon v-if="isLoading" icon="lucide:loader2" class="mr-2 h-4 w-4 animate-spin" />
-              <Icon v-else icon="lucide:github" class="mr-2 h-4 w-4" />
-              Sign In With GitHub
-            </Button>
-
-            <Button variant="outline" type="button" :disabled="isLoading">
-              <Icon v-if="isLoading" icon="lucide:loader2" class="mr-2 h-4 w-4 animate-spin" />
-              <Icon v-else icon="devicon:google" class="mr-2 h-4 w-4" />
-              Sign In With Google
-            </Button>
-
-            <Button variant="outline" type="button" :disabled="isLoading">
-              <Icon v-if="isLoading" icon="lucide:loader2" class="mr-2 h-4 w-4 animate-spin" />
-              <Icon v-else icon="lucide:mail" class="mr-2 h-4 w-4" />
-              Sign In With Magic Link
+            <Button
+              :disabled="form.processing"
+              v-for="provider in filteredOauthProviders" :key="provider.provider"
+              class="bg-background text-foreground hover:bg-secondary disabled:opacity-50 hover:dark:bg-primary/80 dark:bg-primary dark:text-primary-foreground"
+              as="a" :href="route('oauth.redirect', { provider: provider.provider })"
+            >
+              <Icon :icon="provider.icon" class="mr-2 h-4 w-4" />
+              Sign In With {{ useChangeCase(provider.provider, 'sentenceCase') }}
             </Button>
 
             <div class="text-center text-sm text-muted-foreground">

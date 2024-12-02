@@ -2,18 +2,17 @@
 
 declare(strict_types=1);
 
-use Carbon\Carbon;
 use App\Enums\OauthProvider;
 use App\Models\{OauthConnection, User};
 use Laravel\Socialite\Two\User as SocialiteUser;
 use App\Jobs\User\UpdateUserProfileInformationJob;
 
-use function Pest\Laravel\assertDatabaseCount;
-use function Pest\Laravel\assertDatabaseHas;
+use function Pest\Laravel\{assertDatabaseCount, assertDatabaseHas};
 
 beforeEach(function () {
     $this->user = User::factory()->create();
 
+    /** @var SocialiteUser $socialiteUser */
     $this->socialiteUser = new SocialiteUser;
     $this->socialiteUser->map([
         'id' => '123456789',
@@ -26,10 +25,11 @@ beforeEach(function () {
         'token' => 'test-token',
         'refreshToken' => 'test-refresh-token',
         'expiresIn' => null,
+        'avatar' => fake()->imageUrl(),
     ]);
 });
 
-test('it creates new oauth connection when none exists', function () {
+test('creates new oauth connection when none exists', function () {
     $job = new UpdateUserProfileInformationJob(
         $this->user,
         $this->socialiteUser,
@@ -50,7 +50,7 @@ test('it creates new oauth connection when none exists', function () {
     expect($connection->data)->toEqual(collect(['id' => '123456789']));
 });
 
-test('it updates existing oauth connection', function () {
+test('updates existing oauth connection', function () {
     OauthConnection::factory()
         ->withProvider(OauthProvider::GITHUB)
         ->create([
@@ -79,19 +79,10 @@ test('it updates existing oauth connection', function () {
     assertDatabaseCount('oauth_connections', 1);
 });
 
-test('it handles null expiration time correctly', function () {
-    $socialiteUser = Mockery::mock(SocialiteUser::class);
-    $socialiteUser->shouldReceive([
-        'getId' => '123456789',
-        'getRaw' => ['raw_data' => 'test'],
-        'token' => 'test-token',
-        'refreshToken' => 'test-refresh-token',
-        'expiresIn' => null,
-    ]);
-
+test('can handle null expiration time correctly', function () {
     $job = new UpdateUserProfileInformationJob(
         $this->user,
-        $socialiteUser,
+        $this->socialiteUser,
         OauthProvider::GITHUB
     );
 
@@ -99,4 +90,19 @@ test('it handles null expiration time correctly', function () {
 
     $connection = OauthConnection::first();
     $this->assertNull($connection->expires_at);
+});
+
+test('it updates user profile photo path from socialite avatar', function () {
+    $job = new UpdateUserProfileInformationJob(
+        $this->user,
+        $this->socialiteUser,
+        OauthProvider::GITHUB
+    );
+
+    $job->handle();
+
+    assertDatabaseHas('users', [
+        'id' => $this->user->id,
+        'profile_photo_path' => $this->socialiteUser->getAvatar(),
+    ]);
 });

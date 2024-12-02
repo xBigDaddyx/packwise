@@ -8,12 +8,5 @@ enum OauthProvider: string
 {
     case GITHUB = 'github';
     case GOOGLE = 'google';
-
-    /**
-     * @return array<string>
-     */
-    public static function values(): array
-    {
-        return array_map(fn (OauthProvider $provider) => $provider->value, OauthProvider::cases());
-    }
+    case X = 'x';
 }

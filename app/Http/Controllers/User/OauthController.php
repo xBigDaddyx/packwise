@@ -38,7 +38,7 @@ final class OauthController extends Controller
         try {
             $user = User::query()->where('email', $socialiteUser->getEmail())->first();
 
-            return DB::transaction(function () use ($provider, $socialiteUser, $user) {
+            return DB::transaction(function () use ($provider, $socialiteUser, $user): RedirectResponse {
                 if ($user instanceof User) {
                     return $this->handleExistingUser($user, $provider, $socialiteUser);
                 }
@@ -76,7 +76,8 @@ final class OauthController extends Controller
         $user = (new CreateNewUser())->create([
             'name' => (string) $socialiteUser->getName(),
             'email' => (string) $socialiteUser->getEmail(),
-            'terms' => 'on',
+            'email_verified_at' => (string) true,
+            'terms' => (string) true,
         ]);
 
         dispatch(new UpdateUserProfileInformationJob($user, $socialiteUser, $provider))->afterCommit();

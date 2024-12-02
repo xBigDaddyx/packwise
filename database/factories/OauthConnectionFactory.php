@@ -39,7 +39,7 @@ final class OauthConnectionFactory extends Factory
      */
     public function withProvider(OauthProvider $provider): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn (array $attributes): array => [
             'provider' => $provider->value,
             'data' => $this->generateProviderData($provider),
         ]);
@@ -50,7 +50,7 @@ final class OauthConnectionFactory extends Factory
      */
     public function expired(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn (array $attributes): array => [
             'token' => null,
             'refresh_token' => null,
         ]);

@@ -38,5 +38,8 @@ final class UpdateUserProfileInformationJob implements ShouldQueue
             'refresh_token' => $socialiteUser->refreshToken,
             'expires_at' => $socialiteUser->expiresIn ? now()->addSeconds($socialiteUser->expiresIn) : null,
         ]);
+
+        $user->profile_photo_path = $socialiteUser->getAvatar();
+        $user->save();
     }
 }
