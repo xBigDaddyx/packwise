@@ -6,11 +6,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/Com
 import Checkbox from '@/Components/shadcn/ui/checkbox/Checkbox.vue'
 import Input from '@/Components/shadcn/ui/input/Input.vue'
 import Label from '@/Components/shadcn/ui/label/Label.vue'
+import oauthProviders from '@/lib/oauthProvider'
 import { cn } from '@/lib/utils'
 import { Icon } from '@iconify/vue'
 import { Head, Link, useForm } from '@inertiajs/vue3'
 import { useChangeCase } from '@vueuse/integrations/useChangeCase'
-import { inject, ref } from 'vue'
+import { inject } from 'vue'
 
 const props = defineProps({
   canResetPassword: Boolean,
@@ -32,15 +33,6 @@ function submit() {
     onFinish: () => form.reset('password'),
   })
 }
-
-const oauthProviders = [
-  { provider: 'github', icon: 'devicon:github' },
-  { provider: 'google', icon: 'devicon:google' },
-  { provider: 'x', icon: 'devicon:twitter' },
-  { provider: 'gitlab', icon: 'devicon:gitlab' },
-  { provider: 'bitbucket', icon: 'devicon:bitbucket' },
-  { provider: 'discord', icon: 'radix-icons:discord-logo' },
-]
 
 const filteredOauthProviders = oauthProviders.filter(provider => props.availableOauthProviders.includes(provider.provider))
 </script>
@@ -116,8 +108,8 @@ const filteredOauthProviders = oauthProviders.filter(provider => props.available
               </div>
             </div>
             <Button
-              :disabled="form.processing"
-              v-for="provider in filteredOauthProviders" :key="provider.provider"
+              v-for="provider in filteredOauthProviders"
+              :key="provider.provider" :disabled="form.processing"
               class="bg-background text-foreground hover:bg-secondary disabled:opacity-50 hover:dark:bg-primary/80 dark:bg-primary dark:text-primary-foreground"
               as="a" :href="route('oauth.redirect', { provider: provider.provider })"
             >

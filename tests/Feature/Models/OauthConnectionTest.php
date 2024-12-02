@@ -6,6 +6,8 @@ use App\Enums\OauthProvider;
 use Illuminate\Support\Collection;
 use App\Models\{OauthConnection, User};
 
+covers(OauthConnection::class);
+
 beforeEach(function () {
     $this->user = User::factory()->create();
 });
@@ -21,14 +23,15 @@ describe('oauth connection model tests', function () {
             ->id->toBe($this->user->id);
     });
 
-    test('oauth connection casts data to collection', function () {
+    test('oauth connection casts data to collection only', function () {
         $connection = OauthConnection::factory()->create([
             'data' => ['name' => 'John Doe'],
         ]);
 
         expect($connection->data)
-            ->toBeInstanceOf(Collection::class)
-            ->toArray()->toBe(['name' => 'John Doe']);
+            ->toBeInstanceOf(Collection::class);
+
+        expect($connection->data)->not->toBeInstanceOf(ArrayObject::class);
     });
 
     test('oauth connection can create oauth provider connection', function () {

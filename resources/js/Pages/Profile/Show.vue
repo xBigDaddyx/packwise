@@ -2,6 +2,7 @@
 import Separator from '@/Components/shadcn/ui/separator/Separator.vue'
 import AppLayout from '@/Layouts/AppLayout.vue'
 import DeleteUserForm from '@/Pages/Profile/Partials/DeleteUserForm.vue'
+import LinkedAccountsForm from '@/Pages/Profile/Partials/LinkedAccountsForm.vue'
 import LogoutOtherBrowserSessionsForm from '@/Pages/Profile/Partials/LogoutOtherBrowserSessionsForm.vue'
 import TwoFactorAuthenticationForm from '@/Pages/Profile/Partials/TwoFactorAuthenticationForm.vue'
 import UpdatePasswordForm from '@/Pages/Profile/Partials/UpdatePasswordForm.vue'
@@ -10,13 +11,18 @@ import UpdateProfileInformationForm from '@/Pages/Profile/Partials/UpdateProfile
 defineProps({
   confirmsTwoFactorAuthentication: Boolean,
   sessions: Array,
+  availableOauthProviders: Array,
+  activeOauthProviders: {
+    type: Array,
+    default: () => [],
+  },
 })
 </script>
 
 <template>
   <AppLayout title="Settings">
     <template #header>
-      <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
+      <h2 class="text-xl font-semibold leading-tight">
         Profile Settings
       </h2>
     </template>
@@ -45,6 +51,13 @@ defineProps({
         </div>
 
         <LogoutOtherBrowserSessionsForm :sessions="sessions" class="mt-10 sm:mt-0" />
+
+        <Separator class="my-8 hidden sm:block" />
+
+        <LinkedAccountsForm
+          :available-providers="availableOauthProviders" :active-providers="activeOauthProviders"
+          class="mt-10 sm:mt-0"
+        />
 
         <template v-if="$page.props.jetstream.hasAccountDeletionFeatures">
           <Separator class="my-8 hidden sm:block" />

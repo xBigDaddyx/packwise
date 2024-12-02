@@ -3,7 +3,10 @@
 declare(strict_types=1);
 
 use App\Models\User;
+use App\Http\Controllers\DashboardController;
 use Inertia\Testing\AssertableInertia as Assert;
+
+covers(DashboardController::class);
 
 beforeEach(function () {
     $this->user = User::factory()->create();

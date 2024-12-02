@@ -45,6 +45,8 @@ final class AppServiceProvider extends ServiceProvider
         Model::shouldBeStrict();
 
         Model::unguard();
+
+        Model::preventSilentlyDiscardingAttributes(App::isLocal());
     }
 
     /**

@@ -33,6 +33,7 @@ import SidebarMenuButton from '@/Components/shadcn/ui/sidebar/SidebarMenuButton.
 import SidebarMenuItem from '@/Components/shadcn/ui/sidebar/SidebarMenuItem.vue'
 import SidebarProvider from '@/Components/shadcn/ui/sidebar/SidebarProvider.vue'
 import SidebarTrigger from '@/Components/shadcn/ui/sidebar/SidebarTrigger.vue'
+import Toaster from '@/Components/shadcn/ui/toast/Toaster.vue'
 import { Icon } from '@iconify/vue'
 import { Head, Link, router } from '@inertiajs/vue3'
 import { useColorMode } from '@vueuse/core'
@@ -68,6 +69,7 @@ function logout() {
 <template>
   <div>
     <Head :title="title" />
+    <Toaster />
     <SidebarProvider>
       <Sidebar collapsible="icon">
         <SidebarHeader>

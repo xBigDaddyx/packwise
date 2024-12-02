@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property Collection<string, mixed> $data
  * @property string|null $token
  * @property string|null $refresh_token
+ * @property string|null $expires_at
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read User $user
@@ -36,6 +37,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|OauthConnection whereToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|OauthConnection whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|OauthConnection whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|OauthConnection whereExpiresAt($value)
  *
  * @mixin \Eloquent
  */

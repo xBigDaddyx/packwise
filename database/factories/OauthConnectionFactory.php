@@ -98,7 +98,16 @@ final class OauthConnectionFactory extends Factory
                 'email_verified' => true,
                 'locale' => fake()->locale(),
                 'hd' => fake()->domainName(),
-            ]
+            ],
+            OauthProvider::X => [
+                'id' => fake()->uuid(),
+                'name' => fake()->name(),
+                'username' => fake()->userName(),
+                'picture' => fake()->imageUrl(),
+                'email' => fake()->safeEmail(),
+                'email_verified' => true,
+                'locale' => fake()->locale(),
+            ],
         };
     }
 }

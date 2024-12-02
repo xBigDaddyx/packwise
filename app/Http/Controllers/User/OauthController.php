@@ -5,19 +5,22 @@ declare(strict_types=1);
 namespace App\Http\Controllers\User;
 
 use Throwable;
-use App\Models\User;
 use App\Enums\OauthProvider;
+use InvalidArgumentException;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
-use App\Actions\Fortify\CreateNewUser;
 use Laravel\Socialite\Facades\Socialite;
-use App\Jobs\User\UpdateUserProfileInformationJob;
-use Illuminate\Support\Facades\{Auth, DB, Redirect};
+use App\Actions\User\HandleOauthCallbackAction;
+use Illuminate\Support\Facades\{Auth, Redirect};
 use Laravel\Socialite\Two\{InvalidStateException, User as SocialiteUser};
 use Symfony\Component\HttpFoundation\RedirectResponse as SymfonyRedirectResponse;
 
 final class OauthController extends Controller
 {
+    public function __construct(
+        private readonly HandleOauthCallbackAction $handleOauthCallbackAction,
+    ) {}
+
     public function redirect(OauthProvider $provider): SymfonyRedirectResponse
     {
         return Socialite::driver($provider->value)->redirect();
@@ -26,64 +29,34 @@ final class OauthController extends Controller
     public function callback(OauthProvider $provider): RedirectResponse
     {
         try {
-            $socialiteUser = $this->getSocialiteUser($provider);
+            /** @var SocialiteUser $socialiteUser */
+            $socialiteUser = Socialite::driver($provider->value)->user();
+            $authenticatedUser = Auth::user();
+            $user = $this->handleOauthCallbackAction->handle($provider, $socialiteUser, $authenticatedUser);
         } catch (InvalidStateException) {
-            return Redirect::route('login')->with('error', __('The request timed out. Please try again.'));
+            return Redirect::intended(Auth::check() ? route('profile.show') : route('login'))->with('error', __('The request timed out. Please try again.'));
+        } catch (InvalidArgumentException $invalidArgumentException) {
+            return Redirect::intended(Auth::check() ? route('profile.show') : route('login'))->with('error', $invalidArgumentException->getMessage());
         } catch (Throwable $throwable) {
             report($throwable);
 
-            return Redirect::route('login')->with('error', __('An error occurred during authentication. Please try again.'));
+            return Redirect::intended(Auth::check() ? route('profile.show') : route('login'))->with('error', __('An error occurred during authentication. Please try again.'));
         }
 
-        try {
-            $user = User::query()->where('email', $socialiteUser->getEmail())->first();
-
-            return DB::transaction(function () use ($provider, $socialiteUser, $user): RedirectResponse {
-                if ($user instanceof User) {
-                    return $this->handleExistingUser($user, $provider, $socialiteUser);
-                }
-
-                return $this->createAndLoginNewUser($socialiteUser, $provider);
-            });
-        } catch (Throwable $throwable) {
-            report($throwable);
-
-            return Redirect::route('login')->with('error', __('An error occurred during authentication. Please try again.'));
-        }
-    }
-
-    private function getSocialiteUser(OauthProvider $provider): SocialiteUser
-    {
-        /** @var SocialiteUser */
-        return Socialite::driver($provider->value)->user();
-    }
-
-    private function handleExistingUser(User $user, OauthProvider $provider, SocialiteUser $socialiteUser): RedirectResponse
-    {
-        if ($user->oauthConnections()->where('provider', $provider)->exists()) {
-            Auth::login($user, remember: true);
-            dispatch(new UpdateUserProfileInformationJob($user, $socialiteUser, $provider))->afterCommit();
-
-            return Redirect::intended(config('fortify.home'));
+        if (Auth::guest()) {
+            Auth::login($user, true);
         }
 
-        return Redirect::route('login')
-            ->with('error', __('Please login with existing auth provider and then link account'));
+        return Redirect::intended($authenticatedUser ? route('profile.show') : config('fortify.home'))->with('success', "Your {$provider->value} account has been linked.");
     }
 
-    private function createAndLoginNewUser(SocialiteUser $socialiteUser, OauthProvider $provider): RedirectResponse
+    public function destroy(OauthProvider $provider): RedirectResponse
     {
-        $user = (new CreateNewUser())->create([
-            'name' => (string) $socialiteUser->getName(),
-            'email' => (string) $socialiteUser->getEmail(),
-            'email_verified_at' => (string) true,
-            'terms' => (string) true,
-        ]);
+        $user = Auth::user();
 
-        dispatch(new UpdateUserProfileInformationJob($user, $socialiteUser, $provider))->afterCommit();
+        $user?->oauthConnections()->where('provider', $provider)->delete();
+        session()->flash('success', "Your {$provider->value} account has been unlinked.");
 
-        Auth::login($user, true);
-
-        return Redirect::intended(config('fortify.home'));
+        return Redirect::route('profile.show');
     }
 }

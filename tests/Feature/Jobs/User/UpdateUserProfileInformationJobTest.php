@@ -9,6 +9,8 @@ use App\Jobs\User\UpdateUserProfileInformationJob;
 
 use function Pest\Laravel\{assertDatabaseCount, assertDatabaseHas};
 
+covers(UpdateUserProfileInformationJob::class);
+
 beforeEach(function () {
     $this->user = User::factory()->create();
 

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Enums\OauthProvider;
+use Illuminate\Http\Request;
 use Laravel\Jetstream\Jetstream;
 use Illuminate\Support\ServiceProvider;
 use App\Actions\Jetstream\{AddTeamMember,
@@ -38,6 +40,14 @@ final class JetstreamServiceProvider extends ServiceProvider
         Jetstream::removeTeamMembersUsing(RemoveTeamMember::class);
         Jetstream::deleteTeamsUsing(DeleteTeam::class);
         Jetstream::deleteUsersUsing(DeleteUser::class);
+
+        Jetstream::inertia()->whenRendering(
+            'Profile/Show',
+            fn (Request $request, array $data): array => array_merge($data, [
+                'availableOauthProviders' => OauthProvider::cases(),
+                'activeOauthProviders' => $request->user()?->oauthConnections->pluck('provider'),
+            ])
+        );
     }
 
     /**

@@ -17,7 +17,8 @@ final class UpdateUserProfileInformationJob implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(private User $user, private readonly SocialiteUser $socialiteUser, private readonly OauthProvider $provider)
+    public function __construct(private User $user,
+        private readonly SocialiteUser $socialiteUser, private readonly OauthProvider $provider)
     {
         //
     }
@@ -40,6 +41,7 @@ final class UpdateUserProfileInformationJob implements ShouldQueue
         ]);
 
         $user->profile_photo_path = $socialiteUser->getAvatar();
+        $user->email_verified_at ??= now();
         $user->save();
     }
 }
