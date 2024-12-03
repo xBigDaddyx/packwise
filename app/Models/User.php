@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Laravel\Cashier\Billable;
 use Illuminate\Support\Carbon;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Collection;
@@ -72,11 +73,12 @@ use Illuminate\Notifications\{DatabaseNotification, DatabaseNotificationCollecti
  */
 final class User extends Authenticatable implements MustVerifyEmail
 {
+    use Billable;
+
     use HasApiTokens;
 
     /** @use HasFactory<UserFactory> */
     use HasFactory;
-
     use HasProfilePhoto;
     use HasTeams  {
         ownedTeams as public ownedTeamsBase;

@@ -34,7 +34,6 @@ import SidebarMenuItem from '@/Components/shadcn/ui/sidebar/SidebarMenuItem.vue'
 import SidebarProvider from '@/Components/shadcn/ui/sidebar/SidebarProvider.vue'
 import SidebarTrigger from '@/Components/shadcn/ui/sidebar/SidebarTrigger.vue'
 import Sonner from '@/Components/shadcn/ui/sonner/Sonner.vue'
-import { cn } from '@/lib/utils'
 import { Icon } from '@iconify/vue'
 import { Head, Link, router } from '@inertiajs/vue3'
 import { useColorMode } from '@vueuse/core'
@@ -85,7 +84,7 @@ function logout() {
                     <div
                       class="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground"
                     >
-                      {{ $page.props.auth.user.current_team.name.charAt(0) }}
+                      <Icon icon="lucide:rocket" />
                     </div>
                     <div class="grid flex-1 text-left text-sm leading-tight">
                       <span class="truncate font-semibold">{{
@@ -151,7 +150,7 @@ function logout() {
             <SidebarGroupLabel>Platform</SidebarGroupLabel>
             <SidebarMenu>
               <SidebarMenuItem
-                :class="{ 'font-bold text-primary bg-secondary rounded': route().current('dashboard') }"
+                :class="{ 'font-semibold text-primary bg-secondary rounded': route().current('dashboard') }"
               >
                 <SidebarMenuButton as-child>
                   <Link :href="route('dashboard')">
@@ -162,12 +161,23 @@ function logout() {
               </SidebarMenuItem>
 
               <SidebarMenuItem
-                :class="{ 'font-bold text-primary bg-secondary rounded': route().current('profile.show') }"
+                :class="{ 'font-semibold text-primary bg-secondary rounded': route().current('profile.show') }"
               >
                 <SidebarMenuButton as-child>
                   <Link :href="route('profile.show')">
                     <Icon icon="lucide:settings" />
                     Settings
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+
+              <SidebarMenuItem
+                :class="{ 'font-semibold text-primary bg-secondary rounded': route().current('chat.index') }"
+              >
+                <SidebarMenuButton as-child>
+                  <Link :href="route('chat.index')">
+                    <Icon icon="lucide:message-circle" />
+                    Chat
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>

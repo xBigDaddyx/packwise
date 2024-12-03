@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use PrismServer;
+use EchoLabs\Prism\Prism;
+use EchoLabs\Prism\Text\Generator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
+use EchoLabs\Prism\Enums\Provider as PrismProvider;
 use Illuminate\Support\Facades\{App, DB, URL, Vite};
 
 final class AppServiceProvider extends ServiceProvider
@@ -30,6 +34,7 @@ final class AppServiceProvider extends ServiceProvider
         $this->configureModels();
         $this->configureUrl();
         $this->configureVite();
+        $this->configurePrisms();
     }
 
     /**
@@ -66,5 +71,16 @@ final class AppServiceProvider extends ServiceProvider
     private function configureVite(): void
     {
         Vite::useAggressivePrefetching();
+    }
+
+    /**
+     * Configure the application's Prisms.
+     */
+    private function configurePrisms(): void
+    {
+        PrismServer::register(
+            'larasonic',
+            fn (): Generator => Prism::text()->using(PrismProvider::Groq, 'llama3-8b-8192')
+        );
     }
 }
