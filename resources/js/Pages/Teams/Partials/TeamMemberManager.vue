@@ -1,5 +1,4 @@
 <script setup>
-import ActionMessage from '@/Components/ActionMessage.vue'
 import ActionSection from '@/Components/ActionSection.vue'
 import FormSection from '@/Components/FormSection.vue'
 import InputError from '@/Components/InputError.vue'
@@ -19,6 +18,7 @@ import Label from '@/Components/shadcn/ui/label/Label.vue'
 import Separator from '@/Components/shadcn/ui/separator/Separator.vue'
 import { router, useForm, usePage } from '@inertiajs/vue3'
 import { inject, ref } from 'vue'
+import { toast } from 'vue-sonner'
 
 const props = defineProps({
   team: Object,
@@ -51,13 +51,17 @@ function addTeamMember() {
   addTeamMemberForm.post(route('team-members.store', props.team), {
     errorBag: 'addTeamMember',
     preserveScroll: true,
-    onSuccess: () => addTeamMemberForm.reset(),
+    onSuccess: () => {
+      addTeamMemberForm.reset()
+      toast.success('Team member added')
+    },
   })
 }
 
 function cancelTeamInvitation(invitation) {
   router.delete(route('team-invitations.destroy', invitation), {
     preserveScroll: true,
+    onSuccess: () => toast.success('Team invitation canceled'),
   })
 }
 
@@ -70,7 +74,10 @@ function manageRole(teamMember) {
 function updateRole() {
   updateRoleForm.put(route('team-members.update', [props.team, managingRoleFor.value]), {
     preserveScroll: true,
-    onSuccess: () => currentlyManagingRole.value = false,
+    onSuccess: () => {
+      currentlyManagingRole.value = false
+      toast.success('Team member role updated')
+    },
   })
 }
 
@@ -79,7 +86,12 @@ function confirmLeavingTeam() {
 }
 
 function leaveTeam() {
-  leaveTeamForm.delete(route('team-members.destroy', [props.team, page.props.auth.user]))
+  leaveTeamForm.delete(route('team-members.destroy', [props.team, page.props.auth.user]), {
+    onSuccess: () => {
+      confirmingLeavingTeam.value = false
+      toast.success('Team left successfully')
+    },
+  })
 }
 
 function confirmTeamMemberRemoval(teamMember) {
@@ -91,7 +103,10 @@ function removeTeamMember() {
     errorBag: 'removeTeamMember',
     preserveScroll: true,
     preserveState: true,
-    onSuccess: () => teamMemberBeingRemoved.value = null,
+    onSuccess: () => {
+      teamMemberBeingRemoved.value = null
+      toast.success('Team member removed successfully')
+    },
   })
 }
 
@@ -178,10 +193,6 @@ function displayableRole(role) {
         </template>
 
         <template #actions>
-          <ActionMessage :on="addTeamMemberForm.recentlySuccessful" class="me-3">
-            Added.
-          </ActionMessage>
-
           <Button
             :class="{ 'opacity-25': addTeamMemberForm.processing }"
             :disabled="addTeamMemberForm.processing"

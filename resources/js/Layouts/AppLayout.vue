@@ -33,7 +33,7 @@ import SidebarMenuButton from '@/Components/shadcn/ui/sidebar/SidebarMenuButton.
 import SidebarMenuItem from '@/Components/shadcn/ui/sidebar/SidebarMenuItem.vue'
 import SidebarProvider from '@/Components/shadcn/ui/sidebar/SidebarProvider.vue'
 import SidebarTrigger from '@/Components/shadcn/ui/sidebar/SidebarTrigger.vue'
-import Toaster from '@/Components/shadcn/ui/toast/Toaster.vue'
+import Sonner from '@/Components/shadcn/ui/sonner/Sonner.vue'
 import { Icon } from '@iconify/vue'
 import { Head, Link, router } from '@inertiajs/vue3'
 import { useColorMode } from '@vueuse/core'
@@ -69,7 +69,7 @@ function logout() {
 <template>
   <div>
     <Head :title="title" />
-    <Toaster />
+    <Sonner position="top-center" />
     <SidebarProvider>
       <Sidebar collapsible="icon">
         <SidebarHeader>
@@ -157,6 +157,18 @@ function logout() {
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
+
+              <SidebarMenuItem>
+                <SidebarMenuButton as-child>
+                  <Link
+                    :href="route('profile.show')"
+                    :class="{ active: route.currentRoute === 'profile.show' }"
+                  >
+                    <Icon icon="lucide:settings" />
+                    Settings
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroup>
           <SidebarGroup class="mt-auto">
@@ -222,6 +234,10 @@ function logout() {
                     <DropdownMenuItem :as="Link" :href="route('profile.show')">
                       <Icon icon="lucide:settings" />
                       Settings
+                    </DropdownMenuItem>
+                    <DropdownMenuItem :as="Link" :href="route('api-tokens.index')">
+                      <Icon icon="lucide:key" />
+                      API Tokens
                     </DropdownMenuItem>
                     <DropdownMenuItem>
                       <Icon icon="lucide:credit-card" />

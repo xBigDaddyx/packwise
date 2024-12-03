@@ -1,5 +1,4 @@
 <script setup>
-import ActionMessage from '@/Components/ActionMessage.vue'
 import FormSection from '@/Components/FormSection.vue'
 import InputError from '@/Components/InputError.vue'
 import Avatar from '@/Components/shadcn/ui/avatar/Avatar.vue'
@@ -11,6 +10,7 @@ import Input from '@/Components/shadcn/ui/input/Input.vue'
 import Label from '@/Components/shadcn/ui/label/Label.vue'
 import { useForm } from '@inertiajs/vue3'
 import { inject } from 'vue'
+import { toast } from 'vue-sonner'
 
 const props = defineProps({
   team: Object,
@@ -25,6 +25,7 @@ function updateTeamName() {
   form.put(route('teams.update', props.team), {
     errorBag: 'updateTeamName',
     preserveScroll: true,
+    onSuccess: () => toast.success('Team name updated successfully'),
   })
 }
 </script>
@@ -77,10 +78,6 @@ function updateTeamName() {
     </template>
 
     <template v-if="permissions.canUpdateTeam" #actions>
-      <ActionMessage :on="form.recentlySuccessful" class="me-3">
-        Saved.
-      </ActionMessage>
-
       <Button :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
         Save
       </Button>

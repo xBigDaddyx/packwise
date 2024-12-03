@@ -14,8 +14,9 @@ use Illuminate\Support\Facades\{DB, Validator};
 use Laravel\Socialite\Two\User as SocialiteUser;
 use App\Jobs\User\UpdateUserProfileInformationJob;
 use Illuminate\Validation\{Rule, ValidationException};
+use App\Exceptions\OAuthAccountLinkingException;
 
-class HandleOauthCallbackAction
+final readonly class HandleOauthCallbackAction
 {
     use AsFakeAction;
 
@@ -73,15 +74,18 @@ class HandleOauthCallbackAction
                 'email.in' => __('The email address from this :provider does not match your account email.', ['provider' => $provider->value]),
             ]);
         } catch (ValidationException) {
-            throw_if($socialiteUser->getEmail() !== $user->email, new InvalidArgumentException("The email address from this {$provider->value} does not match your account email."));
+            throw_if($socialiteUser->getEmail() !== $user->email, OAuthAccountLinkingException::emailMismatch($provider->value));
 
-            throw new InvalidArgumentException('Validation error try again later.');
+            throw new InvalidArgumentException(__('Validation error try again later.'));
         }
     }
 
     private function handleExistingUser(User $user, OauthProvider $provider, SocialiteUser $socialiteUser): User
     {
-        throw_unless($user->oauthConnections()->where('provider', $provider)->exists(), new InvalidArgumentException('Please login with existing auth provider and then link account'));
+        throw_unless(
+            $user->oauthConnections()->where('provider', $provider)->exists(),
+            OAuthAccountLinkingException::existingConnection($provider->value)
+        );
 
         $this->updateUserProfile($user, $socialiteUser, $provider);
 

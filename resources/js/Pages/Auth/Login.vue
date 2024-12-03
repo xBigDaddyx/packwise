@@ -6,58 +6,79 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/Com
 import Checkbox from '@/Components/shadcn/ui/checkbox/Checkbox.vue'
 import Input from '@/Components/shadcn/ui/input/Input.vue'
 import Label from '@/Components/shadcn/ui/label/Label.vue'
+import Sonner from '@/Components/shadcn/ui/sonner/Sonner.vue'
 import oauthProviders from '@/lib/oauthProvider'
 import { cn } from '@/lib/utils'
 import { Icon } from '@iconify/vue'
-import { Head, Link, useForm } from '@inertiajs/vue3'
+import { Head, Link, useForm, usePage } from '@inertiajs/vue3'
 import { useChangeCase } from '@vueuse/integrations/useChangeCase'
-import { inject } from 'vue'
+import { computed, inject, onMounted } from 'vue'
+import { toast } from 'vue-sonner'
 
 const props = defineProps({
   canResetPassword: Boolean,
   status: String,
   availableOauthProviders: Array,
 })
+
+const page = usePage()
 const route = inject('route')
+
+const filteredOauthProviders = computed(() =>
+  oauthProviders.filter(provider => props.availableOauthProviders.includes(provider.provider)),
+)
+
 const form = useForm({
   email: '',
   password: '',
   remember: false,
 })
-
-function submit() {
+function handleSubmit() {
   form.transform(data => ({
     ...data,
     remember: form.remember ? 'on' : '',
   })).post(route('login'), {
+    onSuccess: () => toast.success(page.props.flash.success),
+    onError: () => toast.error(page.props.flash.error),
     onFinish: () => form.reset('password'),
   })
 }
 
-const filteredOauthProviders = oauthProviders.filter(provider => props.availableOauthProviders.includes(provider.provider))
+onMounted(() => {
+  if (page.props.flash.success) {
+    toast.success(page.props.flash.success)
+  }
+  if (page.props.flash.error) {
+    toast.error(page.props.flash.error)
+  }
+})
 </script>
 
 <template>
   <Head title="Log in" />
-
+  <Sonner position="top-center" />
   <div class="flex min-h-screen flex-col items-center justify-center">
     <Card class="mx-auto max-w-lg" :class="cn('w-[380px]')">
+      <!-- Header -->
       <CardHeader>
         <CardTitle class="flex justify-center">
           <AuthenticationCardLogo />
         </CardTitle>
         <CardDescription class="text-center text-2xl">
-          Welcome back
+          Log In
         </CardDescription>
       </CardHeader>
 
       <CardContent>
+        <!-- Status Message -->
         <div v-if="status" class="mb-4 text-sm font-medium text-green-600">
           {{ status }}
         </div>
 
-        <form @submit.prevent="submit">
+        <!-- Login Form -->
+        <form @submit.prevent="handleSubmit">
           <div class="grid gap-4">
+            <!-- Email Field -->
             <div class="grid gap-2">
               <Label for="email">Email</Label>
               <Input
@@ -67,6 +88,7 @@ const filteredOauthProviders = oauthProviders.filter(provider => props.available
               <InputError :message="form.errors.email" />
             </div>
 
+            <!-- Password Field -->
             <div class="grid gap-2">
               <div class="flex items-center justify-between">
                 <Label for="password">Password</Label>
@@ -84,6 +106,7 @@ const filteredOauthProviders = oauthProviders.filter(provider => props.available
               <InputError :message="form.errors.password" />
             </div>
 
+            <!-- Remember Me -->
             <div class="flex items-center space-x-2">
               <Checkbox id="remember" v-model:checked="form.remember" name="remember" />
               <label for="remember" class="text-sm text-muted-foreground">
@@ -91,12 +114,15 @@ const filteredOauthProviders = oauthProviders.filter(provider => props.available
               </label>
             </div>
 
+            <!-- Submit Button -->
             <Button
               type="submit" class="w-full" :class="{ 'opacity-25': form.processing }"
               :disabled="form.processing"
             >
               Log in
             </Button>
+
+            <!-- OAuth Divider -->
             <div class="relative">
               <div class="absolute inset-0 flex items-center">
                 <span class="w-full border-t" />
@@ -107,9 +133,11 @@ const filteredOauthProviders = oauthProviders.filter(provider => props.available
                 </span>
               </div>
             </div>
+
+            <!-- OAuth Providers -->
             <Button
-              v-for="provider in filteredOauthProviders"
-              :key="provider.provider" :disabled="form.processing"
+              v-for="provider in filteredOauthProviders" :key="provider.provider"
+              :disabled="form.processing"
               class="bg-background text-foreground hover:bg-secondary disabled:opacity-50 hover:dark:bg-primary/80 dark:bg-primary dark:text-primary-foreground"
               as="a" :href="route('oauth.redirect', { provider: provider.provider })"
             >
@@ -117,6 +145,7 @@ const filteredOauthProviders = oauthProviders.filter(provider => props.available
               Sign In With {{ useChangeCase(provider.provider, 'sentenceCase') }}
             </Button>
 
+            <!-- Register Link -->
             <div class="text-center text-sm text-muted-foreground">
               Don't have an account?
               <Link :href="route('register')" class="underline hover:text-primary">

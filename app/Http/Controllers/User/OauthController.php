@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Laravel\Socialite\Facades\Socialite;
 use App\Actions\User\HandleOauthCallbackAction;
+use App\Exceptions\OAuthAccountLinkingException;
 use Illuminate\Support\Facades\{Auth, Redirect};
 use Laravel\Socialite\Two\{InvalidStateException, User as SocialiteUser};
 use Symfony\Component\HttpFoundation\RedirectResponse as SymfonyRedirectResponse;
@@ -35,8 +36,8 @@ final class OauthController extends Controller
             $user = $this->handleOauthCallbackAction->handle($provider, $socialiteUser, $authenticatedUser);
         } catch (InvalidStateException) {
             return Redirect::intended(Auth::check() ? route('profile.show') : route('login'))->with('error', __('The request timed out. Please try again.'));
-        } catch (InvalidArgumentException $invalidArgumentException) {
-            return Redirect::intended(Auth::check() ? route('profile.show') : route('login'))->with('error', $invalidArgumentException->getMessage());
+        } catch (OAuthAccountLinkingException $oauthAccountLinkingException) {
+            return Redirect::intended(Auth::check() ? route('profile.show') : route('login'))->with('error', $oauthAccountLinkingException->getMessage());
         } catch (Throwable $throwable) {
             report($throwable);
 

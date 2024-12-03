@@ -87,19 +87,7 @@ final class OauthConnectionFactory extends Factory
                 'created_at' => fake()->dateTimeThisDecade()->format('Y-m-d\TH:i:s\Z'),
                 'updated_at' => fake()->dateTimeThisYear()->format('Y-m-d\TH:i:s\Z'),
             ],
-            OauthProvider::GOOGLE => [
-                'id' => fake()->uuid(),
-                'sub' => fake()->uuid(),
-                'name' => fake()->name(),
-                'given_name' => fake()->firstName(),
-                'family_name' => fake()->lastName(),
-                'picture' => fake()->imageUrl(),
-                'email' => fake()->safeEmail(),
-                'email_verified' => true,
-                'locale' => fake()->locale(),
-                'hd' => fake()->domainName(),
-            ],
-            OauthProvider::X => [
+            OauthProvider::GITLAB => [
                 'id' => fake()->uuid(),
                 'name' => fake()->name(),
                 'username' => fake()->userName(),

@@ -1,5 +1,4 @@
 <script setup>
-import ActionMessage from '@/Components/ActionMessage.vue'
 import ActionSection from '@/Components/ActionSection.vue'
 import ConfirmationModal from '@/Components/ConfirmationModal.vue'
 import FormSection from '@/Components/FormSection.vue'
@@ -19,6 +18,7 @@ import Label from '@/Components/shadcn/ui/label/Label.vue'
 import Separator from '@/Components/shadcn/ui/separator/Separator.vue'
 import { useForm } from '@inertiajs/vue3'
 import { inject, ref } from 'vue'
+import { toast } from 'vue-sonner'
 
 const props = defineProps({
   tokens: Array,
@@ -47,6 +47,7 @@ function createApiToken() {
     onSuccess: () => {
       displayingToken.value = true
       createApiTokenForm.reset()
+      toast.success('Token has been created')
     },
   })
 }
@@ -60,7 +61,10 @@ function updateApiToken() {
   updateApiTokenForm.put(route('api-tokens.update', managingPermissionsFor.value), {
     preserveScroll: true,
     preserveState: true,
-    onSuccess: () => (managingPermissionsFor.value = null),
+    onSuccess: () => {
+      managingPermissionsFor.value = null
+      toast.success('Permissions have been updated')
+    },
   })
 }
 
@@ -72,7 +76,10 @@ function deleteApiToken() {
   deleteApiTokenForm.delete(route('api-tokens.destroy', apiTokenBeingDeleted.value), {
     preserveScroll: true,
     preserveState: true,
-    onSuccess: () => (apiTokenBeingDeleted.value = null),
+    onSuccess: () => {
+      apiTokenBeingDeleted.value = null
+      toast.success('Token has been deleted')
+    },
   })
 }
 
@@ -134,10 +141,6 @@ function hasPermission(permissions, permission) {
       </template>
 
       <template #actions>
-        <ActionMessage :on="createApiTokenForm.recentlySuccessful" class="me-3">
-          Created.
-        </ActionMessage>
-
         <Button
           :class="{ 'opacity-25': createApiTokenForm.processing }"
           :disabled="createApiTokenForm.processing"

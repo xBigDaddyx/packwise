@@ -1,11 +1,11 @@
 <script setup>
-import ActionMessage from '@/Components/ActionMessage.vue'
 import ActionSection from '@/Components/ActionSection.vue'
 import ConfirmsPassword from '@/Components/ConfirmsPassword.vue'
 import Button from '@/Components/shadcn/ui/button/Button.vue'
 import { Icon } from '@iconify/vue'
 import { useForm } from '@inertiajs/vue3'
 import { inject } from 'vue'
+import { toast } from 'vue-sonner'
 
 defineProps({
   sessions: Array,
@@ -22,7 +22,10 @@ function logoutOtherBrowserSessions(password) {
     password,
   })).delete(route('other-browser-sessions.destroy'), {
     preserveScroll: true,
-    onSuccess: () => form.reset(),
+    onSuccess: () => {
+      form.reset()
+      toast.success('Logged out of other browser sessions')
+    },
     onFinish: () => form.reset(),
   })
 }
@@ -39,7 +42,7 @@ function logoutOtherBrowserSessions(password) {
     </template>
 
     <template #content>
-      <div class="max-w-xl text-sm text-gray-600 dark:text-gray-400">
+      <div class="max-w-xl text-sm ">
         If necessary, you may log out of all of your other browser sessions across all of your devices. Some of
         your recent sessions are listed below; however, this list may not be exhaustive. If you feel your
         account has been compromised, you should also update your password.
@@ -52,12 +55,12 @@ function logoutOtherBrowserSessions(password) {
             <Icon
               v-if="session.agent.is_desktop"
               icon="heroicons:computer-desktop"
-              class="size-8 text-gray-500"
+              class="size-8"
             />
             <Icon
               v-else
               icon="heroicons:device-phone-mobile"
-              class="size-8 text-gray-500"
+              class="size-8"
             />
           </div>
 
@@ -91,10 +94,6 @@ function logoutOtherBrowserSessions(password) {
             Log Out Other Browser Sessions
           </Button>
         </ConfirmsPassword>
-
-        <ActionMessage :on="form.recentlySuccessful" class="ms-3">
-          Done.
-        </ActionMessage>
       </div>
     </template>
   </ActionSection>

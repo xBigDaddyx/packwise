@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Enums\OauthProvider;
+use App\Exceptions\OAuthAccountLinkingException;
 use App\Models\{OauthConnection, User};
 use Laravel\Socialite\Facades\Socialite;
 use App\Http\Controllers\User\OauthController;
@@ -91,9 +92,29 @@ test('it handles oauth callback for existing user without authenticated user', f
     $response = get(route('oauth.callback', ['provider' => OauthProvider::GITHUB]));
 
     $response->assertRedirect(route('login'))
-        ->assertSessionHas('error', __('Please login with existing auth provider and then link account'));
+        ->assertSessionHas('error', OAuthAccountLinkingException::EXISTING_CONNECTION_ERROR_MESSAGE);
 
     assertDatabaseCount('oauth_connections', 0);
+    assertDatabaseCount('users', 1);
+});
+
+test('it handles oauth callback for existing user without authenticated user and other provider' , function () {
+    $user = User::factory()->create(['email' => 'test@test.com']);
+    mockSocialiteForCallback();
+    $existingConnection = OauthConnection::factory()
+        ->for($user)
+        ->withProvider(OauthProvider::GITHUB)
+        ->create(['provider_id' => '1']);
+
+    assertDatabaseCount('oauth_connections', 1);
+    assertDatabaseCount('users', 1);
+
+    $response = get(route('oauth.callback', ['provider' => OauthProvider::GITLAB]));
+
+    $response->assertRedirect(route('login'))
+        ->assertSessionHas('error', OAuthAccountLinkingException::EXISTING_CONNECTION_ERROR_MESSAGE);
+
+    assertDatabaseCount('oauth_connections', 1);
     assertDatabaseCount('users', 1);
 });
 

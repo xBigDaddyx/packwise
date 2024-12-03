@@ -1,5 +1,4 @@
 <script setup>
-import ActionMessage from '@/Components/ActionMessage.vue'
 import FormSection from '@/Components/FormSection.vue'
 import InputError from '@/Components/InputError.vue'
 import Button from '@/Components/shadcn/ui/button/Button.vue'
@@ -8,6 +7,7 @@ import Label from '@/Components/shadcn/ui/label/Label.vue'
 
 import { Link, router, useForm } from '@inertiajs/vue3'
 import { inject, ref } from 'vue'
+import { toast } from 'vue-sonner'
 
 const props = defineProps({
   user: Object,
@@ -32,7 +32,10 @@ function updateProfileInformation() {
   form.post(route('user-profile-information.update'), {
     errorBag: 'updateProfileInformation',
     preserveScroll: true,
-    onSuccess: () => clearPhotoFileInput(),
+    onSuccess: () => {
+      clearPhotoFileInput()
+      toast.success('Profile information updated')
+    },
   })
 }
 
@@ -65,6 +68,7 @@ function deletePhoto() {
     onSuccess: () => {
       photoPreview.value = null
       clearPhotoFileInput()
+      toast.success('Photo deleted')
     },
   })
 }
@@ -185,10 +189,6 @@ function clearPhotoFileInput() {
     </template>
 
     <template #actions>
-      <ActionMessage :on="form.recentlySuccessful" class="me-3">
-        Saved.
-      </ActionMessage>
-
       <Button :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
         Save
       </Button>

@@ -7,6 +7,5 @@ namespace App\Enums;
 enum OauthProvider: string
 {
     case GITHUB = 'github';
-    case GOOGLE = 'google';
-    case X = 'x';
+    case GITLAB = 'gitlab';
 }
