@@ -12,7 +12,7 @@ import CreateTeamForm from '@/Pages/Teams/Partials/CreateTeamForm.vue'
     </template>
 
     <div>
-      <div class="mx-auto max-w-7xl py-10">
+      <div class="max-w-7xl py-10">
         <CreateTeamForm />
       </div>
     </div>

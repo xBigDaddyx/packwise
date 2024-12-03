@@ -11,10 +11,10 @@ use InvalidArgumentException;
 use App\Actions\Fortify\CreateNewUser;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\{DB, Validator};
+use App\Exceptions\OAuthAccountLinkingException;
 use Laravel\Socialite\Two\User as SocialiteUser;
 use App\Jobs\User\UpdateUserProfileInformationJob;
 use Illuminate\Validation\{Rule, ValidationException};
-use App\Exceptions\OAuthAccountLinkingException;
 
 final readonly class HandleOauthCallbackAction
 {
@@ -84,7 +84,7 @@ final readonly class HandleOauthCallbackAction
     {
         throw_unless(
             $user->oauthConnections()->where('provider', $provider)->exists(),
-            OAuthAccountLinkingException::existingConnection($provider->value)
+            OAuthAccountLinkingException::existingConnection()
         );
 
         $this->updateUserProfile($user, $socialiteUser, $provider);

@@ -3,10 +3,10 @@
 declare(strict_types=1);
 
 use App\Enums\OauthProvider;
-use App\Exceptions\OAuthAccountLinkingException;
 use App\Models\{OauthConnection, User};
 use Laravel\Socialite\Facades\Socialite;
 use App\Http\Controllers\User\OauthController;
+use App\Exceptions\OAuthAccountLinkingException;
 use Laravel\Socialite\Two\{InvalidStateException, User as SocialiteUser};
 
 use function Pest\Laravel\{actingAs, assertDatabaseCount, delete, get};
@@ -98,7 +98,7 @@ test('it handles oauth callback for existing user without authenticated user', f
     assertDatabaseCount('users', 1);
 });
 
-test('it handles oauth callback for existing user without authenticated user and other provider' , function () {
+test('it handles oauth callback for existing user without authenticated user and other provider', function () {
     $user = User::factory()->create(['email' => 'test@test.com']);
     mockSocialiteForCallback();
     $existingConnection = OauthConnection::factory()

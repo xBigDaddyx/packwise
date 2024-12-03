@@ -6,7 +6,7 @@ import oauthProviders from '@/lib/oauthProvider'
 import { Icon } from '@iconify/vue'
 import { router, usePage } from '@inertiajs/vue3'
 import { useChangeCase } from '@vueuse/integrations/useChangeCase'
-import { inject } from 'vue'
+import { inject, onMounted, ref } from 'vue'
 import { toast } from 'vue-sonner'
 
 const props = defineProps({
@@ -20,32 +20,64 @@ const props = defineProps({
   },
 })
 
-const filteredOauthProviders = oauthProviders.filter(provider => props.availableProviders.includes(provider.provider))
-
 const route = inject('route')
 
 const page = usePage()
 
+onMounted(() => {
+  if (page.props.flash.success) {
+    toast.success(page.props.flash.success)
+  }
+  if (page.props.flash.error) {
+    toast.error(page.props.flash.error)
+  }
+})
+
+const filteredOauthProviders = oauthProviders.filter(provider => props.availableProviders.includes(provider.provider))
+
+const loadingProvider = ref(null)
+
 function toggleLink(provider) {
+  loadingProvider.value = provider
   if (!props.activeProviders.includes(provider)) {
+    toast.promise(
+      new Promise(resolve => setTimeout(resolve, 1000)),
+      {
+        loading: 'Redirecting to provider...',
+      },
+    )
     window.location.href = route('oauth.redirect', { provider })
     return
   }
 
   router.delete(route('oauth.destroy', { provider }), {
+    async: true,
     preserveScroll: true,
+    onBefore: () => {
+      toast.promise(
+        new Promise(resolve => setTimeout(resolve, 1000)),
+        {
+          loading: 'Unlinking account...',
+        },
+      )
+    },
     onSuccess: () => {
-      toast.success(page.props.flash.success)
+      setTimeout(() => {
+        toast.success(page.props.flash.success)
+      }, 1000)
     },
     onError: () => {
       toast.error(page.props.flash.message)
+    },
+    onFinish: () => {
+      loadingProvider.value = null
     },
   })
 }
 </script>
 
 <template>
-  <ActionSection v-if="filteredOauthProviders.length > 0">
+  <ActionSection>
     <template #title>
       Linked Accounts
     </template>
@@ -71,6 +103,7 @@ function toggleLink(provider) {
             </Label>
           </div>
           <Switch
+            :disabled="loadingProvider"
             :checked="activeProviders.includes(provider.provider)"
             @update:checked="toggleLink(provider.provider)"
             @update:unchecked="toggleLink(provider.provider)"

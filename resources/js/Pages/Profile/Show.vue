@@ -28,37 +28,38 @@ defineProps({
     </template>
 
     <div>
-      <div class="mx-auto max-w-7xl py-10">
+      <div class="max-w-7xl py-10">
         <div v-if="$page.props.jetstream.canUpdateProfileInformation">
           <UpdateProfileInformationForm :user="$page.props.auth.user" />
+        </div>
 
+        <div v-if="availableOauthProviders.length > 0">
           <Separator class="my-8 hidden sm:block" />
+
+          <LinkedAccountsForm
+            :available-providers="availableOauthProviders"
+            :active-providers="activeOauthProviders" class="mt-10 sm:mt-0"
+          />
         </div>
 
         <div v-if="$page.props.jetstream.canUpdatePassword">
-          <UpdatePasswordForm class="mt-10 sm:mt-0" />
-
           <Separator class="my-8 hidden sm:block" />
+
+          <UpdatePasswordForm class="mt-10 sm:mt-0" />
         </div>
 
         <div v-if="$page.props.jetstream.canManageTwoFactorAuthentication">
+          <Separator class="my-8 hidden sm:block" />
           <TwoFactorAuthenticationForm
             :requires-confirmation="confirmsTwoFactorAuthentication"
             class="mt-10 sm:mt-0"
           />
-
-          <Separator class="my-8 hidden sm:block" />
         </div>
+        <div v-if="sessions.length > 0">
+          <Separator class="my-8 hidden sm:block" />
 
-        <LogoutOtherBrowserSessionsForm :sessions="sessions" class="mt-10 sm:mt-0" />
-
-        <Separator class="my-8 hidden sm:block" />
-
-        <LinkedAccountsForm
-          :available-providers="availableOauthProviders" :active-providers="activeOauthProviders"
-          class="mt-10 sm:mt-0"
-        />
-
+          <LogoutOtherBrowserSessionsForm :sessions="sessions" class="mt-10 sm:mt-0" />
+        </div>
         <template v-if="$page.props.jetstream.hasAccountDeletionFeatures">
           <Separator class="my-8 hidden sm:block" />
 

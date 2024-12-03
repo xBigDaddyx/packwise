@@ -6,7 +6,6 @@ namespace App\Http\Controllers\User;
 
 use Throwable;
 use App\Enums\OauthProvider;
-use InvalidArgumentException;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Laravel\Socialite\Facades\Socialite;

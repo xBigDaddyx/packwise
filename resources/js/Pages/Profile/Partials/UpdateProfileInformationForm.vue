@@ -4,7 +4,6 @@ import InputError from '@/Components/InputError.vue'
 import Button from '@/Components/shadcn/ui/button/Button.vue'
 import Input from '@/Components/shadcn/ui/input/Input.vue'
 import Label from '@/Components/shadcn/ui/label/Label.vue'
-
 import { Link, router, useForm } from '@inertiajs/vue3'
 import { inject, ref } from 'vue'
 import { toast } from 'vue-sonner'
@@ -94,13 +93,7 @@ function clearPhotoFileInput() {
       <!-- Profile Photo -->
       <div v-if="$page.props.jetstream.managesProfilePhotos" class="col-span-6 sm:col-span-4">
         <!-- Profile Photo File Input -->
-        <input
-          id="photo"
-          ref="photoInput"
-          type="file"
-          class="hidden"
-          @change="updatePhotoPreview"
-        >
+        <input id="photo" ref="photoInput" type="file" class="hidden" @change="updatePhotoPreview">
 
         <Label for="photo">Photo</Label>
 
@@ -117,20 +110,12 @@ function clearPhotoFileInput() {
           />
         </div>
 
-        <Button
-          variant="secondary"
-          class="me-2 mt-2"
-          type="button"
-          @click.prevent="selectNewPhoto"
-        >
+        <Button variant="secondary" class="me-2 mt-2" type="button" @click.prevent="selectNewPhoto">
           Select A New Photo
         </Button>
 
         <Button
-          v-if="user.profile_photo_path"
-          variant="secondary"
-          type="button"
-          class="mt-2"
+          v-if="user.profile_photo_path" variant="secondary" type="button" class="mt-2"
           @click.prevent="deletePhoto"
         >
           Remove Photo
@@ -143,11 +128,7 @@ function clearPhotoFileInput() {
       <div class="col-span-6 sm:col-span-4">
         <Label for="name">Name</Label>
         <Input
-          id="name"
-          v-model="form.name"
-          type="text"
-          class="mt-1 block w-full"
-          required
+          id="name" v-model="form.name" type="text" class="mt-1 block w-full" required
           autocomplete="name"
         />
         <InputError :message="form.errors.name" class="mt-2" />
@@ -159,6 +140,7 @@ function clearPhotoFileInput() {
         <Input
           id="email"
           v-model="form.email"
+          disabled
           type="email"
           class="mt-1 block w-full"
           required
@@ -171,9 +153,7 @@ function clearPhotoFileInput() {
             Your email address is unverified.
 
             <Link
-              :href="route('verification.send')"
-              method="post"
-              as="button"
+              :href="route('verification.send')" method="post" as="button"
               class="rounded-md text-sm underline focus:outline-none focus:ring-2 focus:ring-offset-2"
               @click.prevent="sendEmailVerification"
             >
