@@ -34,6 +34,7 @@ import SidebarMenuItem from '@/Components/shadcn/ui/sidebar/SidebarMenuItem.vue'
 import SidebarProvider from '@/Components/shadcn/ui/sidebar/SidebarProvider.vue'
 import SidebarTrigger from '@/Components/shadcn/ui/sidebar/SidebarTrigger.vue'
 import Sonner from '@/Components/shadcn/ui/sonner/Sonner.vue'
+import { cn } from '@/lib/utils'
 import { Icon } from '@iconify/vue'
 import { Head, Link, router } from '@inertiajs/vue3'
 import { useColorMode } from '@vueuse/core'
@@ -149,7 +150,9 @@ function logout() {
           <SidebarGroup>
             <SidebarGroupLabel>Platform</SidebarGroupLabel>
             <SidebarMenu>
-              <SidebarMenuItem>
+              <SidebarMenuItem
+                :class="{ 'font-bold text-primary bg-secondary rounded': route().current('dashboard') }"
+              >
                 <SidebarMenuButton as-child>
                   <Link :href="route('dashboard')">
                     <Icon icon="lucide:layout-dashboard" />
@@ -158,12 +161,11 @@ function logout() {
                 </SidebarMenuButton>
               </SidebarMenuItem>
 
-              <SidebarMenuItem>
+              <SidebarMenuItem
+                :class="{ 'font-bold text-primary bg-secondary rounded': route().current('profile.show') }"
+              >
                 <SidebarMenuButton as-child>
-                  <Link
-                    :href="route('profile.show')"
-                    :class="{ active: route.currentRoute === 'profile.show' }"
-                  >
+                  <Link :href="route('profile.show')">
                     <Icon icon="lucide:settings" />
                     Settings
                   </Link>

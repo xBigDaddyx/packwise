@@ -1,5 +1,7 @@
 <?php
 
+// @codeCoverageIgnoreStart
+
 declare(strict_types=1);
 
 namespace App\Traits;
@@ -81,4 +83,6 @@ trait AsFakeAction
     {
         return 'Action:AsFake:'.static::class;
     }
+
+    // @codeCoverageIgnoreEnd
 }

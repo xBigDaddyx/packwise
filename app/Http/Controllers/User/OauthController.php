@@ -45,9 +45,11 @@ final class OauthController extends Controller
 
         if (Auth::guest()) {
             Auth::login($user, true);
+
+            return Redirect::intended(config('fortify.home'));
         }
 
-        return Redirect::intended($authenticatedUser ? route('profile.show') : config('fortify.home'))->with('success', "Your {$provider->value} account has been linked.");
+        return Redirect::intended(route('profile.show'))->with('success', "Your {$provider->value} account has been linked.");
     }
 
     public function destroy(OauthProvider $provider): RedirectResponse

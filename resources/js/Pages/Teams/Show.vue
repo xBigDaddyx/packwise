@@ -21,7 +21,7 @@ defineProps({
     </template>
 
     <div>
-      <div class="max-w-7xl py-10">
+      <div class="max-w-7xl">
         <UpdateTeamNameForm :team="team" :permissions="permissions" />
 
         <TeamMemberManager
