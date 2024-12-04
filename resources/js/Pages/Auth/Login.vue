@@ -39,15 +39,11 @@ function handleSubmit() {
     remember: form.remember ? 'on' : '',
   })).post(route('login'), {
     onSuccess: () => toast.success(page.props.flash.success),
-    onError: () => toast.error(page.props.flash.error),
     onFinish: () => form.reset('password'),
   })
 }
 
 onMounted(() => {
-  if (page.props.flash.success) {
-    toast.success(page.props.flash.success)
-  }
   if (page.props.flash.error) {
     toast.error(page.props.flash.error)
   }

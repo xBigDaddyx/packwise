@@ -27,7 +27,6 @@ beforeEach(function () {
         'token' => 'test-token',
         'refreshToken' => 'test-refresh-token',
         'expiresIn' => null,
-        'avatar' => fake()->imageUrl(),
     ]);
 });
 

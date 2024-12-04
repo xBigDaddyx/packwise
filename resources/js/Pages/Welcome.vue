@@ -2,10 +2,61 @@
 import FeaturesCard from '@/Components/FeaturesCard.vue'
 import Badge from '@/Components/shadcn/ui/badge/Badge.vue'
 import Button from '@/Components/shadcn/ui/button/Button.vue'
+import WebLayout from '@/Layouts/WebLayout.vue'
 import { Icon } from '@iconify/vue'
 import { Head, Link } from '@inertiajs/vue3'
 
-defineProps({
+const features = [
+  {
+    icon: 'lucide:rocket',
+    title: '10x Dev Experience',
+    description: 'Ship faster with opinionated Laravel Pint, maximum PHPStan level, and Rector for enhanced code quality and developer productivity.',
+  },
+  {
+    icon: 'lucide:container',
+    title: 'Production Docker Ready',
+    description: 'Optimized Docker images with Laravel Octane and Sail for lightning-fast development and deployment.',
+  },
+  {
+    icon: 'lucide:key',
+    title: 'Advanced Authentication',
+    description: 'Complete authentication system with social login, and role-based access control.',
+  },
+  {
+    icon: 'lucide:credit-card',
+    title: 'Payment Ready',
+    description: 'Integrated Laravel Cashier for subscription billing and payment processing so you can focus on building your product.',
+  },
+  {
+    icon: 'lucide:code',
+    title: 'API Ready',
+    description: 'RESTful API endpoints with Laravel Sanctum authentication and comprehensive documentation.',
+  },
+  {
+    icon: 'lucide:palette',
+    title: 'Customizable UI',
+    description: 'Built with shadcn/ui components, making UI customization a breeze. Easily modify themes, styles, and components to match your brand.',
+  },
+  {
+    icon: 'lucide:brain',
+    title: 'AI Integration Ready',
+    description: 'Pre-configured LLM integrations for OpenAI, Anthropic, and more. Build AI-powered features into your app with minimal setup.',
+  },
+  {
+    icon: 'lucide:layout-dashboard',
+    title: 'FilamentPHP Admin',
+    description: 'Beautiful admin panel powered by FilamentPHP with CRUD operations, charts, and detailed analytics.',
+  },
+  {
+    icon: 'lucide:sparkles',
+    title: 'Evolving Features',
+    description: 'This is just the beginning. Regular updates bring new features, integrations, and improvements to supercharge your development.',
+  },
+]
+
+const githubUrl = 'https://github.com/pushpak1300/larasonic'
+
+const props = defineProps({
   canLogin: {
     type: Boolean,
   },
@@ -16,34 +67,8 @@ defineProps({
 </script>
 
 <template>
-  <Head title="Build Faster with Larasonic" />
-  <div class="min-h-screen">
-    <header class="sticky top-0 z-50 w-full border-b backdrop-blur">
-      <div class="container flex h-16 items-center">
-        <div class="mr-4 flex">
-          <a class="mr-6 flex items-center space-x-2" href="/">
-            <span class="hidden font-bold sm:inline-block">
-              🚀 Larasonic
-            </span>
-          </a>
-          <nav class="flex items-center space-x-6 text-sm font-medium">
-            <a class="transition-colors" href="https://github.com/pushpak1300/larasonic" target="_blank" rel="noopener">
-              Github
-            </a>
-          </nav>
-        </div>
-        <div class="flex flex-1 items-center justify-end space-x-4">
-          <nav class="flex items-center space-x-4">
-            <Link v-if="canLogin" href="/login" class="text-sm font-medium">
-              Login
-            </Link>
-            <Link v-if="canRegister" href="/register" class="text-sm font-medium">
-              Register
-            </Link>
-          </nav>
-        </div>
-      </div>
-    </header>
+  <WebLayout :can-login="canLogin" :can-register="canRegister">
+    <Head title="Build Faster with Larasonic" />
 
     <!-- Hero Section -->
     <section class="relative overflow-hidden border-b">
@@ -63,10 +88,10 @@ defineProps({
             <div class="mt-8 flex">
               <Button>
                 <Link
-                  href="https://github.com/pushpak1300/larasonic" target="_blank" rel="noopener"
+                  :href="githubUrl" target="_blank" rel="noopener noreferrer"
                   class="flex items-center gap-2"
                 >
-                  <Icon icon="lucide:github" class="size-4" />Star Repo
+                  <Icon icon="lucide:github" class="size-4" aria-hidden="true" />Star Repo
                 </Link>
               </Button>
             </div>
@@ -81,7 +106,7 @@ defineProps({
     </section>
 
     <!-- Features Grid -->
-    <section class="container mx-auto px-4 py-16 sm:px-6 lg:px-8">
+    <section id="features" class="container mx-auto px-4 py-16 sm:px-6 lg:px-8">
       <h2 class="text-center text-3xl font-bold tracking-tight sm:text-4xl">
         Everything you need to ship faster 🚀
       </h2>
@@ -91,68 +116,32 @@ defineProps({
 
       <div class="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
         <FeaturesCard
-          icon="lucide:rocket" title="10x Dev Experience"
-          description="Ship faster with opinionated Laravel Pint, maximum PHPStan level, and Rector for enhanced code quality and developer productivity."
-        />
-
-        <FeaturesCard
-          icon="lucide:container" title="Production Docker Ready"
-          description="Optimized Docker images with Laravel Octane and Sail for lightning-fast development and deployment."
-        />
-
-        <FeaturesCard
-          icon="lucide:key" title="Advanced Authentication"
-          description="Complete authentication system with social login, magic links, and role-based access control."
-        />
-
-        <FeaturesCard
-          icon="lucide:layout-dashboard" title="FilamentPHP Admin"
-          description="Beautiful admin panel powered by FilamentPHP with CRUD operations, charts, and detailed analytics."
-        />
-
-        <FeaturesCard
-          icon="lucide:credit-card" title="Payment Ready"
-          description="Integrated Laravel Cashier for subscription billing and payment processing so you can focus on building your product."
-        />
-
-        <FeaturesCard
-          icon="lucide:code" title="API Ready"
-          description="RESTful API endpoints with Laravel Sanctum authentication and comprehensive documentation."
-        />
-
-        <FeaturesCard
-          icon="lucide:palette" title="Customizable UI"
-          description="Built with shadcn/ui components, making UI customization a breeze. Easily modify themes, styles, and components to match your brand."
-        />
-
-        <FeaturesCard
-          icon="lucide:brain" title="AI Integration Ready"
-          description="Pre-configured LLM integrations for OpenAI, Anthropic, and more. Build AI-powered features into your app with minimal setup."
-        />
-
-        <FeaturesCard
-          icon="lucide:sparkles" title="Evolving Features"
-          description="This is just the beginning. Regular updates bring new features, integrations, and improvements to supercharge your development."
+          v-for="feature in features" :key="feature.title" :icon="feature.icon"
+          :title="feature.title" :description="feature.description"
         />
       </div>
+      <div class="mt-6 flex justify-center gap-2">
+        <Button as="a" :href="`${githubUrl}/issues`" target="_blank" rel="noopener noreferrer">
+          <Icon icon="lucide:construction" class="size-4" aria-hidden="true" />
+          Roadmap
+        </Button>
+      </div>
     </section>
+
     <!-- CTA Section -->
     <section class="border-t">
       <div class="container mx-auto px-4 py-16 sm:px-6 lg:px-8">
         <div class="rounded-2xl px-6 py-16 sm:p-16">
           <div class="mx-auto max-w-2xl text-center">
-            <h2 class="text-3xl font-bold tracking-tight sm:text-4xl">
+            <h2 class="text-3xl font-bold tracking-tight sm:text-6xl">
               Ready to ship faster?
             </h2>
-            <p class="mx-auto mt-4 max-w-xl text-lg ">
+            <p class="mx-auto mt-4 max-w-xl text-lg">
               You're already blazing fast with Laravel.<br> Larasonic is about to make your shipping speed
               supersonic. 🚀
             </p>
             <div class="mt-8 flex justify-center gap-4">
-              <Button
-                :as="Link" href="https://github.com/pushpak1300/larasonic" target="_blank"
-                rel="noopener"
-              >
+              <Button :as="Link" :href="githubUrl" target="_blank" rel="noopener noreferrer">
                 View on GitHub
               </Button>
             </div>
@@ -160,33 +149,5 @@ defineProps({
         </div>
       </div>
     </section>
-
-    <!-- Footer -->
-    <footer class="border-t">
-      <div class="container mx-auto px-4 py-8 sm:px-6 lg:px-8">
-        <div class="flex flex-col items-center justify-between gap-4 sm:flex-row">
-          <p class="text-sm text-muted-foreground">
-            © 2024 Larasonic. Crafted with ❤️ by <a
-              class="underline"
-              href="https://pushpak1300.me?ref=larasonic"
-            > Pushpak.</a>
-          </p>
-          <div class="flex gap-4">
-            <a
-              href="https://github.com/pushpak1300/larasonic" target="_blank" rel="noopener"
-              class="text-muted-foreground hover:text-foreground"
-            >
-              <Icon icon="lucide:github" class="h-5 w-5" />
-            </a>
-            <a
-              href="https://twitter.com/pushpak1300" target="_blank" rel="noopener"
-              class="text-muted-foreground hover:text-foreground"
-            >
-              <Icon icon="lucide:twitter" class="h-5 w-5" />
-            </a>
-          </div>
-        </div>
-      </div>
-    </footer>
-  </div>
+  </WebLayout>
 </template>

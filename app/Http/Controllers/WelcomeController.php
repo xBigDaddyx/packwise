@@ -9,9 +9,17 @@ use Illuminate\Support\Facades\Route;
 
 final class WelcomeController extends Controller
 {
-    public function __invoke(): Response
+    public function home(): Response
     {
         return Inertia::render('Welcome', [
+            'canLogin' => Route::has('login'),
+            'canRegister' => Route::has('register'),
+        ]);
+    }
+
+    public function pricing(): Response
+    {
+        return Inertia::render('Pricing', [
             'canLogin' => Route::has('login'),
             'canRegister' => Route::has('register'),
         ]);
