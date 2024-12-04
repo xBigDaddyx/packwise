@@ -17,5 +17,5 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
     Route::delete('/auth/destroy/{provider}', [OauthController::class, 'destroy'])->name('oauth.destroy');
 
-    Route::resource('chat', ChatController::class)->except('edit', 'create', 'update', 'destroy');
+    Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
 });

@@ -5,33 +5,36 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from '@/Components/shadcn/ui/select'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 
 const props = defineProps({
   models: {
     type: Array,
-    required: false,
-    default: () => ['Model 1', 'Model 2', 'Model 3'],
+    required: true,
   },
 })
 
-const selectedModel = ref()
+const emit = defineEmits(['update:modelSelect'])
+const selectedModel = ref(props.models[0])
+
+watch(selectedModel, (newVal) => {
+  emit('update:modelSelect', newVal)
+})
 </script>
 
 <template>
   <Label for="model">Model</Label>
   <Select id="model" v-model="selectedModel">
     <SelectTrigger class="w-[180px]">
-      <SelectValue :placeholder="props.models[0] || 'Select a model'" />
+      <SelectValue :placeholder="models[0]" />
     </SelectTrigger>
     <SelectContent>
       <SelectGroup>
         <SelectItem
-          v-for="model in props.models"
+          v-for="model in models"
           :key="model"
           :value="model"
         >
