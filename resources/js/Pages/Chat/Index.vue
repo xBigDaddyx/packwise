@@ -46,7 +46,7 @@ async function submit() {
   }).json()
 
   if (fetchError.value) {
-    error.value = fetchError.value
+    error.value = 'An error occurred while submitting your message.'
   }
   else {
     modelOutput.value = data.value.choices[0].message.content
