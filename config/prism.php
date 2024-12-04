@@ -5,7 +5,7 @@ declare(strict_types=1);
 return [
     'prism_server' => [
         // The middleware that will be applied to the Prism Server routes.
-        'middleware' => [],
+        'middleware' => ['web', 'verified', 'auth'],
         'enabled' => env('PRISM_SERVER_ENABLED', true),
     ],
     'providers' => [

@@ -9,7 +9,7 @@ export default antfu({
     html: true,
     markdown: 'prettier',
   },
-  ignores: ['storage/logs/**/*', '**/*.{yaml,yml,php}', 'resources/js/Components/shadcn/**/*'],
+  ignores: ['storage/**/*', '**/*.{yaml,yml,php}', 'resources/js/Components/shadcn/**/*', 'public/**/*'],
 }, {
   files: ['**/*.{js,vue,json,ts,tsx,md,html,blade}'],
   ...eslintPluginTailwindCSS.configs['flat/recommended'].rules,

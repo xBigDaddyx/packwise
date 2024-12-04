@@ -100,7 +100,7 @@ async function submit() {
                       />
                     </div>
                   </div>
-                  <div class="flex items-center space-x-2" v-if="!modelOutput">
+                  <div v-if="!modelOutput" class="flex items-center space-x-2">
                     <Button @click.prevent="submit">
                       <span>Submit</span>
                     </Button>

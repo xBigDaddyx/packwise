@@ -135,7 +135,7 @@ function toggleMenu() {
           </p>
           <div class="flex gap-4">
             <Icon
-            class="text-muted-foreground" :icon="mode === 'dark' ? 'lucide:moon' : 'lucide:sun'"
+              class="text-muted-foreground" :icon="mode === 'dark' ? 'lucide:moon' : 'lucide:sun'"
               @click="mode = mode === 'dark' ? 'light' : 'dark'"
             />
 

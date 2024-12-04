@@ -10,7 +10,7 @@ use EchoLabs\Prism\Text\Generator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
 use EchoLabs\Prism\Enums\Provider as PrismProvider;
-use Illuminate\Support\Facades\{App, DB, URL, View, Vite};
+use Illuminate\Support\Facades\{App, DB, URL, Vite};
 
 final class AppServiceProvider extends ServiceProvider
 {
@@ -80,21 +80,21 @@ final class AppServiceProvider extends ServiceProvider
     {
         PrismServer::register(
             'Larasonic Small',
-            fn(): Generator => Prism::text()->using(PrismProvider::Groq, 'llama3-8b-8192')
+            fn (): Generator => Prism::text()->using(PrismProvider::Groq, 'llama3-8b-8192')
                 ->withSystemPrompt(view('prompts.system')->render())
                 ->withMaxTokens(50)
         );
 
         PrismServer::register(
             'Larasonic Medium',
-            fn(): Generator => Prism::text()->using(PrismProvider::Groq, 'llama3-8b-8192')
+            fn (): Generator => Prism::text()->using(PrismProvider::Groq, 'llama3-8b-8192')
                 ->withSystemPrompt(view('prompts.system')->render())
                 ->withMaxTokens(50)
         );
 
         PrismServer::register(
             'Larasonic Large',
-            fn(): Generator => Prism::text()->using(PrismProvider::Groq, 'llama3-8b-8192')
+            fn (): Generator => Prism::text()->using(PrismProvider::Groq, 'llama3-8b-8192')
                 ->withSystemPrompt(view('prompts.system')->render())
                 ->withMaxTokens(50)
         );
