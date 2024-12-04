@@ -30,7 +30,19 @@ docker run --rm \
     composer install --ignore-platform-reqs
 ```
 
-3. Start Laravel Sail:
+3. Copy the `.env.example` file to `.env` and update the environment variables:
+
+```bash
+cp .env.example .env
+```
+
+4. Start Laravel Sail:
+
+```bash
+./vendor/bin/sail up -d
+```
+
+5. Run setup script:
 
 ```bash
 ./vendor/bin/sail composer run setup
