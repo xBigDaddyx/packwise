@@ -2,13 +2,16 @@
 
 declare(strict_types=1);
 
-use App\Models\{Team, User};
+use App\Models\Team;
+use App\Models\User;
 use Laravel\Jetstream\Jetstream;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Event;
 use App\Actions\Jetstream\AddTeamMember;
-use Illuminate\Support\Facades\{Event, Gate};
+use Laravel\Jetstream\Events\TeamMemberAdded;
 use Illuminate\Validation\ValidationException;
+use Laravel\Jetstream\Events\AddingTeamMember;
 use Illuminate\Auth\Access\AuthorizationException;
-use Laravel\Jetstream\Events\{AddingTeamMember, TeamMemberAdded};
 
 beforeEach(function () {
     $this->owner = User::factory()->create();

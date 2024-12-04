@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
+use App\Models\User;
 use App\Enums\OauthProvider;
-use App\Models\{OauthConnection, User};
+use App\Models\OauthConnection;
 use App\Actions\User\HandleOauthCallbackAction;
 use App\Exceptions\OAuthAccountLinkingException;
 use Laravel\Socialite\Two\User as SocialiteUser;
 
-use function Pest\Laravel\{assertDatabaseHas};
+use function Pest\Laravel\assertDatabaseHas;
 
 beforeEach(function () {
     $this->socialiteUser = tap(new SocialiteUser, function ($user) {

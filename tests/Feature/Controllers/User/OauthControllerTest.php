@@ -2,14 +2,19 @@
 
 declare(strict_types=1);
 
+use App\Models\User;
 use App\Enums\OauthProvider;
-use App\Models\{OauthConnection, User};
+use App\Models\OauthConnection;
 use Laravel\Socialite\Facades\Socialite;
 use App\Http\Controllers\User\OauthController;
 use App\Exceptions\OAuthAccountLinkingException;
-use Laravel\Socialite\Two\{InvalidStateException, User as SocialiteUser};
+use Laravel\Socialite\Two\InvalidStateException;
+use Laravel\Socialite\Two\User as SocialiteUser;
 
-use function Pest\Laravel\{actingAs, assertDatabaseCount, delete, get};
+use function Pest\Laravel\get;
+use function Pest\Laravel\delete;
+use function Pest\Laravel\actingAs;
+use function Pest\Laravel\assertDatabaseCount;
 
 covers(OauthController::class);
 

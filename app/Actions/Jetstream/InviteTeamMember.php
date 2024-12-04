@@ -5,15 +5,20 @@ declare(strict_types=1);
 namespace App\Actions\Jetstream;
 
 use Closure;
+use App\Models\Team;
+use App\Models\User;
+use Illuminate\Validation\Rule;
 use Laravel\Jetstream\Jetstream;
 use Laravel\Jetstream\Rules\Role;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Facades\Validator;
 use Laravel\Jetstream\Mail\TeamInvitation;
 use Laravel\Jetstream\Events\InvitingTeamMember;
 use Laravel\Jetstream\Contracts\InvitesTeamMembers;
-use Illuminate\Support\Facades\{Gate, Mail, Validator};
-use Illuminate\Validation\{Rule, Validator as ValidatorAlias};
-use App\Models\{Team, TeamInvitation as TeamInvitationModel, User};
+use App\Models\TeamInvitation as TeamInvitationModel;
+use Illuminate\Validation\Validator as ValidatorAlias;
 
 final class InviteTeamMember implements InvitesTeamMembers
 {

@@ -2,12 +2,14 @@
 
 declare(strict_types=1);
 
+use App\Models\User;
 use App\Enums\OauthProvider;
-use App\Models\{OauthConnection, User};
+use App\Models\OauthConnection;
 use Laravel\Socialite\Two\User as SocialiteUser;
 use App\Jobs\User\UpdateUserProfileInformationJob;
 
-use function Pest\Laravel\{assertDatabaseCount, assertDatabaseHas};
+use function Pest\Laravel\assertDatabaseHas;
+use function Pest\Laravel\assertDatabaseCount;
 
 covers(UpdateUserProfileInformationJob::class);
 

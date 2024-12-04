@@ -8,7 +8,10 @@ namespace App\Traits;
 
 use Mockery;
 use RuntimeException;
-use Mockery\{Expectation, ExpectationInterface, HigherOrderMessage, MockInterface};
+use Mockery\Expectation;
+use Mockery\MockInterface;
+use Mockery\HigherOrderMessage;
+use Mockery\ExpectationInterface;
 
 trait AsFakeAction
 {

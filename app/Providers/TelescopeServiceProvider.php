@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Models\User;
+use Laravel\Telescope\Telescope;
 use Illuminate\Support\Facades\Gate;
-use Laravel\Telescope\{IncomingEntry, Telescope, TelescopeApplicationServiceProvider};
+use Laravel\Telescope\IncomingEntry;
+use Laravel\Telescope\TelescopeApplicationServiceProvider;
 
 final class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
 {

@@ -6,16 +6,20 @@ namespace App\Models;
 
 use Laravel\Cashier\Billable;
 use Illuminate\Support\Carbon;
+use Laravel\Jetstream\HasTeams;
+use Laravel\Sanctum\HasApiTokens;
 use Database\Factories\UserFactory;
+use Laravel\Jetstream\HasProfilePhoto;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\PersonalAccessToken;
 use Illuminate\Database\Eloquent\Collection;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Laravel\Jetstream\{HasProfilePhoto, HasTeams};
-use Illuminate\Database\Eloquent\Relations\{HasMany};
+use Illuminate\Notifications\DatabaseNotification;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Laravel\Sanctum\{HasApiTokens, PersonalAccessToken};
-use Illuminate\Notifications\{DatabaseNotification, DatabaseNotificationCollection, Notifiable};
+use Illuminate\Notifications\DatabaseNotificationCollection;
 
 /**
  * @property int $id
@@ -74,11 +78,11 @@ use Illuminate\Notifications\{DatabaseNotification, DatabaseNotificationCollecti
 final class User extends Authenticatable implements MustVerifyEmail
 {
     use Billable;
-
     use HasApiTokens;
 
     /** @use HasFactory<UserFactory> */
     use HasFactory;
+
     use HasProfilePhoto;
     use HasTeams  {
         ownedTeams as public ownedTeamsBase;

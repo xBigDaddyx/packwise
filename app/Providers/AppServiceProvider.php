@@ -7,10 +7,13 @@ namespace App\Providers;
 use PrismServer;
 use EchoLabs\Prism\Prism;
 use EchoLabs\Prism\Text\Generator;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Vite;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
 use EchoLabs\Prism\Enums\Provider as PrismProvider;
-use Illuminate\Support\Facades\{App, DB, URL, Vite};
 
 final class AppServiceProvider extends ServiceProvider
 {

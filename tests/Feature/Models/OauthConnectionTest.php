@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
+use App\Models\User;
 use App\Enums\OauthProvider;
+use App\Models\OauthConnection;
 use Illuminate\Support\Collection;
-use App\Models\{OauthConnection, User};
 
 covers(OauthConnection::class);
 

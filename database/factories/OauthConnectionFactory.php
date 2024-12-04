@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
+use App\Models\User;
 use App\Enums\OauthProvider;
-use App\Models\{OauthConnection, User};
+use App\Models\OauthConnection;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**

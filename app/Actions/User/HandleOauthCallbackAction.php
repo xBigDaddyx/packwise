@@ -8,13 +8,15 @@ use App\Models\User;
 use App\Enums\OauthProvider;
 use App\Traits\AsFakeAction;
 use InvalidArgumentException;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\DB;
 use App\Actions\Fortify\CreateNewUser;
 use Illuminate\Database\Query\Builder;
-use Illuminate\Support\Facades\{DB, Validator};
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 use App\Exceptions\OAuthAccountLinkingException;
 use Laravel\Socialite\Two\User as SocialiteUser;
 use App\Jobs\User\UpdateUserProfileInformationJob;
-use Illuminate\Validation\{Rule, ValidationException};
 
 final readonly class HandleOauthCallbackAction
 {

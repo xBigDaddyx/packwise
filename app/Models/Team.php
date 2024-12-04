@@ -6,11 +6,13 @@ namespace App\Models;
 
 use Illuminate\Support\Carbon;
 use Database\Factories\TeamFactory;
+use Laravel\Jetstream\Events\TeamCreated;
+use Laravel\Jetstream\Events\TeamDeleted;
+use Laravel\Jetstream\Events\TeamUpdated;
 use Illuminate\Database\Eloquent\Collection;
 use Laravel\Jetstream\Team as JetstreamTeam;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Laravel\Jetstream\Events\{TeamCreated, TeamDeleted, TeamUpdated};
 
 /**
  * @property int $id

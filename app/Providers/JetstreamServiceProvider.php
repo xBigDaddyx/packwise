@@ -7,14 +7,14 @@ namespace App\Providers;
 use App\Enums\OauthProvider;
 use Illuminate\Http\Request;
 use Laravel\Jetstream\Jetstream;
+use App\Actions\Jetstream\CreateTeam;
+use App\Actions\Jetstream\DeleteTeam;
+use App\Actions\Jetstream\DeleteUser;
 use Illuminate\Support\ServiceProvider;
-use App\Actions\Jetstream\{AddTeamMember,
-    CreateTeam,
-    DeleteTeam,
-    DeleteUser,
-    InviteTeamMember,
-    RemoveTeamMember,
-    UpdateTeamName};
+use App\Actions\Jetstream\AddTeamMember;
+use App\Actions\Jetstream\UpdateTeamName;
+use App\Actions\Jetstream\InviteTeamMember;
+use App\Actions\Jetstream\RemoveTeamMember;
 
 final class JetstreamServiceProvider extends ServiceProvider
 {

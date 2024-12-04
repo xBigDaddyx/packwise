@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
+use App\Models\Team;
+use App\Models\User;
 use Illuminate\Support\Str;
-use App\Models\{Team, User};
 use Laravel\Jetstream\Features;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Factories\Factory;

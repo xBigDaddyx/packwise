@@ -3,8 +3,10 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ChatController;
+use App\Http\Controllers\WelcomeController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\User\OauthController;
-use App\Http\Controllers\{ChatController, DashboardController, WelcomeController};
 
 Route::get('/', [WelcomeController::class, 'home']);
 Route::get('/pricing', [WelcomeController::class, 'pricing']);

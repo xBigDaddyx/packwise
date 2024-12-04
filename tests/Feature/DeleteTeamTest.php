@@ -2,7 +2,8 @@
 
 declare(strict_types=1);
 
-use App\Models\{Team, User};
+use App\Models\Team;
+use App\Models\User;
 
 test('teams can be deleted', function () {
     $this->actingAs($user = User::factory()->withPersonalTeam()->create());

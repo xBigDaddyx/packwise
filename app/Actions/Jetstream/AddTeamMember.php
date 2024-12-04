@@ -5,14 +5,17 @@ declare(strict_types=1);
 namespace App\Actions\Jetstream;
 
 use Closure;
-use App\Models\{Team, User};
+use App\Models\Team;
+use App\Models\User;
 use Laravel\Jetstream\Jetstream;
 use Laravel\Jetstream\Rules\Role;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Contracts\Validation\Rule;
+use Illuminate\Support\Facades\Validator;
+use Laravel\Jetstream\Events\TeamMemberAdded;
+use Laravel\Jetstream\Events\AddingTeamMember;
 use Laravel\Jetstream\Contracts\AddsTeamMembers;
-use Illuminate\Support\Facades\{Gate, Validator};
 use Illuminate\Validation\Validator as ValidatorAlias;
-use Laravel\Jetstream\Events\{AddingTeamMember, TeamMemberAdded};
 
 final class AddTeamMember implements AddsTeamMembers
 {

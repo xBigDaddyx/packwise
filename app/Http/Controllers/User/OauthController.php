@@ -7,12 +7,14 @@ namespace App\Http\Controllers\User;
 use Throwable;
 use App\Enums\OauthProvider;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Redirect;
 use Laravel\Socialite\Facades\Socialite;
 use App\Actions\User\HandleOauthCallbackAction;
 use App\Exceptions\OAuthAccountLinkingException;
-use Illuminate\Support\Facades\{Auth, Redirect};
-use Laravel\Socialite\Two\{InvalidStateException, User as SocialiteUser};
+use Laravel\Socialite\Two\InvalidStateException;
+use Laravel\Socialite\Two\User as SocialiteUser;
 use Symfony\Component\HttpFoundation\RedirectResponse as SymfonyRedirectResponse;
 
 final class OauthController extends Controller

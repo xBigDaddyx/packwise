@@ -5,13 +5,18 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use Inertia\Inertia;
+use Illuminate\Support\Str;
 use App\Enums\OauthProvider;
 use Illuminate\Http\Request;
 use Laravel\Fortify\Fortify;
+use Illuminate\Support\Facades\Route;
+use App\Actions\Fortify\CreateNewUser;
+use Illuminate\Support\ServiceProvider;
 use Illuminate\Cache\RateLimiting\Limit;
-use Illuminate\Support\{ServiceProvider, Str};
-use Illuminate\Support\Facades\{RateLimiter, Route};
-use App\Actions\Fortify\{CreateNewUser, ResetUserPassword, UpdateUserPassword, UpdateUserProfileInformation};
+use App\Actions\Fortify\ResetUserPassword;
+use App\Actions\Fortify\UpdateUserPassword;
+use Illuminate\Support\Facades\RateLimiter;
+use App\Actions\Fortify\UpdateUserProfileInformation;
 
 final class FortifyServiceProvider extends ServiceProvider
 {

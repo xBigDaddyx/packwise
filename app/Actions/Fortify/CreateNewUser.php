@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace App\Actions\Fortify;
 
-use App\Models\{Team, User};
+use App\Models\Team;
+use App\Models\User;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Laravel\Jetstream\Jetstream;
-use Illuminate\Support\{Arr, Str};
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
-use Illuminate\Support\Facades\{DB, Hash, Validator};
 
 final class CreateNewUser implements CreatesNewUsers
 {
