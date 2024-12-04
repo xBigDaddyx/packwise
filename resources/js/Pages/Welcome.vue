@@ -6,6 +6,15 @@ import WebLayout from '@/Layouts/WebLayout.vue'
 import { Icon } from '@iconify/vue'
 import { Head, Link } from '@inertiajs/vue3'
 
+defineProps({
+  canLogin: {
+    type: Boolean,
+  },
+  canRegister: {
+    type: Boolean,
+  },
+})
+
 const features = [
   {
     icon: 'lucide:rocket',
@@ -55,15 +64,6 @@ const features = [
 ]
 
 const githubUrl = 'https://github.com/pushpak1300/larasonic'
-
-const props = defineProps({
-  canLogin: {
-    type: Boolean,
-  },
-  canRegister: {
-    type: Boolean,
-  },
-})
 </script>
 
 <template>
@@ -98,7 +98,14 @@ const props = defineProps({
           </div>
           <div class="relative">
             <div class="relative rounded-lg border bg-card p-2 shadow-2xl">
-              <img src="/images/dashboard.png" alt="Dashboard Preview" class="rounded-md">
+              <img
+                src="/images/dashboard-light.webp" alt="Dashboard Preview"
+                class="hidden dark:block rounded-md"
+              >
+              <img
+                src="/images/dashboard-dark.webp" alt="Dashboard Preview"
+                class="block dark:hidden rounded-md"
+              >
             </div>
           </div>
         </div>

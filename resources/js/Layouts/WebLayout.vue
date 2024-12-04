@@ -3,6 +3,7 @@ import Button from '@/Components/shadcn/ui/button/Button.vue'
 import { cn } from '@/lib/utils'
 import { Icon } from '@iconify/vue'
 import { Link } from '@inertiajs/vue3'
+import { useColorMode } from '@vueuse/core'
 import { ref } from 'vue'
 
 defineProps({
@@ -11,6 +12,14 @@ defineProps({
   },
   canRegister: {
     type: Boolean,
+  },
+})
+
+const mode = useColorMode({
+  attribute: 'class',
+  modes: {
+    light: '',
+    dark: 'dark',
   },
 })
 
@@ -125,6 +134,11 @@ function toggleMenu() {
             </span>
           </p>
           <div class="flex gap-4">
+            <Icon
+            class="text-muted-foreground" :icon="mode === 'dark' ? 'lucide:moon' : 'lucide:sun'"
+              @click="mode = mode === 'dark' ? 'light' : 'dark'"
+            />
+
             <a
               :href="githubUrl" target="_blank" rel="noopener noreferrer"
               class="text-muted-foreground hover:text-foreground" aria-label="GitHub"
