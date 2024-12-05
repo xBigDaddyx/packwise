@@ -86,13 +86,8 @@ const githubUrl = 'https://github.com/pushpak1300/larasonic'
               Laravel Jetstream, Inertia V2, and Shadcn/ui.
             </p>
             <div class="mt-8 flex">
-              <Button>
-                <Link
-                  :href="githubUrl" target="_blank" rel="noopener noreferrer"
-                  class="flex items-center gap-2"
-                >
-                  <Icon icon="lucide:github" class="size-4" aria-hidden="true" />Star Repo
-                </Link>
+              <Button as="a" :href="githubUrl" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2">
+                <Icon icon="mdi:github" class="size-4" aria-hidden="true" />Star Repo
               </Button>
             </div>
           </div>

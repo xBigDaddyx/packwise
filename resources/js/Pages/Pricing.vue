@@ -7,7 +7,7 @@ import Button from '@/Components/shadcn/ui/button/Button.vue'
 import { Card, CardContent, CardFooter, CardHeader } from '@/Components/shadcn/ui/card'
 import WebLayout from '@/Layouts/WebLayout.vue'
 import { Icon } from '@iconify/vue'
-import { Head, Link } from '@inertiajs/vue3'
+import { Head } from '@inertiajs/vue3'
 
 const props = defineProps({
   canLogin: {
@@ -57,7 +57,7 @@ const faqItems = [
 
 <template>
   <WebLayout :can-login="props.canLogin" :can-register="props.canRegister">
-    <Head title="Simple, transparent pricing - Larasonic" />
+    <Head title="Pricing" />
     <div class="relative min-h-screen">
       <div class="container mx-auto px-4 py-16 sm:px-6 lg:px-8">
         <!-- Header -->
@@ -112,7 +112,7 @@ const faqItems = [
                 </div>
                 <div class="mt-6 grid w-full gap-4">
                   <Button
-                    size="lg" :as="Link" href="https://github.com/pushpak1300/larasonic"
+                    size="lg" as="a" href="https://github.com/pushpak1300/larasonic"
                     target="_blank"
                   >
                     Get Started
@@ -126,11 +126,11 @@ const faqItems = [
                   Want to support the development?
                 </p>
                 <div class="flex gap-4">
-                  <Button variant="outline" :as="a" :href="sponsorLinks.github" target="_blank">
+                  <Button variant="outline" as="a" :href="sponsorLinks.github" target="_blank">
                     <Icon icon="mdi:github" class="mr-2 size-4" aria-hidden="true" />
                     Sponsor
                   </Button>
-                  <Button variant="outline" :as="a" :href="sponsorLinks.x" target="_blank">
+                  <Button variant="outline" as="a" :href="sponsorLinks.x" target="_blank">
                     <Icon icon="ri:twitter-x-line" class="mr-2 size-4" aria-hidden="true" />
                     Follow Me
                   </Button>

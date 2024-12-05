@@ -1,5 +1,8 @@
 <script setup>
 import InputError from '@/Components/InputError.vue'
+import Alert from '@/Components/shadcn/ui/alert/Alert.vue'
+import AlertDescription from '@/Components/shadcn/ui/alert/AlertDescription.vue'
+import AlertTitle from '@/Components/shadcn/ui/alert/AlertTitle.vue'
 import { Button } from '@/Components/shadcn/ui/button'
 import { Label } from '@/Components/shadcn/ui/label'
 import Skeleton from '@/Components/shadcn/ui/skeleton/Skeleton.vue'
@@ -9,6 +12,7 @@ import { useFetch } from '@vueuse/core'
 import { ref } from 'vue'
 import ModelSelector from './Components/ModelSelector.vue'
 import TemperatureSelector from './Components/TemperatureSelector.vue'
+import { Icon } from '@iconify/vue'
 
 const props = defineProps({
   systemPrompt: String,
@@ -62,6 +66,13 @@ async function submit() {
       </h2>
     </template>
     <div class="h-full flex-col flex">
+      <Alert class="mb-4">
+        <Icon icon="lucide:info" class="size-4" />
+        <AlertTitle>Demo AI Chat</AlertTitle>
+        <AlertDescription>
+          This is a demo AI chat. You can use it to test the AI chat. And This is subscrition protected page so you can't use it without subscription.
+        </AlertDescription>
+      </Alert>
       <div class="flex-1">
         <div class="h-full">
           <div class="grid h-full items-stretch gap-6 md:grid-cols-[minmax(0,1fr)_180px]">
@@ -91,10 +102,12 @@ async function submit() {
                     </div>
                     <div class="flex flex-col space-y-2">
                       <Label for="output">Model Output</Label>
-                      <Skeleton v-if="!modelOutput" class="h-20 sm:h-full min-h-[400px]lg:min-h-[700px] rounded-md" />
+                      <Skeleton
+                        v-if="!modelOutput"
+                        class="h-20 sm:h-full min-h-[400px]lg:min-h-[700px] rounded-md"
+                      />
                       <Textarea
-                        v-else id="output"
-                        disabled
+                        v-else id="output" disabled
                         class="min-h-[400px] rounded-md bg-muted border lg:min-h-[700px]"
                         :default-value="modelOutput"
                       />

@@ -29,6 +29,7 @@ const navLinks = [
 ]
 
 const githubUrl = 'https://github.com/pushpak1300/larasonic'
+const twitterUrl = 'https://x.com/pushpak1300?ref=larasonic'
 
 const isMenuOpen = ref(false)
 
@@ -117,15 +118,13 @@ function toggleMenu() {
         <div class="flex flex-col items-center justify-between gap-4 sm:flex-row">
           <p class="text-sm flex items-center gap-2 text-center sm:text-left">
             <Icon icon="lucide:rocket" class="size-6" aria-hidden="true" />
-            Crafted with ❤️ by <a
-              class="underline" href="https://x.com/pushpak1300?ref=larasonic"
-              target="_blank" rel="noopener noreferrer"
-            >
-              Pushpak.
+            Crafted with ❤️ by<a
+              class="underline" :href="twitterUrl" target="_blank"
+              rel="noopener noreferrer"
+            >Pushpak.
             </a>
             <span class="hidden sm:inline">
-              The source code is available on
-              <a
+              The source code is available on <a
                 class="underline" href="https://github.com/pushpak1300/larasonic" target="_blank"
                 rel="noopener noreferrer"
               >
@@ -143,13 +142,13 @@ function toggleMenu() {
               :href="githubUrl" target="_blank" rel="noopener noreferrer"
               class="text-muted-foreground hover:text-foreground" aria-label="GitHub"
             >
-              <Icon icon="lucide:github" class="h-5 w-5" aria-hidden="true" />
+              <Icon icon="mdi:github" class="h-5 w-5" aria-hidden="true" />
             </a>
             <a
-              href="https://twitter.com/pushpak1300" target="_blank" rel="noopener noreferrer"
+              :href="twitterUrl" target="_blank" rel="noopener noreferrer"
               class="text-muted-foreground hover:text-foreground" aria-label="Twitter"
             >
-              <Icon icon="lucide:twitter" class="h-5 w-5" aria-hidden="true" />
+              <Icon icon="ri:twitter-x-line" class="h-5 w-5" aria-hidden="true" />
             </a>
           </div>
         </div>
