@@ -118,18 +118,19 @@ function toggleMenu() {
         <div class="flex flex-col items-center justify-between gap-4 sm:flex-row">
           <p class="text-sm flex items-center gap-2 text-center sm:text-left">
             <Icon icon="lucide:rocket" class="size-6" aria-hidden="true" />
-            Crafted with ❤️ by<a
+            Crafted by<a
               class="underline" :href="twitterUrl" target="_blank"
               rel="noopener noreferrer"
             >Pushpak.
             </a>
             <span class="hidden sm:inline">
-              The source code is available on <a
-                class="underline" href="https://github.com/pushpak1300/larasonic" target="_blank"
+              Hosted On <a
+                class="underline" href="https://sevalla.com/?ref=larasonic" target="_blank"
                 rel="noopener noreferrer"
               >
-                GitHub.
+                Sevalla
               </a>
+              ❤️
             </span>
           </p>
           <div class="flex gap-4">

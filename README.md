@@ -71,19 +71,6 @@ Add to ~/.bashrc or ~/.zshrc:
 alias sail='[ -f sail ] && sh sail || sh vendor/bin/sail'
 ```
 
-### Available Services
-
-- **Application**: http://localhost:8010
-- **Vite Dev Server**: http://localhost:5173
-- **PostgreSQL**: port 5432
-  - Database: ${DB_DATABASE}
-  - Username: ${DB_USERNAME}
-  - Password: ${DB_PASSWORD}
-- **Mailpit**:
-  - SMTP: port 1025
-  - Dashboard: http://localhost:8025
-- **FrankenPHP Admin**: http://localhost:2019
-
 ### Tech Stack
 
 - PHP 8.3 +
@@ -95,6 +82,11 @@ alias sail='[ -f sail ] && sh sail || sh vendor/bin/sail'
 - Redis (Alpine)
 - Mailpit for local email testing
 
+### Hosting
+
+This project is proudly hosted on [Sevalla.com](https://sevalla.com/?ref=larasonic). Sevalla is our official hosting partner, providing reliable and scalable hosting solutions for Laravel applications.
+
+
 ## Security
 
 If you discover a security vulnerability, please email pushpak1300@gmail.com.
@@ -102,3 +94,4 @@ If you discover a security vulnerability, please email pushpak1300@gmail.com.
 ## License
 
 This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
