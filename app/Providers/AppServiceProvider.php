@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
-use PrismServer;
+use EchoLabs\Prism\Facades\PrismServer;
 use EchoLabs\Prism\Prism;
 use EchoLabs\Prism\Text\Generator;
 use Illuminate\Support\Facades\DB;
@@ -26,6 +26,7 @@ final class AppServiceProvider extends ServiceProvider
          * This is optional, but it's recommended to register Telescope in local environment.
          * You are free to remove this if you don't want to use Telescope.
          * Remove the migration files if you don't want to use Telescope.
+         *
          * @see https://laravel.com/docs/telescope
          * @see migrations/0001_01_01_000009_create_telescope_entries_table.php
          */
@@ -58,6 +59,7 @@ final class AppServiceProvider extends ServiceProvider
     /**
      * Configure the application's models.
      * This is optional, but it's recommended to enable strict mode and disable mass assignment.
+     *
      * @see https://laravel.com/docs/eloquent#configuring-eloquent-strictness
      */
     private function configureModels(): void
@@ -70,6 +72,7 @@ final class AppServiceProvider extends ServiceProvider
     /**
      * Configure the application's URL.
      * This is optional, but it's recommended to force HTTPS in production.
+     *
      * @see https://laravel.com/docs/octane#serving-your-application-via-https
      */
     private function configureUrl(): void
@@ -86,10 +89,12 @@ final class AppServiceProvider extends ServiceProvider
         Vite::useAggressivePrefetching();
     }
 
+
     /**
      * Configure the application's Prisms.
      * This is optional to demonstrate how to register a Prism.
      * If you don't use AI, you can remove this method.
+     *
      * @see https://prism.echolabs.dev/getting-started/introduction.html
      */
     private function configurePrisms(): void
