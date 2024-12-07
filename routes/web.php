@@ -7,9 +7,10 @@ use App\Http\Controllers\ChatController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\User\OauthController;
+use Illuminate\Http\Request;
 
-Route::get('/', [WelcomeController::class, 'home']);
-Route::get('/pricing', [WelcomeController::class, 'pricing']);
+Route::get('/', [WelcomeController::class, 'home'])->name('home');
+Route::get('/pricing', [WelcomeController::class, 'pricing'])->name('pricing');
 
 Route::get('/auth/redirect/{provider}', [OauthController::class, 'redirect'])->name('oauth.redirect');
 
@@ -20,4 +21,9 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::delete('/auth/destroy/{provider}', [OauthController::class, 'destroy'])->name('oauth.destroy');
 
     Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
+
+
+    Route::get('/billing-portal', function (Request $request) {
+        return $request->user()->redirectToBillingPortal(route('dashboard'));
+    })->name('billing.portal');
 });

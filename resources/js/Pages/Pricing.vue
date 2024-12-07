@@ -1,13 +1,13 @@
 <script setup>
+import PricingCard from '@/Components/PricingCard.vue'
 import Accordion from '@/Components/shadcn/ui/accordion/Accordion.vue'
 import AccordionContent from '@/Components/shadcn/ui/accordion/AccordionContent.vue'
 import AccordionItem from '@/Components/shadcn/ui/accordion/AccordionItem.vue'
 import AccordionTrigger from '@/Components/shadcn/ui/accordion/AccordionTrigger.vue'
 import Button from '@/Components/shadcn/ui/button/Button.vue'
-import { Card, CardContent, CardFooter, CardHeader } from '@/Components/shadcn/ui/card'
 import WebLayout from '@/Layouts/WebLayout.vue'
 import { Icon } from '@iconify/vue'
-import { Head } from '@inertiajs/vue3'
+import { Head, Link } from '@inertiajs/vue3'
 
 const props = defineProps({
   canLogin: {
@@ -24,8 +24,6 @@ const features = [
   'AI Integrations',
   'Payment integration ready',
   'API endpoints with Sanctum',
-  'Maximum PHPStan level',
-  'Laravel Pint configuration',
   'Comprehensive documentation',
   'Regular updates & improvements',
   'Best In Class IDE support',
@@ -71,75 +69,30 @@ const faqItems = [
         </div>
 
         <!-- Pricing Card -->
-        <div class="mx-auto mt-16 max-w-4xl">
-          <Card class="relative overflow-hidden ">
-            <CardHeader class="space-y-2 p-8">
-              <h2 class="text-3xl font-bold">
-                What's included in Larasonic
-              </h2>
-            </CardHeader>
-            <CardContent class="grid gap-8 p-8 pt-0 lg:grid-cols-[2fr,1fr]">
-              <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                <ul class="space-y-4">
-                  <li
-                    v-for="(feature, index) in features.slice(0, 5)" :key="index"
-                    class="flex items-center gap-3 "
-                  >
-                    <Icon icon="lucide:check" class="size-5 text-primary" aria-hidden="true" />
-                    {{ feature }}
-                  </li>
-                </ul>
-                <ul class="space-y-4">
-                  <li
-                    v-for="(feature, index) in features.slice(5)" :key="index"
-                    class="flex items-center gap-3 text-gray-300"
-                  >
-                    <Icon icon="lucide:check" class="size-5 text-primary" aria-hidden="true" />
-                    {{ feature }}
-                  </li>
-                </ul>
+        <PricingCard class="mx-auto max-w-4xl mt-16" :features="features" :price="0" plan="What's included ?" billing-period="Free Forever">
+          <template #action>
+            <Button :as="Link" :href="route('dashboard')">
+              Get Started
+            </Button>
+          </template>
+          <template #footer>
+            <div class="flex w-full flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <p class="text-sm">
+                Want to support the development?
+              </p>
+              <div class="flex gap-4">
+                <Button variant="outline" as="a" :href="sponsorLinks.github" target="_blank">
+                  <Icon icon="mdi:github" class="mr-2 size-4" aria-hidden="true" />
+                  Sponsor
+                </Button>
+                <Button variant="outline" as="a" :href="sponsorLinks.x" target="_blank">
+                  <Icon icon="ri:twitter-x-line" class="mr-2 size-4" aria-hidden="true" />
+                  Follow Me
+                </Button>
               </div>
-              <div
-                class="flex flex-col items-center justify-center border-t lg:border-l lg:border-t-0 pt-8 lg:pl-8 lg:pt-0"
-              >
-                <div class="text-center">
-                  <div class="text-7xl font-bold">
-                    $0
-                  </div>
-                  <div class="mt-2">
-                    Forever Free
-                  </div>
-                </div>
-                <div class="mt-6 grid w-full gap-4">
-                  <Button
-                    size="lg" as="a" href="https://github.com/pushpak1300/larasonic"
-                    target="_blank"
-                  >
-                    Get Started
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-            <CardFooter class="border-t p-8">
-              <div class="flex w-full flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                <p class="text-sm">
-                  Want to support the development?
-                </p>
-                <div class="flex gap-4">
-                  <Button variant="outline" as="a" :href="sponsorLinks.github" target="_blank">
-                    <Icon icon="mdi:github" class="mr-2 size-4" aria-hidden="true" />
-                    Sponsor
-                  </Button>
-                  <Button variant="outline" as="a" :href="sponsorLinks.x" target="_blank">
-                    <Icon icon="ri:twitter-x-line" class="mr-2 size-4" aria-hidden="true" />
-                    Follow Me
-                  </Button>
-                </div>
-              </div>
-            </CardFooter>
-          </Card>
-        </div>
-
+            </div>
+          </template>
+        </PricingCard>
         <!-- FAQ Section -->
         <div class="mx-auto mt-16 max-w-4xl text-center">
           <h2 class="text-2xl font-bold">

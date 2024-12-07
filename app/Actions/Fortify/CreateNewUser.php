@@ -38,6 +38,7 @@ final class CreateNewUser implements CreatesNewUsers
             'password' => Arr::get($input, 'password') ? Hash::make($input['password']) : Str::random(12),
         ]), function (User $user): void {
             $this->createTeam($user);
+            $this->createCustomer($user);
         }));
     }
 
@@ -51,5 +52,17 @@ final class CreateNewUser implements CreatesNewUsers
             'name' => explode(' ', $user->name, 2)[0]."'s Team",
             'personal_team' => true,
         ]));
+    }
+
+    /**
+     * Create a billing customer for the user.
+     */
+    private function createCustomer(User $user): void
+    {
+        $stripeCustomer = $user->createOrGetStripeCustomer();
+
+        $user->update([
+            'stripe_id' => $stripeCustomer->stripe_id,
+        ]);
     }
 }

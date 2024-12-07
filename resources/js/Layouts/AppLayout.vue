@@ -251,13 +251,9 @@ function logout() {
                       <Icon icon="lucide:key" />
                       API Tokens
                     </DropdownMenuItem>
-                    <DropdownMenuItem>
+                    <DropdownMenuItem as="a" :href="route('billing.portal')">
                       <Icon icon="lucide:credit-card" />
                       Billing
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Icon icon="lucide:bell" />
-                      Notifications
                     </DropdownMenuItem>
                   </DropdownMenuGroup>
                   <DropdownMenuSeparator />
