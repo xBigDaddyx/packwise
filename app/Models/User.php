@@ -21,6 +21,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\DatabaseNotificationCollection;
 
+use function Illuminate\Events\queueable;
+
 /**
  * @property int $id
  * @property string $name
@@ -112,6 +114,10 @@ final class User extends Authenticatable implements MustVerifyEmail
         'remember_token',
         'two_factor_recovery_codes',
         'two_factor_secret',
+        'stripe_id',
+        'pm_type',
+        'pm_last_four',
+        'trial_ends_at',
     ];
 
     /**
@@ -132,6 +138,15 @@ final class User extends Authenticatable implements MustVerifyEmail
     public function oauthConnections(): HasMany
     {
         return $this->hasMany(OauthConnection::class);
+    }
+
+    protected static function booted(): void
+    {
+        self::updated(queueable(function (User $customer): void {
+            if ($customer->hasStripeId()) {
+                $customer->syncStripeCustomerDetails();
+            }
+        }));
     }
 
     /**

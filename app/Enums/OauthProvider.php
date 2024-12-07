@@ -14,6 +14,7 @@ namespace App\Enums;
  * @see https://laravel.com/docs/11.x/socialite#registering-providers
  *
  * The frontend uses this enum to map the providers to the icons.
+ *
  * @uses resources/js/lib/oauthProvider.js
  */
 enum OauthProvider: string

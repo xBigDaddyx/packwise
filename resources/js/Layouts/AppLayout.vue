@@ -251,7 +251,7 @@ function logout() {
                       <Icon icon="lucide:key" />
                       API Tokens
                     </DropdownMenuItem>
-                    <DropdownMenuItem as="a" :href="route('billing.portal')">
+                    <DropdownMenuItem :as="Link" :href="route('subscriptions.create')">
                       <Icon icon="lucide:credit-card" />
                       Billing
                     </DropdownMenuItem>
@@ -276,7 +276,7 @@ function logout() {
             <Separator orientation="vertical" class="mr-2 h-4 hidden md:block" />
             <Breadcrumb>
               <BreadcrumbList>
-                <BreadcrumbItem class="hidden md:block ">
+                <BreadcrumbItem>
                   <BreadcrumbLink>
                     {{ title }}
                   </BreadcrumbLink>

@@ -15,7 +15,6 @@ use App\Actions\Jetstream\AddTeamMember;
 use App\Actions\Jetstream\UpdateTeamName;
 use App\Actions\Jetstream\InviteTeamMember;
 use App\Actions\Jetstream\RemoveTeamMember;
-use Route;
 
 final class JetstreamServiceProvider extends ServiceProvider
 {

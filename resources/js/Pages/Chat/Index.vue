@@ -8,15 +8,16 @@ import { Label } from '@/Components/shadcn/ui/label'
 import Skeleton from '@/Components/shadcn/ui/skeleton/Skeleton.vue'
 import { Textarea } from '@/Components/shadcn/ui/textarea'
 import AppLayout from '@/Layouts/AppLayout.vue'
+import { Icon } from '@iconify/vue'
 import { useFetch } from '@vueuse/core'
 import { ref } from 'vue'
 import ModelSelector from './Components/ModelSelector.vue'
 import TemperatureSelector from './Components/TemperatureSelector.vue'
-import { Icon } from '@iconify/vue'
 
 const props = defineProps({
   systemPrompt: String,
   models: Array,
+  subscriptionEnabled: Boolean,
 })
 
 const userInput = ref('')
@@ -73,7 +74,7 @@ async function submit() {
           This is a demo AI chat. You can use it to test the AI chat. And This is subscrition protected page so you can't use it without subscription.
         </AlertDescription>
       </Alert>
-      <div class="flex-1">
+      <div v-if="props.subscriptionEnabled" class="flex-1">
         <div class="h-full">
           <div class="grid h-full items-stretch gap-6 md:grid-cols-[minmax(0,1fr)_180px]">
             <div class="flex-col space-y-4 flex md:order-2">

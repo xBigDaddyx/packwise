@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
-use EchoLabs\Prism\Facades\PrismServer;
 use EchoLabs\Prism\Prism;
 use EchoLabs\Prism\Text\Generator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Vite;
+use EchoLabs\Prism\Facades\PrismServer;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
 use EchoLabs\Prism\Enums\Provider as PrismProvider;
@@ -88,7 +88,6 @@ final class AppServiceProvider extends ServiceProvider
     {
         Vite::useAggressivePrefetching();
     }
-
 
     /**
      * Configure the application's Prisms.
