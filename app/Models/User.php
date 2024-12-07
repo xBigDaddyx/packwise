@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Filament\Panel;
 use Laravel\Cashier\Billable;
 use Illuminate\Support\Carbon;
 use Laravel\Jetstream\HasTeams;
@@ -12,6 +13,7 @@ use Database\Factories\UserFactory;
 use Laravel\Jetstream\HasProfilePhoto;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\PersonalAccessToken;
+use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Database\Eloquent\Collection;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -77,7 +79,7 @@ use function Illuminate\Events\queueable;
  *
  * @mixin \Eloquent
  */
-final class User extends Authenticatable implements MustVerifyEmail
+final class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 {
     use Billable;
     use HasApiTokens;
@@ -138,6 +140,14 @@ final class User extends Authenticatable implements MustVerifyEmail
     public function oauthConnections(): HasMany
     {
         return $this->hasMany(OauthConnection::class);
+    }
+
+    /**
+     * Configure the panel access.
+     */
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return true;
     }
 
     protected static function booted(): void
