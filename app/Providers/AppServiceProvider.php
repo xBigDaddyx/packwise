@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Models\User;
 use EchoLabs\Prism\Prism;
+use Knuckles\Scribe\Scribe;
+use Illuminate\Http\Request;
+use Laravel\Sanctum\Sanctum;
 use EchoLabs\Prism\Text\Generator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\App;
@@ -14,6 +18,7 @@ use EchoLabs\Prism\Facades\PrismServer;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
 use EchoLabs\Prism\Enums\Provider as PrismProvider;
+use Knuckles\Camel\Extraction\ExtractedEndpointData;
 
 final class AppServiceProvider extends ServiceProvider
 {
@@ -46,6 +51,17 @@ final class AppServiceProvider extends ServiceProvider
         $this->configureUrl();
         $this->configureVite();
         $this->configurePrisms();
+        $this->configureScribe();
+    }
+
+    public function configureScribe(): void
+    {
+        if (class_exists(Scribe::class)) {
+            Scribe::beforeResponseCall(function (Request $request, ExtractedEndpointData $endpointData): void {
+                $user = \App\Models\User::query()->first();
+                Sanctum::actingAs($user, ['*']);
+            });
+        }
     }
 
     /**

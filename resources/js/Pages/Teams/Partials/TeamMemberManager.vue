@@ -147,11 +147,8 @@ function displayableRole(role) {
           <!-- Role -->
           <div v-if="availableRoles.length > 0" class="col-span-6 lg:col-span-4">
             <Label for="roles">Role</Label>
-            <InputError :message="addTeamMemberForm.errors.role" class="mt-2" />
 
-            <div
-              class="relative z-0 mt-1 cursor-pointer rounded-lg border"
-            >
+            <div class="relative z-0 mt-1 cursor-pointer rounded-lg border">
               <button
                 v-for="(role, i) in availableRoles" :key="role.key" type="button"
                 class="relative inline-flex w-full rounded-lg px-4 py-3 focus:z-10 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary dark:focus:border-primary dark:focus:ring-primary"
@@ -189,6 +186,8 @@ function displayableRole(role) {
                 </div>
               </button>
             </div>
+
+            <InputError :message="addTeamMemberForm.errors.role" class="mt-2" />
           </div>
         </template>
 
@@ -328,10 +327,7 @@ function displayableRole(role) {
               <div :class="{ 'opacity-50': updateRoleForm.role && updateRoleForm.role !== role.key }">
                 <!-- Role Name -->
                 <div class="flex items-center">
-                  <div
-                    class="text-sm"
-                    :class="{ 'font-semibold': updateRoleForm.role === role.key }"
-                  >
+                  <div class="text-sm" :class="{ 'font-semibold': updateRoleForm.role === role.key }">
                     {{ role.name }}
                   </div>
 
@@ -362,10 +358,8 @@ function displayableRole(role) {
           </Button>
 
           <Button
-            class="ms-3"
-            :class="{ 'opacity-25': updateRoleForm.processing }"
-            :disabled="updateRoleForm.processing"
-            @click="updateRole"
+            class="ms-3" :class="{ 'opacity-25': updateRoleForm.processing }"
+            :disabled="updateRoleForm.processing" @click="updateRole"
           >
             Save
           </Button>
@@ -389,11 +383,8 @@ function displayableRole(role) {
           </Button>
 
           <Button
-            variant="destructive"
-            class="ms-3"
-            :class="{ 'opacity-25': leaveTeamForm.processing }"
-            :disabled="leaveTeamForm.processing"
-            @click="leaveTeam"
+            variant="destructive" class="ms-3" :class="{ 'opacity-25': leaveTeamForm.processing }"
+            :disabled="leaveTeamForm.processing" @click="leaveTeam"
           >
             Leave
           </Button>
@@ -417,11 +408,9 @@ function displayableRole(role) {
           </Button>
 
           <Button
-            variant="destructive"
-            class="ms-3"
+            variant="destructive" class="ms-3"
             :class="{ 'opacity-25': removeTeamMemberForm.processing }"
-            :disabled="removeTeamMemberForm.processing"
-            @click="removeTeamMember"
+            :disabled="removeTeamMemberForm.processing" @click="removeTeamMember"
           >
             Remove
           </Button>

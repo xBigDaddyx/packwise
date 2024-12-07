@@ -6,4 +6,6 @@ use Illuminate\Support\Facades\Schedule;
 
 Schedule::daily()
     ->onOneServer()
-    ->group(fn () => Schedule::command('telescope:prune'));
+    ->group(fn () => [
+        Schedule::command('sitemap:generate'),
+    ]);
