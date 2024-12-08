@@ -36,8 +36,8 @@ final class AppServiceProvider extends ServiceProvider
          * @see migrations/0001_01_01_000009_create_telescope_entries_table.php
          */
         if (App::isLocal()) {
-            App::register(\Laravel\Telescope\TelescopeServiceProvider::class);
-            App::register(TelescopeServiceProvider::class);
+            App::singleton(\Laravel\Telescope\TelescopeServiceProvider::class);
+            App::singleton(TelescopeServiceProvider::class);
         }
     }
 
