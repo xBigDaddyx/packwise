@@ -4,32 +4,51 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   ci:
     runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_DB: testing
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     strategy:
       fail-fast: true
       matrix:
         php: [8.3]
 
-    name: Tests
+    name: Tests PHP ${{ matrix.php }}
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Cache Dependencies
+      - name: Cache Composer dependencies
         uses: actions/cache@v4
         with:
           path: ~/.composer/cache/files
-          key: dependencies-php-composer-${{ hashFiles('composer.lock') }}
+          key: php-${{ matrix.php }}-composer-${{ hashFiles('composer.lock') }}
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: json, dom, curl, libxml, mbstring, zip
+          extensions: pgsql, pdo_pgsql, json, dom, curl, libxml, mbstring, zip, pcntl, bcmath
           tools: composer:v2
           coverage: xdebug
 
@@ -50,7 +69,7 @@ jobs:
         shell: bash
         run: echo "dir=$(bun config get cache)" >> ${GITHUB_OUTPUT}
 
-      - name: Cache dependencies
+      - name: Cache Bun dependencies
         id: bun-cache
         uses: actions/cache@v4
         with:
@@ -61,11 +80,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-bun-
 
-      - name: Install dependencies
+      - name: Install Node dependencies
         if: steps.bun-cache.outputs.cache-hit != 'true'
         run: bun install
 
-      - name: Build dependencies
+      - name: Build assets
         run: bun run build
 
       - name: Prepare Laravel
@@ -73,5 +92,18 @@ jobs:
           cp .env.example .env
           php artisan key:generate
 
-      - name: Tests
+      - name: Run Tests
         run: php artisan test --parallel
+        env:
+          DB_CONNECTION: pgsql
+          DB_HOST: localhost
+          DB_PORT: 5432
+          DB_DATABASE: testing
+          DB_USERNAME: postgres
+          DB_PASSWORD: password
+          SESSION_DRIVER: database
+          TELESCOPE_ENABLED: false
+          CACHE_STORE: file
+          APP_ENV: testing
+          APP_MAINTENANCE_DRIVER: file
+          BCRYPT_ROUNDS: 4
