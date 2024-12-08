@@ -3,7 +3,6 @@ import { CheckIcon } from 'lucide-vue-next'
 import { Button } from './shadcn/ui/button'
 import { Card, CardFooter } from './shadcn/ui/card'
 
-
 defineProps({
   features: {
     type: Array,

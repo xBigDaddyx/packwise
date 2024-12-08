@@ -52,16 +52,8 @@ function logoutOtherBrowserSessions(password) {
       <div v-if="sessions.length > 0" class="mt-5 space-y-6">
         <div v-for="(session, i) in sessions" :key="i" class="flex items-center">
           <div>
-            <Icon
-              v-if="session.agent.is_desktop"
-              icon="heroicons:computer-desktop"
-              class="size-8"
-            />
-            <Icon
-              v-else
-              icon="heroicons:device-phone-mobile"
-              class="size-8"
-            />
+            <Icon v-if="session.agent.is_desktop" icon="lucide:laptop" class="size-8" />
+            <Icon v-else icon="lucide:tablet-smartphone" class="size-8" />
           </div>
 
           <div class="ms-3">
@@ -87,8 +79,7 @@ function logoutOtherBrowserSessions(password) {
         <ConfirmsPassword
           title="Log Out Other Browser Sessions"
           content="Please enter your password to confirm you would like to log out of your other browser sessions across all of your devices."
-          button="Log Out Other Browser Sessions"
-          @confirmed="logoutOtherBrowserSessions"
+          button="Log Out Other Browser Sessions" @confirmed="logoutOtherBrowserSessions"
         >
           <Button>
             Log Out Other Browser Sessions

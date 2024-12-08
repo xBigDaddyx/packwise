@@ -30,7 +30,7 @@ const route = inject('route')
 
     <div v-if="activeSubscriptions.length === 0" class="flex flex-col space-y-4">
       <Alert class="text-md">
-        <Icon icon="heroicons:exclamation-triangle" class="size-4" />
+        <Icon icon="lucide:triangle-alert" class="size-4" />
         <AlertTitle>
           You are not subscribed to any plan. Subscribe to a plan to continue.
         </AlertTitle>

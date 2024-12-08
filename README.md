@@ -62,7 +62,6 @@ Stop environment:
 ./vendor/bin/sail down
 ```
 
-
 ### Optional: Shell Alias
 
 Add to ~/.bashrc or ~/.zshrc:
@@ -86,7 +85,6 @@ alias sail='[ -f sail ] && sh sail || sh vendor/bin/sail'
 
 This project is proudly hosted on [Sevalla.com](https://sevalla.com/?ref=larasonic). Sevalla is our official hosting partner, providing reliable and scalable hosting solutions for Laravel applications.
 
-
 ## Security
 
 If you discover a security vulnerability, please email pushpak1300@gmail.com.
@@ -94,4 +92,3 @@ If you discover a security vulnerability, please email pushpak1300@gmail.com.
 ## License
 
 This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-

@@ -1,6 +1,6 @@
 <script setup>
 import ActionSection from '@/Components/ActionSection.vue'
-import Button from '@/Components/shadcn/ui/button/Button.vue';
+import Button from '@/Components/shadcn/ui/button/Button.vue'
 import {
   Table,
   TableBody,
@@ -9,7 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/Components/shadcn/ui/table'
-import { Icon } from '@iconify/vue';
+import { Icon } from '@iconify/vue'
 
 defineProps({
   invoices: {

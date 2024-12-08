@@ -4,16 +4,21 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use PrismServer;
+use App\Models\User;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Support\Facades\Auth;
+use EchoLabs\Prism\Facades\PrismServer;
 
 final class ChatController extends Controller
 {
     public function index(): Response
     {
+        /** @var User $user */
+        $user = Auth::user();
+
         return Inertia::render('Chat/Index', [
-            'subscriptionEnabled' => request()->user()->subscribed('Larasonic Pro ✨'),
+            'subscriptionEnabled' => $user->subscribed('Larasonic Pro ✨'),
             'systemPrompt' => view('prompts.system')->render(),
             'models' => PrismServer::prisms()->pluck('name'),
         ]);

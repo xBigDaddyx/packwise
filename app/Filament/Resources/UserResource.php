@@ -7,6 +7,7 @@ namespace App\Filament\Resources;
 use Filament\Forms;
 use App\Models\User;
 use Filament\Tables;
+use DateTimeInterface;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
@@ -23,9 +24,12 @@ final class UserResource extends Resource
 
     protected static ?int $navigationSort = 1;
 
-    public static function getNavigationBadge(): ?string
+    public static function getNavigationBadge(): string
     {
-        return (string) self::getModel()::count();
+        /** @var int $count */
+        $count = self::getModel()::count();
+
+        return (string) $count;
     }
 
     public static function form(Form $form): Form
@@ -91,12 +95,20 @@ final class UserResource extends Resource
                     ])
                     ->query(fn (Builder $query, array $data): Builder => $query
                         ->when(
-                            $data['created_from'],
-                            fn (Builder $query, $date): Builder => $query->whereDate('created_at', '>=', $date),
+                            $data['created_from'] ?? null,
+                            fn (Builder $query, mixed $date): Builder => $query->whereDate(
+                                'created_at',
+                                '>=',
+                                type($date)->as(DateTimeInterface::class)
+                            ),
                         )
                         ->when(
-                            $data['created_until'],
-                            fn (Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
+                            $data['created_until'] ?? null,
+                            fn (Builder $query, mixed $date): Builder => $query->whereDate(
+                                'created_at',
+                                '<=',
+                                type($date)->as(DateTimeInterface::class)
+                            ),
                         )),
             ])
             ->actions([

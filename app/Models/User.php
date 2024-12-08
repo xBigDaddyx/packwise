@@ -8,6 +8,7 @@ use Filament\Panel;
 use Laravel\Cashier\Billable;
 use Illuminate\Support\Carbon;
 use Laravel\Jetstream\HasTeams;
+use Laravel\Cashier\Subscription;
 use Laravel\Sanctum\HasApiTokens;
 use Database\Factories\UserFactory;
 use Laravel\Jetstream\HasProfilePhoto;
@@ -76,6 +77,21 @@ use function Illuminate\Events\queueable;
  * @property-read int|null $owned_teams_base_count
  * @property-read Collection<int, OauthConnection> $oauthConnections
  * @property-read int|null $oauth_connections_count
+ * @property string|null $deleted_at
+ * @property string|null $stripe_id
+ * @property string|null $pm_type
+ * @property string|null $pm_last_four
+ * @property string|null $trial_ends_at
+ * @property-read Collection<int, Subscription> $subscriptions
+ * @property-read int|null $subscriptions_count
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User hasExpiredGenericTrial()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User onGenericTrial()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User wherePmLastFour($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User wherePmType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereStripeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereTrialEndsAt($value)
  *
  * @mixin \Eloquent
  */

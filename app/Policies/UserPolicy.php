@@ -21,7 +21,7 @@ final class UserPolicy
      */
     public function view(User $user, User $model): bool
     {
-        return $user->belongsToTeam($model->team) && $user->hasTeamPermission($model->team, 'read') && $user->tokenCan('read');
+        return $user->belongsToTeam($model->currentTeam) && $user->hasTeamPermission($model->currentTeam, 'read') && $user->tokenCan('read');
     }
 
     /**
@@ -37,7 +37,7 @@ final class UserPolicy
      */
     public function update(User $user, User $model): bool
     {
-        return $user->belongsToTeam($model->team) && $user->hasTeamPermission($model->team, 'update') && $user->tokenCan('update');
+        return $user->belongsToTeam($model->currentTeam) && $user->hasTeamPermission($model->currentTeam, 'update') && $user->tokenCan('update');
     }
 
     /**
@@ -45,7 +45,7 @@ final class UserPolicy
      */
     public function delete(User $user, User $model): bool
     {
-        return $user->belongsToTeam($model->team) && $user->hasTeamPermission($model->team, 'delete') && $user->tokenCan('delete')
+        return $user->belongsToTeam($model->currentTeam) && $user->hasTeamPermission($model->currentTeam, 'delete') && $user->tokenCan('delete')
             && $user->id !== $model->id; // Prevent self-deletion
     }
 
@@ -54,7 +54,7 @@ final class UserPolicy
      */
     public function restore(User $user, User $model): bool
     {
-        return $user->belongsToTeam($model->team) && $user->hasTeamPermission($model->team, 'delete') && $user->tokenCan('delete')
+        return $user->belongsToTeam($model->currentTeam) && $user->hasTeamPermission($model->currentTeam, 'delete') && $user->tokenCan('delete')
             && $user->id !== $model->id;
     }
 
