@@ -54,13 +54,15 @@ jobs:
         id: bun-cache
         uses: actions/cache@v4
         with:
-          path: ${{ steps.bun-cache-dir.outputs.dir }}
+          path: |
+            **/node_modules
+            ${{ steps.bun-cache-dir.outputs.dir }}
           key: ${{ runner.os }}-bun-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-bun-
 
       - name: Install dependencies
-        if: steps.cache.outputs.cache-hit != 'true'
+        if: steps.bun-cache.outputs.cache-hit != 'true'
         run: bun install
 
       - name: Build dependencies
