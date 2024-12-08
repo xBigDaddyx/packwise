@@ -107,3 +107,5 @@ jobs:
           APP_ENV: testing
           APP_MAINTENANCE_DRIVER: file
           BCRYPT_ROUNDS: 4
+          MAIL_MAILER: array
+          STRIPE_SECRET: ${{ secrets.STRIPE_SECRET }}
