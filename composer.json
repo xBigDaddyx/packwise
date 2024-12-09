@@ -86,7 +86,7 @@
       "bun run build",
       "@php artisan scribe:generate"
     ],
-    "lint": [
+    "analyse": [
       "./vendor/bin/phpstan analyse -c phpstan.neon --ansi"
     ],
     "format": [
