@@ -40,7 +40,7 @@ function createTeam() {
 
         <div class="flex items-center mt-2">
           <Avatar>
-            <AvatarImage :src="$page.props.auth.user.profile_photo_url ?? ''" :alt="$page.props.auth.user.name" />
+            <AvatarImage :src="$page.props.auth.user.profile_photo_path ?? ''" :alt="$page.props.auth.user.name" />
             <AvatarFallback class="rounded-full bg-secondary p-2">
               {{ $page.props.auth.user.name.charAt(0) }}
             </AvatarFallback>

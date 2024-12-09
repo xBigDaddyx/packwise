@@ -47,17 +47,17 @@ function updateTeamName() {
 
         <div class="mt-2 flex items-center">
           <Avatar>
-            <AvatarImage :src="team.owner.profile_photo_url ?? ''" alt="profile photo" />
+            <AvatarImage :src="team.owner.profile_photo_path ?? ''" alt="profile photo" />
             <AvatarFallback class="rounded-full bg-secondary p-2">
               {{ team.name.charAt(0) }}
             </AvatarFallback>
           </Avatar>
 
           <div class="ms-4 leading-tight">
-            <div class="text-gray-900 dark:text-white">
+            <div class="">
               {{ team.owner.name }}
             </div>
-            <div class="text-sm text-gray-700 dark:text-gray-300">
+            <div class="text-sm ">
               {{ team.owner.email }}
             </div>
           </div>

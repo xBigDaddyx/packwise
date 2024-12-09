@@ -1,5 +1,33 @@
 <script setup>
+import StatsCard from '@/Components/StatsCard.vue'
 import AppLayout from '@/Layouts/AppLayout.vue'
+
+const stats = [
+  {
+    value: 'Larasonic Documentation',
+    description: 'Check out our comprehensive documentation',
+    link: 'https://docs.larasonic.com/introduction',
+    icon: 'lucide:book-open'
+  },
+  {
+    value: 'GitHub Repository',
+    description: 'Star us on GitHub',
+    link: 'https://github.com/pushpak1300/Larasonic',
+    icon: 'lucide:github'
+  },
+  {
+    value: 'Roadmap',
+    description: 'See what\'s coming next',
+    link: 'https://github.com/pushpak1300/Larasonic/discussions/categories/roadmap',
+    icon: 'lucide:map'
+  },
+  {
+    value: 'Join Us',
+    description: 'Be part of our growing community',
+    link: 'https://github.com/pushpak1300/Larasonic/discussions',
+    icon: 'lucide:users'
+  },
+]
 </script>
 
 <template>
@@ -11,10 +39,13 @@ import AppLayout from '@/Layouts/AppLayout.vue'
     </template>
 
     <div>
-      <div class="flex flex-1 flex-col gap-4 p-4 pt-0">
+      <div class="flex flex-1 flex-col gap-4 pt-0">
         <div class="grid auto-rows-min gap-4 md:grid-cols-2">
-          <div class="aspect-video rounded-xl bg-muted/50" />
-          <div class="aspect-video rounded-xl bg-muted/50" />
+          <StatsCard
+            v-for="stat in stats"
+            :key="stat.title"
+            v-bind="stat"
+          />
         </div>
       </div>
     </div>

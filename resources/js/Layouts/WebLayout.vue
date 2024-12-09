@@ -24,8 +24,9 @@ const mode = useColorMode({
 })
 
 const navLinks = [
-  { label: 'Features', href: '/#features' },
-  { label: 'Pricing', href: '/pricing' },
+  { label: 'Features', href: '/#features', external: false },
+  { label: 'Pricing', href: '/pricing', external: false },
+  { label: 'Docs', href: 'https://docs.larasonic.com/introduction', external: true },
 ]
 
 const githubUrl = 'https://github.com/pushpak1300/larasonic'
@@ -49,12 +50,24 @@ function toggleMenu() {
           </a>
         </div>
         <nav class="hidden md:flex gap-6">
-          <Link
-            v-for="link in navLinks" :key="link.href" :href="link.href"
-            :class="cn('flex items-center text-sm font-medium transition-colors hover:text-foreground/80')"
-          >
-            {{ link.label }}
-          </Link>
+          <template v-for="link in navLinks" :key="link.href">
+            <a
+              v-if="link.external"
+              :href="link.href"
+              target="_blank"
+              rel="noopener noreferrer"
+              :class="cn('flex items-center text-sm font-medium transition-colors hover:text-foreground/80')"
+            >
+              {{ link.label }}
+            </a>
+            <Link
+              v-else
+              :href="link.href"
+              :class="cn('flex items-center text-sm font-medium transition-colors hover:text-foreground/80')"
+            >
+              {{ link.label }}
+            </Link>
+          </template>
         </nav>
         <div class="flex items-center space-x-4">
           <template v-if="!$page.props.auth.user">

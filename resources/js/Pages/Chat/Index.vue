@@ -4,13 +4,16 @@ import Alert from '@/Components/shadcn/ui/alert/Alert.vue'
 import AlertDescription from '@/Components/shadcn/ui/alert/AlertDescription.vue'
 import AlertTitle from '@/Components/shadcn/ui/alert/AlertTitle.vue'
 import { Button } from '@/Components/shadcn/ui/button'
+
 import { Label } from '@/Components/shadcn/ui/label'
 import Skeleton from '@/Components/shadcn/ui/skeleton/Skeleton.vue'
 import { Textarea } from '@/Components/shadcn/ui/textarea'
 import AppLayout from '@/Layouts/AppLayout.vue'
 import { Icon } from '@iconify/vue'
+import { router } from '@inertiajs/vue3'
 import { useFetch } from '@vueuse/core'
-import { ref } from 'vue'
+import { inject, onMounted, ref } from 'vue'
+import { toast } from 'vue-sonner'
 import ModelSelector from './Components/ModelSelector.vue'
 import TemperatureSelector from './Components/TemperatureSelector.vue'
 
@@ -19,6 +22,8 @@ const props = defineProps({
   models: Array,
   subscriptionEnabled: Boolean,
 })
+
+const route = inject('route')
 
 const userInput = ref('')
 const modelOutput = ref(null)
@@ -57,6 +62,23 @@ async function submit() {
     modelOutput.value = data.value.choices[0].message.content
   }
 }
+
+onMounted(() => {
+  if (!props.subscriptionEnabled) {
+    const promise = new Promise((resolve, _reject) => {
+      setTimeout(() => {
+        resolve(route('subscriptions.create'))
+      }, 5000)
+    })
+
+    toast.promise(promise, {
+      loading: 'Pro Subscription Required to use this feature.',
+      success: (data) => {
+        router.visit(data)
+      },
+    })
+  }
+})
 </script>
 
 <template>
@@ -71,7 +93,9 @@ async function submit() {
         <Icon icon="lucide:info" class="size-4" />
         <AlertTitle>Demo AI Chat</AlertTitle>
         <AlertDescription>
-          This is a demo AI chat. You can use it to test the AI chat. And This is subscrition protected page so you can't use it without subscription.
+          This is a demo AI chat. You can use it to test the AI chat. And This is subscrition protected page
+          so you
+          can't use it without subscription.
         </AlertDescription>
       </Alert>
       <div v-if="props.subscriptionEnabled" class="flex-1">
