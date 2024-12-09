@@ -1,94 +1,62 @@
-# Larasonic
+# Larasonic 🚀
 
-## Local Development Setup with Laravel Sail
+![Larasonic](public/images/og.webp)
 
-This project uses Laravel Sail, a light-weight command-line interface for interacting with Laravel's default Docker development environment.
 
-### Prerequisites
+Larasonic is a modern, open-source AI chat platform built with Laravel, Vue.js, and Inertia. It provides a powerful foundation for building AI-powered chat applications with features like team collaboration, multiple AI models support, and real-time communication.
 
-- Docker Desktop
-- Docker Compose
-- Git
+[![GitHub stars](https://img.shields.io/github/stars/pushpak1300/Larasonic)](https://github.com/pushpak1300/Larasonic/stargazers)
+[![License](https://img.shields.io/github/license/pushpak1300/Larasonic)](https://opensource.org/licenses/MIT)
 
-### First-time Setup
+## ✨ Features
 
-1. Clone the repository:
+- 🤖 Multiple AI Model Support (OpenAI, Anthropic, etc.)
+- 👥 Team Collaboration
+- 💬 Real-time Chat
+- 🎨 Beautiful UI with TailwindCSS
+- 🚀 High Performance with Laravel Octane & FrankenPHP
+- 🔒 Enterprise-grade Security
+
+## Quick Start
 
 ```bash
+# Clone the repo
 git clone git@github.com:pushpak1300/Larasonic.git
 cd Larasonic
-```
 
-2. Install Composer dependencies:
-
-```bash
+# Install dependencies
 docker run --rm \
     -u "$(id -u):$(id -g)" \
     -v "$(pwd):/var/www/html" \
     -w /var/www/html \
     laravelsail/php83-composer:latest \
     composer install --ignore-platform-reqs
-```
 
-3. Copy the `.env.example` file to `.env` and update the environment variables:
-
-```bash
+# Setup environment
 cp .env.example .env
-```
-
-4. Start Laravel Sail:
-
-```bash
 ./vendor/bin/sail up -d
-```
-
-5. Run setup script:
-
-```bash
 ./vendor/bin/sail composer run setup
 ```
 
-### Daily Development Commands
+For detailed installation instructions and documentation, visit [docs.larasonic.com](https://docs.larasonic.com).
 
-Start environment:
+## Tech Stack
 
-```bash
-./vendor/bin/sail up -d
-```
-
-Stop environment:
-
-```bash
-./vendor/bin/sail down
-```
-
-### Optional: Shell Alias
-
-Add to ~/.bashrc or ~/.zshrc:
-
-```bash
-alias sail='[ -f sail ] && sh sail || sh vendor/bin/sail'
-```
-
-### Tech Stack
-
-- PHP 8.3 +
-- Laravel Octane with FrankenPHP
-- Bun (Package Manager)
-- Inertia.js 2 + Vue 3.4
+- PHP 8.3+ with Laravel Octane & FrankenPHP
+- Vue 3.4 + Inertia.js
 - TailwindCSS 3.4+
 - PostgreSQL 17
-- Redis (Alpine)
-- Mailpit for local email testing
+- Redis
+- Bun Package Manager
 
-### Hosting
+## Hosting
 
-This project is proudly hosted on [Sevalla.com](https://sevalla.com/?ref=larasonic). Sevalla is our official hosting partner, providing reliable and scalable hosting solutions for Laravel applications.
+Proudly hosted and sponsored by [Sevalla.com](https://sevalla.com/?ref=larasonic).
 
 ## Security
 
-If you discover a security vulnerability, please email pushpak1300@gmail.com.
+Report vulnerabilities to pushpak1300@gmail.com
 
 ## License
 
-This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+[MIT](https://opensource.org/licenses/MIT)
