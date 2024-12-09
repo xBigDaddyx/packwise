@@ -3,10 +3,10 @@
 declare(strict_types=1);
 
 use App\Models\User;
-use App\Enums\OauthProvider;
 use App\Models\OauthConnection;
 use Laravel\Socialite\Facades\Socialite;
 use App\Http\Controllers\User\OauthController;
+use App\Actions\User\ActiveOauthProviderAction;
 use App\Exceptions\OAuthAccountLinkingException;
 use Laravel\Socialite\Two\InvalidStateException;
 use Laravel\Socialite\Two\User as SocialiteUser;
@@ -53,9 +53,9 @@ function mockSocialiteForCallback()
 }
 
 test('it redirects to oauth provider', function () {
-    foreach (OauthProvider::cases() as $provider) {
+    foreach ((new ActiveOauthProviderAction())->handle() as $provider) {
         mockSocialiteForRedirect();
-        $response = get(route('oauth.redirect', ['provider' => $provider]));
+        $response = get(route('oauth.redirect', ['provider' => $provider['slug']]));
 
         $response->assertRedirect();
         $response->assertStatus(302);
@@ -74,14 +74,14 @@ test('it handles oauth callback for new user without authenticated user', functi
     assertDatabaseCount('users', 0);
     assertDatabaseCount('oauth_connections', 0);
 
-    $response = get(route('oauth.callback', ['provider' => OauthProvider::GITHUB]));
+    $response = get(route('oauth.callback', ['provider' => 'github']));
 
     $response->assertRedirect(config('fortify.home'));
     assertDatabaseCount('users', 1);
     assertDatabaseCount('oauth_connections', 1);
 
     $connection = OauthConnection::first();
-    expect($connection->provider)->toBe(OauthProvider::GITHUB->value)
+    expect($connection->provider)->toBe('github')
         ->and($connection->provider_id)->toBe('1')
         ->and($connection->token)->toBe('test-token')
         ->and($connection->refresh_token)->toBe('test-refresh-token');
@@ -94,7 +94,7 @@ test('it handles oauth callback for existing user without authenticated user', f
     assertDatabaseCount('oauth_connections', 0);
     assertDatabaseCount('users', 1);
 
-    $response = get(route('oauth.callback', ['provider' => OauthProvider::GITHUB]));
+    $response = get(route('oauth.callback', ['provider' => 'github']));
 
     $response->assertRedirect(route('login'))
         ->assertSessionHas('error', OAuthAccountLinkingException::EXISTING_CONNECTION_ERROR_MESSAGE);
@@ -108,13 +108,13 @@ test('it handles oauth callback for existing user without authenticated user and
     mockSocialiteForCallback();
     $existingConnection = OauthConnection::factory()
         ->for($user)
-        ->withProvider(OauthProvider::GITHUB)
+        ->withProvider('github')
         ->create(['provider_id' => '1']);
 
     assertDatabaseCount('oauth_connections', 1);
     assertDatabaseCount('users', 1);
 
-    $response = get(route('oauth.callback', ['provider' => OauthProvider::GITLAB]));
+    $response = get(route('oauth.callback', ['provider' => 'gitlab']));
 
     $response->assertRedirect(route('login'))
         ->assertSessionHas('error', OAuthAccountLinkingException::EXISTING_CONNECTION_ERROR_MESSAGE);
@@ -128,7 +128,7 @@ test('it handles invalid state exception without authenticated user', function (
         ->with('github')
         ->andThrow(new InvalidStateException);
 
-    $response = get(route('oauth.callback', ['provider' => OauthProvider::GITHUB]));
+    $response = get(route('oauth.callback', ['provider' => 'github']));
 
     $response->assertRedirect(route('login'))
         ->assertSessionHas('error', 'The request timed out. Please try again.');
@@ -140,13 +140,13 @@ test('it handles oauth callback with existing connection and without authenticat
 
     $existingConnection = OauthConnection::factory()
         ->for($user)
-        ->withProvider(OauthProvider::GITHUB)
+        ->withProvider('github')
         ->create(['provider_id' => '1']);
 
     assertDatabaseCount('oauth_connections', 1);
     assertDatabaseCount('users', 1);
 
-    $response = get(route('oauth.callback', ['provider' => OauthProvider::GITHUB]));
+    $response = get(route('oauth.callback', ['provider' => 'github']));
 
     $response->assertRedirect(config('fortify.home'));
 
@@ -155,7 +155,7 @@ test('it handles oauth callback with existing connection and without authenticat
 
     $connection = OauthConnection::first();
     expect($connection->id)->toBe($existingConnection->id)
-        ->and($connection->provider)->toBe(OauthProvider::GITHUB->value)
+        ->and($connection->provider)->toBe('github')
         ->and($connection->provider_id)->toBe('1')
         ->and($connection->user_id)->toBe($user->id)
         ->and($connection->token)->toBe('test-token')
@@ -170,7 +170,7 @@ test('it handles linking account with same email for authenticated user', functi
     assertDatabaseCount('users', 1);
 
     $response = actingAs($user)
-        ->get(route('oauth.callback', ['provider' => OauthProvider::GITHUB]))
+        ->get(route('oauth.callback', ['provider' => 'github']))
         ->assertRedirect(route('profile.show'))
         ->assertSessionHas('success', 'Your github account has been linked.');
 
@@ -186,7 +186,7 @@ test('it handles oauth callback with mismatched emails for authenticated user', 
     assertDatabaseCount('users', 1);
 
     $response = actingAs($user)
-        ->get(route('oauth.callback', ['provider' => OauthProvider::GITHUB]))
+        ->get(route('oauth.callback', ['provider' => 'github']))
         ->assertRedirect(route('profile.show'))
         ->assertSessionHas('error', 'The email address from this github does not match your account email.');
 
@@ -198,10 +198,10 @@ test('it can not unlink oauth connection without authenticated user', function (
     $user = User::factory()->create();
     $connection = OauthConnection::factory()
         ->for($user)
-        ->withProvider(OauthProvider::GITHUB)
+        ->withProvider('github')
         ->create();
 
-    delete(route('oauth.destroy', ['provider' => OauthProvider::GITHUB]))
+    delete(route('oauth.destroy', ['provider' => 'github']))
         ->assertRedirect(route('login'));
 
     assertDatabaseCount('oauth_connections', 1);
@@ -212,11 +212,11 @@ test('it can unlink oauth connection with authenticated user', function () {
     $user = User::factory()->create();
     $connection = OauthConnection::factory()
         ->for($user)
-        ->withProvider(OauthProvider::GITHUB)
+        ->withProvider('github')
         ->create();
 
     actingAs($user)
-        ->delete(route('oauth.destroy', ['provider' => OauthProvider::GITHUB]))
+        ->delete(route('oauth.destroy', ['provider' => 'github']))
         ->assertRedirect(route('profile.show'))
         ->assertSessionHas('success', 'Your github account has been unlinked.');
 

@@ -9,9 +9,18 @@ import UpdatePasswordForm from '@/Pages/Profile/Partials/UpdatePasswordForm.vue'
 import UpdateProfileInformationForm from '@/Pages/Profile/Partials/UpdateProfileInformationForm.vue'
 
 defineProps({
-  confirmsTwoFactorAuthentication: Boolean,
-  sessions: Array,
-  availableOauthProviders: Array,
+  confirmsTwoFactorAuthentication: {
+    type: Boolean,
+    default: false,
+  },
+  sessions: {
+    type: Array,
+    default: () => [],
+  },
+  availableOauthProviders: {
+    type: Object,
+    default: () => {},
+  },
   activeOauthProviders: {
     type: Array,
     default: () => [],
@@ -33,7 +42,7 @@ defineProps({
           <UpdateProfileInformationForm :user="$page.props.auth.user" />
         </div>
 
-        <div v-if="availableOauthProviders.length > 0">
+        <div v-if="Object.keys(availableOauthProviders).length">
           <Separator class="my-8 hidden sm:block" />
 
           <LinkedAccountsForm

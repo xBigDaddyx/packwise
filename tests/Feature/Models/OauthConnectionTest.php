@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 use App\Models\User;
-use App\Enums\OauthProvider;
 use App\Models\OauthConnection;
 use Illuminate\Support\Collection;
+use App\Actions\User\ActiveOauthProviderAction;
 
 covers(OauthConnection::class);
 
@@ -36,11 +36,11 @@ describe('oauth connection model tests', function () {
     });
 
     test('oauth connection can create oauth provider connection', function () {
-        foreach (OauthProvider::cases() as $provider) {
-            $connection = OauthConnection::factory()->withProvider($provider)->create();
+        foreach ((new ActiveOauthProviderAction())->handle() as $provider) {
+            $connection = OauthConnection::factory()->withProvider($provider['slug'])->create();
 
             expect($connection)
-                ->provider->toBe($provider->value)
+                ->provider->toBe($provider['slug'])
                 ->data->toBeInstanceOf(Collection::class)
                 ->data->toHaveKeys([
                     'id',

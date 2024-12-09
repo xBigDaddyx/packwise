@@ -2,7 +2,6 @@
 import ActionSection from '@/Components/ActionSection.vue'
 import Label from '@/Components/shadcn/ui/label/Label.vue'
 import Switch from '@/Components/shadcn/ui/switch/Switch.vue'
-import oauthProviders from '@/lib/oauthProvider'
 import { Icon } from '@iconify/vue'
 import { router, usePage } from '@inertiajs/vue3'
 import { useChangeCase } from '@vueuse/integrations/useChangeCase'
@@ -11,8 +10,8 @@ import { toast } from 'vue-sonner'
 
 const props = defineProps({
   availableProviders: {
-    type: Array,
-    default: () => [],
+    type: Object,
+    default: () => {},
   },
   activeProviders: {
     type: Array,
@@ -32,8 +31,6 @@ onMounted(() => {
     toast.error(page.props.flash.error)
   }
 })
-
-const filteredOauthProviders = oauthProviders.filter(provider => props.availableProviders.includes(provider.provider))
 
 const loadingProvider = ref(null)
 
@@ -93,20 +90,20 @@ function toggleLink(provider) {
 
       <div>
         <div
-          v-for="provider in filteredOauthProviders" :key="provider.provider"
+          v-for="provider in availableProviders" :key="provider.slug"
           class="flex items-center space-x-4 rounded-md border p-4 mt-4"
         >
           <Icon :icon="provider.icon" class="size-8" />
           <div class="flex-1 space-y-1">
             <Label>
-              {{ useChangeCase(provider.provider, 'sentenceCase') }}
+              {{ useChangeCase(provider.slug, 'sentenceCase') }}
             </Label>
           </div>
           <Switch
             :disabled="loadingProvider"
-            :checked="activeProviders.includes(provider.provider)"
-            @update:checked="toggleLink(provider.provider)"
-            @update:unchecked="toggleLink(provider.provider)"
+            :checked="activeProviders.includes(provider.slug)"
+            @update:checked="toggleLink(provider.slug)"
+            @update:unchecked="toggleLink(provider.slug)"
           />
         </div>
       </div>

@@ -6,7 +6,6 @@ namespace App\Providers;
 
 use Inertia\Inertia;
 use Illuminate\Support\Str;
-use App\Enums\OauthProvider;
 use Illuminate\Http\Request;
 use Laravel\Fortify\Fortify;
 use Illuminate\Support\Facades\Route;
@@ -16,6 +15,7 @@ use Illuminate\Cache\RateLimiting\Limit;
 use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
 use Illuminate\Support\Facades\RateLimiter;
+use App\Actions\User\ActiveOauthProviderAction;
 use App\Actions\Fortify\UpdateUserProfileInformation;
 
 final class FortifyServiceProvider extends ServiceProvider
@@ -51,10 +51,12 @@ final class FortifyServiceProvider extends ServiceProvider
 
     private function configureLoginView(): void
     {
-        Fortify::loginView(fn () => Inertia::render('Auth/Login', [
-            'availableOauthProviders' => OauthProvider::cases(),
-            'canResetPassword' => Route::has('password.request'),
-            'status' => session('status'),
-        ]));
+        Fortify::loginView(function (): void {
+            Inertia::render('Auth/Login', [
+                'availableOauthProviders' => (new ActiveOauthProviderAction())->handle(),
+                'canResetPassword' => Route::has('password.request'),
+                'status' => session('status'),
+            ]);
+        });
     }
 }

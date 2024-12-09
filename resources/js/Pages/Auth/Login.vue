@@ -7,26 +7,20 @@ import Checkbox from '@/Components/shadcn/ui/checkbox/Checkbox.vue'
 import Input from '@/Components/shadcn/ui/input/Input.vue'
 import Label from '@/Components/shadcn/ui/label/Label.vue'
 import Sonner from '@/Components/shadcn/ui/sonner/Sonner.vue'
-import oauthProviders from '@/lib/oauthProvider'
+import SocialLoginButton from '@/Components/SocialLoginButton.vue'
 import { cn } from '@/lib/utils'
-import { Icon } from '@iconify/vue'
 import { Head, Link, useForm, usePage } from '@inertiajs/vue3'
-import { useChangeCase } from '@vueuse/integrations/useChangeCase'
-import { computed, inject, onMounted } from 'vue'
+import { inject, onMounted } from 'vue'
 import { toast } from 'vue-sonner'
 
-const props = defineProps({
+defineProps({
   canResetPassword: Boolean,
   status: String,
-  availableOauthProviders: Array,
+  availableOauthProviders: Object,
 })
 
 const page = usePage()
 const route = inject('route')
-
-const filteredOauthProviders = computed(() =>
-  oauthProviders.filter(provider => props.availableOauthProviders.includes(provider.provider)),
-)
 
 const form = useForm({
   email: '',
@@ -119,7 +113,7 @@ onMounted(() => {
             </Button>
 
             <!-- OAuth Divider -->
-            <div class="relative">
+            <div v-if="Object.keys(availableOauthProviders).length" class="relative">
               <div class="absolute inset-0 flex items-center">
                 <span class="w-full border-t" />
               </div>
@@ -131,15 +125,12 @@ onMounted(() => {
             </div>
 
             <!-- OAuth Providers -->
-            <Button
-              v-for="provider in filteredOauthProviders" :key="provider.provider"
+            <SocialLoginButton
+              v-for="provider in availableOauthProviders"
+              :key="provider.slug"
+              :provider="provider"
               :disabled="form.processing"
-              class="bg-background text-foreground hover:bg-secondary disabled:opacity-50 hover:dark:bg-primary/80 dark:bg-primary dark:text-primary-foreground"
-              as="a" :href="route('oauth.redirect', { provider: provider.provider })"
-            >
-              <Icon :icon="provider.icon" class="mr-2 h-4 w-4" />
-              Sign In With {{ useChangeCase(provider.provider, 'sentenceCase') }}
-            </Button>
+            />
 
             <!-- Register Link -->
             <div class="text-center text-sm text-muted-foreground">

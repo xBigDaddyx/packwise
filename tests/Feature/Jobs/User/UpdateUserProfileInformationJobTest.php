@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use App\Models\User;
-use App\Enums\OauthProvider;
 use App\Models\OauthConnection;
 use Laravel\Socialite\Two\User as SocialiteUser;
 use App\Jobs\User\UpdateUserProfileInformationJob;
@@ -36,14 +35,14 @@ test('creates new oauth connection when none exists', function () {
     $job = new UpdateUserProfileInformationJob(
         $this->user,
         $this->socialiteUser,
-        OauthProvider::GITHUB
+        'github'
     );
 
     $job->handle();
 
     assertDatabaseHas('oauth_connections', [
         'user_id' => $this->user->id,
-        'provider' => OauthProvider::GITHUB->value,
+        'provider' => 'github',
         'provider_id' => '123456789',
         'token' => 'test-token',
         'refresh_token' => 'test-refresh-token',
@@ -55,7 +54,7 @@ test('creates new oauth connection when none exists', function () {
 
 test('updates existing oauth connection', function () {
     OauthConnection::factory()
-        ->withProvider(OauthProvider::GITHUB)
+        ->withProvider('github')
         ->create([
             'user_id' => $this->user->id,
             'provider_id' => 'old-id',
@@ -66,14 +65,14 @@ test('updates existing oauth connection', function () {
     $job = new UpdateUserProfileInformationJob(
         $this->user,
         $this->socialiteUser,
-        OauthProvider::GITHUB
+        'github'
     );
 
     $job->handle();
 
     assertDatabaseHas('oauth_connections', [
         'user_id' => $this->user->id,
-        'provider' => OauthProvider::GITHUB->value,
+        'provider' => 'github',
         'provider_id' => '123456789',
         'token' => 'test-token',
         'refresh_token' => 'test-refresh-token',
@@ -86,7 +85,7 @@ test('can handle null expiration time correctly', function () {
     $job = new UpdateUserProfileInformationJob(
         $this->user,
         $this->socialiteUser,
-        OauthProvider::GITHUB
+        'github'
     );
 
     $job->handle();
@@ -99,7 +98,7 @@ test('it updates user profile photo path from socialite avatar', function () {
     $job = new UpdateUserProfileInformationJob(
         $this->user,
         $this->socialiteUser,
-        OauthProvider::GITHUB
+        'github'
     );
 
     $job->handle();

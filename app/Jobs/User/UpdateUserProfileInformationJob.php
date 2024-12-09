@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Jobs\User;
 
 use App\Models\User;
-use App\Enums\OauthProvider;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Laravel\Socialite\Two\User as SocialiteUser;
@@ -18,7 +17,7 @@ final class UpdateUserProfileInformationJob implements ShouldQueue
      * Create a new job instance.
      */
     public function __construct(private User $user,
-        private readonly SocialiteUser $socialiteUser, private readonly OauthProvider $provider)
+        private readonly SocialiteUser $socialiteUser, private readonly string $provider)
     {
         //
     }
@@ -31,7 +30,7 @@ final class UpdateUserProfileInformationJob implements ShouldQueue
         $user = $this->user;
         $socialiteUser = $this->socialiteUser;
         $user->oauthConnections()->updateOrCreate([
-            'provider' => $this->provider->value,
+            'provider' => $this->provider,
         ], [
             'provider_id' => $socialiteUser->getId(),
             'data' => $socialiteUser->getRaw(),

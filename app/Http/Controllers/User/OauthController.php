@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace App\Http\Controllers\User;
 
 use Throwable;
-use App\Enums\OauthProvider;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
 use Laravel\Socialite\Facades\Socialite;
+use App\Actions\User\ActiveOauthProviderAction;
 use App\Actions\User\HandleOauthCallbackAction;
 use App\Exceptions\OAuthAccountLinkingException;
 use Laravel\Socialite\Two\InvalidStateException;
@@ -23,16 +23,20 @@ final class OauthController extends Controller
         private readonly HandleOauthCallbackAction $handleOauthCallbackAction,
     ) {}
 
-    public function redirect(OauthProvider $provider): SymfonyRedirectResponse
+    public function redirect(string $provider): SymfonyRedirectResponse
     {
-        return Socialite::driver($provider->value)->redirect();
+        abort_unless($this->isValidProvider($provider), 404);
+
+        return Socialite::driver($provider)->redirect();
     }
 
-    public function callback(OauthProvider $provider): RedirectResponse
+    public function callback(string $provider): RedirectResponse
     {
+        abort_unless($this->isValidProvider($provider), 404);
+
         try {
             /** @var SocialiteUser $socialiteUser */
-            $socialiteUser = Socialite::driver($provider->value)->user();
+            $socialiteUser = Socialite::driver($provider)->user();
             $authenticatedUser = Auth::user();
             $user = $this->handleOauthCallbackAction->handle($provider, $socialiteUser, $authenticatedUser);
         } catch (InvalidStateException) {
@@ -51,16 +55,25 @@ final class OauthController extends Controller
             return Redirect::intended(config('fortify.home'));
         }
 
-        return Redirect::intended(route('profile.show'))->with('success', "Your {$provider->value} account has been linked.");
+        return Redirect::intended(route('profile.show'))->with('success', "Your {$provider} account has been linked.");
     }
 
-    public function destroy(OauthProvider $provider): RedirectResponse
+    public function destroy(string $provider): RedirectResponse
     {
+        abort_unless($this->isValidProvider($provider), 404);
+
         $user = Auth::user();
 
         $user?->oauthConnections()->where('provider', $provider)->delete();
-        session()->flash('success', "Your {$provider->value} account has been unlinked.");
+        session()->flash('success', "Your {$provider} account has been unlinked.");
 
         return Redirect::route('profile.show');
+    }
+
+    private function isValidProvider(string $provider): bool
+    {
+        $activeProviders = (new ActiveOauthProviderAction)->handle();
+
+        return collect($activeProviders)->contains('slug', $provider);
     }
 }

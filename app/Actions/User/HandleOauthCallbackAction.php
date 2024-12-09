@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Actions\User;
 
 use App\Models\User;
-use App\Enums\OauthProvider;
 use App\Traits\AsFakeAction;
 use InvalidArgumentException;
 use Illuminate\Validation\Rule;
@@ -22,7 +21,7 @@ final readonly class HandleOauthCallbackAction
 {
     use AsFakeAction;
 
-    public function handle(OauthProvider $provider, SocialiteUser $socialiteUser, ?User $authenticatedUser = null): User
+    public function handle(string $provider, SocialiteUser $socialiteUser, ?User $authenticatedUser = null): User
     {
         return match (true) {
             $authenticatedUser instanceof User => $this->handleAuthenticatedUser($provider, $socialiteUser, $authenticatedUser),
@@ -30,7 +29,7 @@ final readonly class HandleOauthCallbackAction
         };
     }
 
-    private function handleAuthenticatedUser(OauthProvider $provider, SocialiteUser $socialiteUser, User $user): User
+    private function handleAuthenticatedUser(string $provider, SocialiteUser $socialiteUser, User $user): User
     {
         $this->validateAuthenticatedUserConnection($provider, $socialiteUser, $user);
 
@@ -39,7 +38,7 @@ final readonly class HandleOauthCallbackAction
         return $user;
     }
 
-    private function handleUnauthenticatedUser(OauthProvider $provider, SocialiteUser $socialiteUser): User
+    private function handleUnauthenticatedUser(string $provider, SocialiteUser $socialiteUser): User
     {
         return DB::transaction(function () use ($provider, $socialiteUser): User {
             $existingUser = User::query()
@@ -53,36 +52,35 @@ final readonly class HandleOauthCallbackAction
         });
     }
 
-    private function validateAuthenticatedUserConnection(OauthProvider $provider, SocialiteUser $socialiteUser, User $user): void
+    private function validateAuthenticatedUserConnection(string $provider, SocialiteUser $socialiteUser, User $user): void
     {
         try {
             Validator::validate([
-                'provider' => $provider->value,
+                'provider' => $provider,
                 'provider_id' => $socialiteUser->getId(),
                 'email' => $socialiteUser->getEmail(),
             ], [
                 'provider' => [
                     'required',
                     'max:255',
-                    Rule::enum(OauthProvider::class),
                     Rule::unique('oauth_connections')->where(
-                        fn (Builder $query) => $query->where('provider', $provider->value)
+                        fn (Builder $query) => $query->where('provider', $provider)
                             ->where('provider_id', $socialiteUser->getId())
                     ),
                 ],
                 'email' => ['required', 'email', Rule::in([$user->email])],
             ], [
-                'provider.unique' => __('This account from :provider is already connected to another account.', ['provider' => $provider->value]),
-                'email.in' => __('The email address from this :provider does not match your account email.', ['provider' => $provider->value]),
+                'provider.unique' => __('This account from :provider is already connected to another account.', ['provider' => $provider]),
+                'email.in' => __('The email address from this :provider does not match your account email.', ['provider' => $provider]),
             ]);
         } catch (ValidationException) {
-            throw_if($socialiteUser->getEmail() !== $user->email, OAuthAccountLinkingException::emailMismatch($provider->value));
+            throw_if($socialiteUser->getEmail() !== $user->email, OAuthAccountLinkingException::emailMismatch($provider));
 
             throw new InvalidArgumentException(__('Validation error try again later.'));
         }
     }
 
-    private function handleExistingUser(User $user, OauthProvider $provider, SocialiteUser $socialiteUser): User
+    private function handleExistingUser(User $user, string $provider, SocialiteUser $socialiteUser): User
     {
         throw_unless(
             $user->oauthConnections()->where('provider', $provider)->exists(),
@@ -94,7 +92,7 @@ final readonly class HandleOauthCallbackAction
         return $user;
     }
 
-    private function createNewUser(SocialiteUser $socialiteUser, OauthProvider $provider): User
+    private function createNewUser(SocialiteUser $socialiteUser, string $provider): User
     {
         $user = (new CreateNewUser())->create([
             'name' => (string) $socialiteUser->getName(),
@@ -107,7 +105,7 @@ final readonly class HandleOauthCallbackAction
         return $user;
     }
 
-    private function updateUserProfile(User $user, SocialiteUser $socialiteUser, OauthProvider $provider): void
+    private function updateUserProfile(User $user, SocialiteUser $socialiteUser, string $provider): void
     {
         dispatch_sync(new UpdateUserProfileInformationJob($user, $socialiteUser, $provider));
     }
