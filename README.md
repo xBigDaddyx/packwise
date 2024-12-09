@@ -10,12 +10,15 @@ Larasonic is a modern, open-source AI chat platform built with Laravel, Vue.js, 
 
 ## ✨ Features
 
-- 🤖 Multiple AI Model Support (OpenAI, Anthropic, etc.)
-- 👥 Team Collaboration
-- 💬 Real-time Chat
-- 🎨 Beautiful UI with TailwindCSS
-- 🚀 High Performance with Laravel Octane & FrankenPHP
-- 🔒 Enterprise-grade Security
+- ⚡ 10x Dev Experience
+- 🐳 Production Docker Ready
+- 🔑 Advanced Authentication
+- 💳 Payment Ready
+- 🌐 API Ready
+- 🎨 Customizable UI
+- 🧠 AI Integration Ready
+- 📊 FilamentPHP Admin
+- ✨ Evolving Features
 
 ## Quick Start
 
@@ -39,14 +42,6 @@ cp .env.example .env
 ```
 
 For detailed installation instructions and documentation, visit [docs.larasonic.com](https://docs.larasonic.com).
-
-## Tech Stack
-
-- PHP 8.3+ with Laravel Octane & FrankenPHP
-- Vue 3.4 + Inertia.js
-- TailwindCSS 3.4+
-- PostgreSQL 17
-- Bun Package Manager
 
 ## Hosting
 
