@@ -79,7 +79,7 @@ const githubUrl = 'https://github.com/pushpak1300/larasonic'
               ✨ Using PHP 8.3+, Laravel 11, Inertia 2.0 and Tailwind CSS 3.4+
             </Badge>
             <h1 class="mt-4 text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl">
-              The Ultimate Laravel <span>Starter Kit</span> for Modern SASS
+              The Ultimate Laravel <span>Starter Kit</span> for Modern SaaS
             </h1>
             <p class="mt-4 text-xl">
               Build production-ready applications 10x faster with free opinionated starter kit powered by
