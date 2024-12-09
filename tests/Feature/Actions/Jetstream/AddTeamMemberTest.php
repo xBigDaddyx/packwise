@@ -13,7 +13,7 @@ use Illuminate\Validation\ValidationException;
 use Laravel\Jetstream\Events\AddingTeamMember;
 use Illuminate\Auth\Access\AuthorizationException;
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->owner = User::factory()->create();
     $this->team = Team::factory()->create(['user_id' => $this->owner->id]);
     $this->newMember = User::factory()->create();
@@ -21,8 +21,8 @@ beforeEach(function () {
     $this->jetstreamInstance = Mockery::mock(Jetstream::class);
 });
 
-describe('add team member action', function () {
-    test('can add team member', function () {
+describe('add team member action', function (): void {
+    test('can add team member', function (): void {
         Event::fake([AddingTeamMember::class, TeamMemberAdded::class]);
 
         $this->jetstreamInstance->shouldReceive('hasRoles')->andReturn(false);
@@ -51,7 +51,7 @@ describe('add team member action', function () {
         Event::assertDispatched(TeamMemberAdded::class);
     });
 
-    test('validates team member email exists', function () {
+    test('validates team member email exists', function (): void {
         Gate::shouldReceive('forUser')
             ->with($this->owner)
             ->andReturn(Gate::partialMock());
@@ -68,7 +68,7 @@ describe('add team member action', function () {
         ))->toThrow(ValidationException::class);
     });
 
-    test('prevents adding existing team member', function () {
+    test('prevents adding existing team member', function (): void {
         $this->team->users()->attach($this->newMember, ['role' => 'admin']);
 
         Gate::shouldReceive('forUser')
@@ -87,7 +87,7 @@ describe('add team member action', function () {
         ))->toThrow(ValidationException::class);
     });
 
-    test('requires role when jetstream has roles', function () {
+    test('requires role when jetstream has roles', function (): void {
         $this->jetstreamInstance->shouldReceive('hasRoles')->andReturn(true);
 
         Gate::shouldReceive('forUser')
@@ -106,7 +106,7 @@ describe('add team member action', function () {
         ))->toThrow(ValidationException::class);
     });
 
-    test('validates role when provided', function () {
+    test('validates role when provided', function (): void {
         $this->jetstreamInstance->shouldReceive('hasRoles')->andReturn(true);
 
         Gate::shouldReceive('forUser')
@@ -125,7 +125,7 @@ describe('add team member action', function () {
         ))->toThrow(ValidationException::class);
     });
 
-    test('unauthorized user cannot add team member', function () {
+    test('unauthorized user cannot add team member', function (): void {
         Gate::shouldReceive('forUser')
             ->with($this->owner)
             ->andReturn(Gate::partialMock());
@@ -142,7 +142,7 @@ describe('add team member action', function () {
         ))->toThrow(AuthorizationException::class);
     });
 
-    test('dispatches events in correct order', function () {
+    test('dispatches events in correct order', function (): void {
         $events = [];
         Event::fake([AddingTeamMember::class, TeamMemberAdded::class]);
 
@@ -161,14 +161,10 @@ describe('add team member action', function () {
             'admin'
         );
 
-        Event::assertDispatched(AddingTeamMember::class, function ($event) {
-            return $event->team->is($this->team) &&
-                   $event->user->is($this->newMember);
-        });
+        Event::assertDispatched(AddingTeamMember::class, fn ($event): bool => $event->team->is($this->team) &&
+               $event->user->is($this->newMember));
 
-        Event::assertDispatched(TeamMemberAdded::class, function ($event) {
-            return $event->team->is($this->team) &&
-                   $event->user->is($this->newMember);
-        });
+        Event::assertDispatched(TeamMemberAdded::class, fn ($event): bool => $event->team->is($this->team) &&
+               $event->user->is($this->newMember));
     });
 });

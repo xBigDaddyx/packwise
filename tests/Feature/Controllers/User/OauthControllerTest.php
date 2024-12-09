@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Models\User;
 use App\Models\OauthConnection;
 use Laravel\Socialite\Facades\Socialite;
+use Laravel\Socialite\Contracts\Provider;
 use App\Http\Controllers\User\OauthController;
 use App\Actions\User\ActiveOauthProviderAction;
 use App\Exceptions\OAuthAccountLinkingException;
@@ -18,8 +19,8 @@ use function Pest\Laravel\assertDatabaseCount;
 
 covers(OauthController::class);
 
-beforeEach(function () {
-    test()->socialiteUser = tap(new SocialiteUser, function ($user) {
+beforeEach(function (): void {
+    test()->socialiteUser = tap(new SocialiteUser, function ($user): void {
         $user->map([
             'id' => '1',
             'nickname' => 'test',
@@ -36,7 +37,7 @@ beforeEach(function () {
 
 function mockSocialiteForRedirect()
 {
-    $mockSocialite = Mockery::mock('Laravel\Socialite\Contracts\Provider');
+    $mockSocialite = Mockery::mock(Provider::class);
     $mockSocialite->shouldReceive('redirect')->andReturn(redirect('https://example.com'));
     Socialite::shouldReceive('driver')->andReturn($mockSocialite);
 
@@ -45,14 +46,14 @@ function mockSocialiteForRedirect()
 
 function mockSocialiteForCallback()
 {
-    $mockSocialite = Mockery::mock('Laravel\Socialite\Contracts\Provider');
+    $mockSocialite = Mockery::mock(Provider::class);
     Socialite::shouldReceive('driver')->andReturn($mockSocialite);
     $mockSocialite->shouldReceive('user')->andReturn(test()->socialiteUser);
 
     return $mockSocialite;
 }
 
-test('it redirects to oauth provider', function () {
+test('it redirects to oauth provider', function (): void {
     foreach ((new ActiveOauthProviderAction())->handle() as $provider) {
         mockSocialiteForRedirect();
         $response = get(route('oauth.redirect', ['provider' => $provider['slug']]));
@@ -62,13 +63,13 @@ test('it redirects to oauth provider', function () {
     }
 });
 
-test('it fails to redirect to oauth provider with invalid provider', function () {
+test('it fails to redirect to oauth provider with invalid provider', function (): void {
     $response = get(route('oauth.redirect', ['provider' => 'invalid-provider']));
 
     $response->assertStatus(404);
 });
 
-test('it handles oauth callback for new user without authenticated user', function () {
+test('it handles oauth callback for new user without authenticated user', function (): void {
     mockSocialiteForCallback();
 
     assertDatabaseCount('users', 0);
@@ -80,14 +81,14 @@ test('it handles oauth callback for new user without authenticated user', functi
     assertDatabaseCount('users', 1);
     assertDatabaseCount('oauth_connections', 1);
 
-    $connection = OauthConnection::first();
+    $connection = OauthConnection::query()->first();
     expect($connection->provider)->toBe('github')
         ->and($connection->provider_id)->toBe('1')
         ->and($connection->token)->toBe('test-token')
         ->and($connection->refresh_token)->toBe('test-refresh-token');
 });
 
-test('it handles oauth callback for existing user without authenticated user', function () {
+test('it handles oauth callback for existing user without authenticated user', function (): void {
     User::factory()->create(['email' => 'test@test.com']);
     mockSocialiteForCallback();
 
@@ -103,7 +104,7 @@ test('it handles oauth callback for existing user without authenticated user', f
     assertDatabaseCount('users', 1);
 });
 
-test('it handles oauth callback for existing user without authenticated user and other provider', function () {
+test('it handles oauth callback for existing user without authenticated user and other provider', function (): void {
     $user = User::factory()->create(['email' => 'test@test.com']);
     mockSocialiteForCallback();
     $existingConnection = OauthConnection::factory()
@@ -123,7 +124,7 @@ test('it handles oauth callback for existing user without authenticated user and
     assertDatabaseCount('users', 1);
 });
 
-test('it handles invalid state exception without authenticated user', function () {
+test('it handles invalid state exception without authenticated user', function (): void {
     Socialite::shouldReceive('driver')
         ->with('github')
         ->andThrow(new InvalidStateException);
@@ -134,7 +135,7 @@ test('it handles invalid state exception without authenticated user', function (
         ->assertSessionHas('error', 'The request timed out. Please try again.');
 });
 
-test('it handles oauth callback with existing connection and without authenticated user', function () {
+test('it handles oauth callback with existing connection and without authenticated user', function (): void {
     $user = User::factory()->create(['email' => 'test@test.com']);
     mockSocialiteForCallback();
 
@@ -153,7 +154,7 @@ test('it handles oauth callback with existing connection and without authenticat
     assertDatabaseCount('oauth_connections', 1);
     assertDatabaseCount('users', 1);
 
-    $connection = OauthConnection::first();
+    $connection = OauthConnection::query()->first();
     expect($connection->id)->toBe($existingConnection->id)
         ->and($connection->provider)->toBe('github')
         ->and($connection->provider_id)->toBe('1')
@@ -162,7 +163,7 @@ test('it handles oauth callback with existing connection and without authenticat
         ->and($connection->refresh_token)->toBe('test-refresh-token');
 });
 
-test('it handles linking account with same email for authenticated user', function () {
+test('it handles linking account with same email for authenticated user', function (): void {
     $user = User::factory()->create(['email' => 'test@test.com']);
     mockSocialiteForCallback();
 
@@ -178,7 +179,7 @@ test('it handles linking account with same email for authenticated user', functi
     assertDatabaseCount('users', 1);
 });
 
-test('it handles oauth callback with mismatched emails for authenticated user', function () {
+test('it handles oauth callback with mismatched emails for authenticated user', function (): void {
     $user = User::factory()->create(['email' => 'different@example.com']);
     mockSocialiteForCallback();
 
@@ -194,7 +195,7 @@ test('it handles oauth callback with mismatched emails for authenticated user', 
     assertDatabaseCount('users', 1);
 });
 
-test('it can not unlink oauth connection without authenticated user', function () {
+test('it can not unlink oauth connection without authenticated user', function (): void {
     $user = User::factory()->create();
     $connection = OauthConnection::factory()
         ->for($user)
@@ -208,7 +209,7 @@ test('it can not unlink oauth connection without authenticated user', function (
     assertDatabaseCount('users', 1);
 });
 
-test('it can unlink oauth connection with authenticated user', function () {
+test('it can unlink oauth connection with authenticated user', function (): void {
     $user = User::factory()->create();
     $connection = OauthConnection::factory()
         ->for($user)

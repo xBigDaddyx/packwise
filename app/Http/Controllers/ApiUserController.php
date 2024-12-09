@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Gate;
 use App\Actions\Jetstream\DeleteUser;
 use App\Actions\Fortify\CreateNewUser;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Auth\Access\AuthorizationException;
 use App\Actions\Fortify\UpdateUserProfileInformation;
 
 /**
@@ -27,21 +26,17 @@ final class ApiUserController extends Controller
      *
      * @return Collection<int, User>|null
      *
-     * @throws AuthorizationException
-     *
      * @authenticated
      */
     public function index(): ?Collection
     {
-        Gate::authorize('view', User::class);
+        Gate::authorize('viewAny', User::class);
 
         return type(Auth::user())->as(User::class)->currentTeam?->users;
     }
 
     /**
      * Create a new user.
-     *
-     * @throws AuthorizationException
      *
      * @authenticated
      */
@@ -53,6 +48,7 @@ final class ApiUserController extends Controller
             'name' => (string) $request->string('name'),
             'email' => (string) $request->string('email'),
             'password' => (string) $request->string('password'),
+            'password_confirmation' => (string) $request->string('password_confirmation'),
             'terms' => 'true',
         ]);
     }
@@ -71,8 +67,6 @@ final class ApiUserController extends Controller
      * Update user profile information.
      *
      * @authenticated
-     *
-     * @throws AuthorizationException
      */
     public function update(Request $request, User $user): User
     {
@@ -90,8 +84,6 @@ final class ApiUserController extends Controller
      * Delete a user.
      *
      * @authenticated
-     *
-     * @throws AuthorizationException
      */
     public function destroy(User $user): Response
     {

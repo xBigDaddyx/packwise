@@ -12,10 +12,9 @@ use function Pest\Laravel\assertDatabaseCount;
 
 covers(UpdateUserProfileInformationJob::class);
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->user = User::factory()->create();
 
-    /** @var SocialiteUser $socialiteUser */
     $this->socialiteUser = new SocialiteUser;
     $this->socialiteUser->map([
         'id' => '123456789',
@@ -31,7 +30,7 @@ beforeEach(function () {
     ]);
 });
 
-test('creates new oauth connection when none exists', function () {
+test('creates new oauth connection when none exists', function (): void {
     $job = new UpdateUserProfileInformationJob(
         $this->user,
         $this->socialiteUser,
@@ -48,11 +47,11 @@ test('creates new oauth connection when none exists', function () {
         'refresh_token' => 'test-refresh-token',
     ]);
 
-    $connection = OauthConnection::first();
+    $connection = OauthConnection::query()->first();
     expect($connection->data)->toEqual(collect(['id' => '123456789']));
 });
 
-test('updates existing oauth connection', function () {
+test('updates existing oauth connection', function (): void {
     OauthConnection::factory()
         ->withProvider('github')
         ->create([
@@ -81,7 +80,7 @@ test('updates existing oauth connection', function () {
     assertDatabaseCount('oauth_connections', 1);
 });
 
-test('can handle null expiration time correctly', function () {
+test('can handle null expiration time correctly', function (): void {
     $job = new UpdateUserProfileInformationJob(
         $this->user,
         $this->socialiteUser,
@@ -90,11 +89,11 @@ test('can handle null expiration time correctly', function () {
 
     $job->handle();
 
-    $connection = OauthConnection::first();
+    $connection = OauthConnection::query()->first();
     $this->assertNull($connection->expires_at);
 });
 
-test('it updates user profile photo path from socialite avatar', function () {
+test('it updates user profile photo path from socialite avatar', function (): void {
     $job = new UpdateUserProfileInformationJob(
         $this->user,
         $this->socialiteUser,

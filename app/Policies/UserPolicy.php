@@ -13,7 +13,8 @@ final class UserPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasTeamPermission($user->currentTeam, 'read');
+        return $user->hasTeamPermission($user->currentTeam, 'read')
+            && $user->tokenCan('read');
     }
 
     /**
@@ -21,7 +22,15 @@ final class UserPolicy
      */
     public function view(User $user, User $model): bool
     {
-        return $user->belongsToTeam($model->currentTeam) && $user->hasTeamPermission($model->currentTeam, 'read') && $user->tokenCan('read');
+        // Allow if it's the same user and token has read ability
+        if ($user->id === $model->id && $user->tokenCan('read')) {
+            return true;
+        }
+
+        // Allow if user has read permission and belongs to same team
+        return $user->belongsToTeam($model->currentTeam)
+            && $user->hasTeamPermission($model->currentTeam, 'read')
+            && $user->tokenCan('read');
     }
 
     /**
@@ -29,7 +38,9 @@ final class UserPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasTeamRole($user->currentTeam, 'admin') && $user->tokenCan('create');
+        return ($user->hasTeamRole($user->currentTeam, 'admin')
+            || $user->hasTeamPermission($user->currentTeam, 'create'))
+            && $user->tokenCan('create');
     }
 
     /**
@@ -37,7 +48,15 @@ final class UserPolicy
      */
     public function update(User $user, User $model): bool
     {
-        return $user->belongsToTeam($model->currentTeam) && $user->hasTeamPermission($model->currentTeam, 'update') && $user->tokenCan('update');
+        // Allow if it's the same user and token has update ability
+        if ($user->id === $model->id && $user->tokenCan('update')) {
+            return true;
+        }
+
+        // Allow if user has write permission and belongs to same team
+        return $user->belongsToTeam($model->currentTeam)
+            && $user->hasTeamPermission($model->currentTeam, 'update')
+            && $user->tokenCan('update');
     }
 
     /**
@@ -45,8 +64,15 @@ final class UserPolicy
      */
     public function delete(User $user, User $model): bool
     {
-        return $user->belongsToTeam($model->currentTeam) && $user->hasTeamPermission($model->currentTeam, 'delete') && $user->tokenCan('delete')
-            && $user->id !== $model->id; // Prevent self-deletion
+        // Prevent self-deletion
+        if ($user->id === $model->id) {
+            return false;
+        }
+
+        // Only admin can delete users
+        return $user->belongsToTeam($model->currentTeam)
+            && $user->hasTeamRole($user->currentTeam, 'admin')
+            && $user->tokenCan('delete');
     }
 
     /**
@@ -54,8 +80,9 @@ final class UserPolicy
      */
     public function restore(User $user, User $model): bool
     {
-        return $user->belongsToTeam($model->currentTeam) && $user->hasTeamPermission($model->currentTeam, 'delete') && $user->tokenCan('delete')
-            && $user->id !== $model->id;
+        return $user->belongsToTeam($model->currentTeam)
+            && $user->hasTeamRole($user->currentTeam, 'admin')
+            && $user->tokenCan('delete');
     }
 
     /**
@@ -63,7 +90,7 @@ final class UserPolicy
      */
     public function forceDelete(User $user): bool
     {
-        return $user->hasTeamPermission($user->currentTeam, 'delete') &&
-            $user->hasTeamRole($user->currentTeam, 'admin');
+        return $user->hasTeamRole($user->currentTeam, 'admin')
+            && $user->tokenCan('delete');
     }
 }

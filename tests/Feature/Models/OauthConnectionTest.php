@@ -9,12 +9,12 @@ use App\Actions\User\ActiveOauthProviderAction;
 
 covers(OauthConnection::class);
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->user = User::factory()->create();
 });
 
-describe('oauth connection model tests', function () {
-    test('oauth connection belongs to a user', function () {
+describe('oauth connection model tests', function (): void {
+    test('oauth connection belongs to a user', function (): void {
         $connection = OauthConnection::factory()->create([
             'user_id' => $this->user->id,
         ]);
@@ -24,7 +24,7 @@ describe('oauth connection model tests', function () {
             ->id->toBe($this->user->id);
     });
 
-    test('oauth connection casts data to collection only', function () {
+    test('oauth connection casts data to collection only', function (): void {
         $connection = OauthConnection::factory()->create([
             'data' => ['name' => 'John Doe'],
         ]);
@@ -35,7 +35,7 @@ describe('oauth connection model tests', function () {
         expect($connection->data)->not->toBeInstanceOf(ArrayObject::class);
     });
 
-    test('oauth connection can create oauth provider connection', function () {
+    test('oauth connection can create oauth provider connection', function (): void {
         foreach ((new ActiveOauthProviderAction())->handle() as $provider) {
             $connection = OauthConnection::factory()->withProvider($provider['slug'])->create();
 
@@ -50,7 +50,7 @@ describe('oauth connection model tests', function () {
         }
     });
 
-    test('oauth connection can mark connection as expired', function () {
+    test('oauth connection can mark connection as expired', function (): void {
         $connection = OauthConnection::factory()->expired()->create();
 
         expect($connection)
@@ -58,13 +58,13 @@ describe('oauth connection model tests', function () {
             ->refresh_token->toBeNull();
     });
 
-    test('oauth connection cascades on user deletion', function () {
+    test('oauth connection cascades on user deletion', function (): void {
         $user = User::factory()->create();
         $connection = OauthConnection::factory()->create([
             'user_id' => $user->id,
         ]);
 
         $user->delete();
-        expect(OauthConnection::find($connection->id))->toBeNull();
+        expect(OauthConnection::query()->find($connection->id))->toBeNull();
     });
 });

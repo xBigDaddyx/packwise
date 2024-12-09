@@ -10,8 +10,8 @@ use Laravel\Socialite\Two\User as SocialiteUser;
 
 use function Pest\Laravel\assertDatabaseHas;
 
-beforeEach(function () {
-    $this->socialiteUser = tap(new SocialiteUser, function ($user) {
+beforeEach(function (): void {
+    $this->socialiteUser = tap(new SocialiteUser, function ($user): void {
         $user->map([
             'id' => '12345',
             'nickname' => 'johndoe',
@@ -25,7 +25,7 @@ beforeEach(function () {
     });
 });
 
-test('it creates new user when handling unauthenticated user', function () {
+test('it creates new user when handling unauthenticated user', function (): void {
     $result = (new HandleOauthCallbackAction())->handle('github', $this->socialiteUser);
 
     expect($result)
@@ -40,7 +40,7 @@ test('it creates new user when handling unauthenticated user', function () {
     ]);
 });
 
-test('it links oauth account to authenticated user with matching email', function () {
+test('it links oauth account to authenticated user with matching email', function (): void {
     $user = User::factory()->create(['email' => 'john@example.com']);
 
     $result = (new HandleOauthCallbackAction())->handle('github', $this->socialiteUser, $user);
@@ -54,17 +54,17 @@ test('it links oauth account to authenticated user with matching email', functio
     ]);
 });
 
-test('it throws exception when emails do not match for authenticated user', function () {
+test('it throws exception when emails do not match for authenticated user', function (): void {
     $user = User::factory()->create(['email' => 'different@example.com']);
 
-    expect(fn () => (new HandleOauthCallbackAction())->handle('github', $this->socialiteUser, $user))
+    expect(fn (): \App\Models\User => (new HandleOauthCallbackAction())->handle('github', $this->socialiteUser, $user))
         ->toThrow(
             OAuthAccountLinkingException::class,
             'The email address from this github does not match your account email.'
         );
 });
 
-test('it throws exception when oauth connection exists for different user', function () {
+test('it throws exception when oauth connection exists for different user', function (): void {
     $existingUser = User::factory()->create();
     $newUser = User::factory()->create(['email' => 'john@example.com']);
 
@@ -74,21 +74,21 @@ test('it throws exception when oauth connection exists for different user', func
         'provider_id' => '12345',
     ]);
 
-    expect(fn () => (new HandleOauthCallbackAction())->handle('github', $this->socialiteUser, $newUser))
+    expect(fn (): \App\Models\User => (new HandleOauthCallbackAction())->handle('github', $this->socialiteUser, $newUser))
         ->toThrow(InvalidArgumentException::class, 'Validation error try again later.');
 });
 
-test('it throws exception when trying to connect to existing user without oauth connection', function () {
+test('it throws exception when trying to connect to existing user without oauth connection', function (): void {
     User::factory()->create(['email' => 'john@example.com']);
 
-    expect(fn () => (new HandleOauthCallbackAction())->handle('github', $this->socialiteUser))
+    expect(fn (): \App\Models\User => (new HandleOauthCallbackAction())->handle('github', $this->socialiteUser))
         ->toThrow(
             OAuthAccountLinkingException::class,
             'Please login with your existing authentication method.'
         );
 });
 
-test('it handles existing user with oauth connection', function () {
+test('it handles existing user with oauth connection', function (): void {
     $user = User::factory()->create(['email' => 'john@example.com']);
 
     OauthConnection::factory()->create([
