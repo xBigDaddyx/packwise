@@ -51,12 +51,10 @@ final class FortifyServiceProvider extends ServiceProvider
 
     private function configureLoginView(): void
     {
-        Fortify::loginView(function (): void {
-            Inertia::render('Auth/Login', [
-                'availableOauthProviders' => (new ActiveOauthProviderAction())->handle(),
-                'canResetPassword' => Route::has('password.request'),
-                'status' => session('status'),
-            ]);
-        });
+        Fortify::loginView(fn() => Inertia::render('Auth/Login', [
+            'availableOauthProviders' => (new ActiveOauthProviderAction())->handle(),
+            'canResetPassword' => Route::has('password.request'),
+            'status' => session('status'),
+        ]));
     }
 }
