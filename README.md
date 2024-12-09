@@ -46,7 +46,6 @@ For detailed installation instructions and documentation, visit [docs.larasonic.
 - Vue 3.4 + Inertia.js
 - TailwindCSS 3.4+
 - PostgreSQL 17
-- Redis
 - Bun Package Manager
 
 ## Hosting
