@@ -13,7 +13,7 @@
     "blaspsoft/blasp": "^1.2",
     "echolabsdev/prism": "^0.19.0",
     "filament/filament": "^3.2",
-    "inertiajs/inertia-laravel": "2.x-dev",
+    "inertiajs/inertia-laravel": "^2.0",
     "laravel/cashier": "^15.5",
     "laravel/framework": "^11.9",
     "laravel/jetstream": "^5.3",

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a0021136b0771b187333587c3ae09309",
+    "content-hash": "59508b37e492d701c2b3304bef5dac51",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -2262,16 +2262,16 @@
         },
         {
             "name": "inertiajs/inertia-laravel",
-            "version": "2.x-dev",
+            "version": "v2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/inertiajs/inertia-laravel.git",
-                "reference": "d5e1d51e0eb6c4b6756a8e0e598ade5cc29330bc"
+                "reference": "0259e37f802bc39c814c42ba92c04ada17921f70"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/inertiajs/inertia-laravel/zipball/d5e1d51e0eb6c4b6756a8e0e598ade5cc29330bc",
-                "reference": "d5e1d51e0eb6c4b6756a8e0e598ade5cc29330bc",
+                "url": "https://api.github.com/repos/inertiajs/inertia-laravel/zipball/0259e37f802bc39c814c42ba92c04ada17921f70",
+                "reference": "0259e37f802bc39c814c42ba92c04ada17921f70",
                 "shasum": ""
             },
             "require": {
@@ -2324,7 +2324,7 @@
             ],
             "support": {
                 "issues": "https://github.com/inertiajs/inertia-laravel/issues",
-                "source": "https://github.com/inertiajs/inertia-laravel/tree/2.x"
+                "source": "https://github.com/inertiajs/inertia-laravel/tree/v2.0.0"
             },
             "funding": [
                 {
@@ -2332,7 +2332,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-12-05T14:41:09+00:00"
+            "time": "2024-12-13T02:48:29+00:00"
         },
         {
             "name": "jean85/pretty-package-versions",
@@ -14346,7 +14346,6 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "driftingly/rector-laravel": 20,
-        "inertiajs/inertia-laravel": 20,
         "rector/rector": 5
     },
     "prefer-stable": true,
