@@ -2,10 +2,10 @@
 
 ![Larasonic](public/images/og.webp)
 
-Larasonic is a modern, open-source AI chat platform built with Laravel, Vue.js, and Inertia. It provides a powerful foundation for building AI-powered chat applications with features like team collaboration, multiple AI models support, and real-time communication.
+Larasonic is a modern, open-source SaaS starter kit with Laravel, Vue.js, TailwindCSS, and Inertia.
 
-[![GitHub stars](https://img.shields.io/github/stars/pushpak1300/Larasonic)](https://github.com/pushpak1300/Larasonic/stargazers)
-[![License](https://img.shields.io/github/license/pushpak1300/Larasonic)](https://opensource.org/licenses/MIT)
+
+![GitHub Repo stars](https://img.shields.io/github/stars/pushpak1300/Larasonic?style=for-the-badge) [![Licence](https://img.shields.io/github/license/Ileriayo/markdown-badges?style=for-the-badge)](./LICENSE.md) [![Github-sponsors](https://img.shields.io/badge/sponsor-30363D?style=for-the-badge&logo=GitHub-Sponsors&logoColor=#EA4AAA)](https://github.com/sponsors/pushpak1300)
 
 ## ✨ Features
 
