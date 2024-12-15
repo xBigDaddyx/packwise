@@ -1,6 +1,4 @@
 <script setup>
-import { Icon } from '@iconify/vue'
-
 defineProps({
   icon: {
     type: String,
@@ -18,8 +16,10 @@ defineProps({
 </script>
 
 <template>
-  <div class="rounded-lg border bg-card p-6 shadow-sm">
-    <Icon :icon="icon" class="h-12 w-12 text-primary" />
+  <div class="flex flex-col items-left text-left rounded-lg border bg-card p-6 shadow-sm">
+    <div class="h-12 w-12 text-primary text-3xl">
+      {{ icon }}
+    </div>
     <h3 class="mt-4 text-xl font-semibold">
       {{ title }}
     </h3>

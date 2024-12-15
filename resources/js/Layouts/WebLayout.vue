@@ -1,6 +1,5 @@
 <script setup>
 import Button from '@/Components/shadcn/ui/button/Button.vue'
-import { cn } from '@/lib/utils'
 import { Icon } from '@iconify/vue'
 import { Link } from '@inertiajs/vue3'
 import { useColorMode } from '@vueuse/core'
@@ -25,11 +24,11 @@ const mode = useColorMode({
 
 const navLinks = [
   { label: 'Features', href: '/#features', external: false },
-  { label: 'Pricing', href: '/pricing', external: false },
+  { label: 'Pricing', href: '/#pricing', external: false },
   { label: 'Docs', href: 'https://docs.larasonic.com/introduction', external: true },
 ]
 
-const githubUrl = 'https://github.com/pushpak1300/larasonic'
+const githubUrl = 'https://github.com/pushpak1300/Larasonic'
 const twitterUrl = 'https://x.com/pushpak1300?ref=larasonic'
 
 const isMenuOpen = ref(false)
@@ -41,84 +40,90 @@ function toggleMenu() {
 
 <template>
   <div class="min-h-screen">
-    <header class="sticky top-0 z-50 w-full border-b backdrop-blur">
+    <header
+      class="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
+    >
       <div class="container flex h-16 items-center justify-between">
         <div class="flex items-center">
           <a class="flex items-center space-x-2" href="/" aria-label="Larasonic">
-            <Icon icon="lucide:rocket" class="size-6" aria-hidden="true" />
+            <Icon icon="lucide:rocket" class="h-6 w-6" aria-hidden="true" />
             <span class="hidden font-bold sm:inline-block">Larasonic</span>
           </a>
-        </div>
-        <nav class="hidden md:flex gap-6">
-          <template v-for="link in navLinks" :key="link.href">
+          <nav class="hidden md:flex items-center space-x-6 text-sm font-medium sm:ml-4">
             <a
-              v-if="link.external"
-              :href="link.href"
-              target="_blank"
-              rel="noopener noreferrer"
-              :class="cn('flex items-center text-sm font-medium transition-colors hover:text-foreground/80')"
+              v-for="link in navLinks" :key="link.href" :href="link.href"
+              class="transition-colors hover:text-foreground/80" :class="[
+                link.href.startsWith('http') ? '' : 'text-foreground/60',
+              ]" :target="link.href.startsWith('http') ? '_blank' : undefined"
+              :rel="link.href.startsWith('http') ? 'noreferrer' : undefined"
             >
               {{ link.label }}
             </a>
-            <Link
-              v-else
-              :href="link.href"
-              :class="cn('flex items-center text-sm font-medium transition-colors hover:text-foreground/80')"
-            >
-              {{ link.label }}
-            </Link>
-          </template>
-        </nav>
+          </nav>
+        </div>
         <div class="flex items-center space-x-4">
-          <template v-if="!$page.props.auth.user">
-            <Button
-              v-if="canLogin" variant="secondary" :as="Link" href="/login"
-              class="hidden sm:inline-flex"
-            >
-              Login
+          <div class="hidden sm:flex space-x-2">
+            <template v-if="!$page.props.auth.user">
+              <Button variant="outline" :as="Link" href="/login">
+                Login
+              </Button>
+              <Button variant="outline" :as="Link" href="/register">
+                Register
+              </Button>
+            </template>
+            <Button v-else variant="outline" :as="Link" href="/dashboard">
+              Dashboard
             </Button>
-            <Button
-              v-if="canRegister" variant="secondary" :as="Link" href="/register"
-              class="hidden sm:inline-flex"
-            >
-              Register
-            </Button>
-          </template>
-          <Button v-else variant="secondary" :as="Link" href="/dashboard" class="hidden sm:inline-flex">
-            Dashboard
+          </div>
+          <Button variant="ghost" size="icon" aria-label="Toggle Theme" @click="mode = mode === 'dark' ? 'light' : 'dark'">
+            <Icon
+              class="text-muted-foreground h-6 w-6"
+              :icon="mode === 'dark' ? 'lucide:sun' : 'lucide:moon'"
+            />
           </Button>
+          <a
+            :href="githubUrl" target="_blank" rel="noreferrer" class="hidden sm:inline-block"
+            aria-label="GitHub"
+          >
+            <Icon icon="mdi:github" class="h-5 w-5" />
+          </a>
           <Button class="md:hidden" variant="ghost" size="icon" aria-label="Toggle menu" @click="toggleMenu">
-            <Icon v-if="!isMenuOpen" icon="lucide:menu" class="size-6" aria-hidden="true" />
-            <Icon v-else icon="lucide:x" class="size-6" aria-hidden="true" />
+            <Icon :icon="isMenuOpen ? 'lucide:x' : 'lucide:menu'" class="h-6 w-6" aria-hidden="true" />
           </Button>
         </div>
       </div>
       <!-- Mobile menu -->
-      <div v-show="isMenuOpen" class="md:hidden">
-        <nav class="flex flex-col p-4 space-y-4 border-t">
-          <Link
-            v-for="link in navLinks" :key="link.href" :href="link.href" class="text-sm font-medium"
-            @click="toggleMenu"
+      <div v-show="isMenuOpen" class="md:hidden border-t">
+        <nav class="flex flex-col p-4 space-y-4">
+          <a
+            v-for="link in navLinks" :key="link.href" :href="link.href"
+            class="text-sm font-medium transition-colors hover:text-foreground/80"
+            :target="link.href.startsWith('http') ? '_blank' : undefined"
+            :rel="link.href.startsWith('http') ? 'noreferrer' : undefined" @click="toggleMenu"
           >
             {{ link.label }}
-          </Link>
+          </a>
           <template v-if="!$page.props.auth.user">
-            <Button
-              v-if="canLogin" variant="secondary" :as="Link" href="/login" class="w-full"
-              @click="toggleMenu"
-            >
+            <Button variant="outline" :as="Link" href="/login" class="w-full" @click="toggleMenu">
               Login
             </Button>
-            <Button
-              v-if="canRegister" variant="secondary" :as="Link" href="/register" class="w-full"
-              @click="toggleMenu"
-            >
+            <Button variant="outline" :as="Link" href="/register" class="w-full" @click="toggleMenu">
               Register
             </Button>
           </template>
-          <Button v-else variant="secondary" :as="Link" href="/dashboard" class="w-full" @click="toggleMenu">
+          <Button
+            v-else variant="outline" :as="Link" href="/dashboard" class="w-full"
+            @click="toggleMobileMenu"
+          >
             Dashboard
           </Button>
+          <a
+            href="https://github.com/your-repo" target="_blank" rel="noreferrer"
+            class="flex items-center space-x-2 text-sm font-medium" @click="toggleMobileMenu"
+          >
+            <Icon icon="mdi:github" class="h-5 w-5" />
+            <span>GitHub</span>
+          </a>
         </nav>
       </div>
     </header>

@@ -10,7 +10,6 @@ use App\Http\Controllers\User\OauthController;
 use App\Http\Controllers\SubscriptionController;
 
 Route::get('/', [WelcomeController::class, 'home'])->name('home');
-Route::get('/pricing', [WelcomeController::class, 'pricing'])->name('pricing');
 
 Route::get('/auth/redirect/{provider}', [OauthController::class, 'redirect'])->name('oauth.redirect');
 
