@@ -119,7 +119,10 @@ const githubUrl = 'https://github.com/pushpak1300/larasonic'
 
         <!-- Main Heading -->
         <div class="mx-auto max-w-4xl">
-          <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
+          <h1
+            class="text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl"
+            :style="{ contain: 'layout paint' }"
+          >
             <span class="block text-foreground">Modern Laravel</span>
             <span
               class="mt-2 block bg-gradient-to-r from-red-500 via-purple-500 to-indigo-500 bg-clip-text text-transparent"
@@ -129,8 +132,12 @@ const githubUrl = 'https://github.com/pushpak1300/larasonic'
           </h1>
         </div>
 
-        <!-- Subtitle -->
-        <p class="mx-auto mt-6 max-w-2xl text-center text-base text-muted-foreground sm:text-lg md:text-xl">
+        <!-- Subtitle - Add priority hint -->
+        <p
+          class="mx-auto mt-6 max-w-2xl text-center text-base text-muted-foreground sm:text-lg md:text-xl"
+          :style="{ contain: 'layout paint' }"
+          fetchpriority="high"
+        >
           Ship faster production-ready applications 10x faster with starter kit powered
           by Laravel Jetstream, Inertia V2, and Shadcn/ui.
         </p>
