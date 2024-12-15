@@ -22,4 +22,7 @@ export default defineConfig({
       host: 'localhost',
     },
   },
+  build: {
+    minify: true,
+  },
 })
