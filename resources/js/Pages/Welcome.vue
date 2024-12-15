@@ -123,7 +123,7 @@ const githubUrl = 'https://github.com/pushpak1300/larasonic'
         />
       </div>
       <div class="mt-6 flex justify-center gap-2">
-        <Button as="a" :href="`${githubUrl}/issues`" target="_blank" rel="noopener noreferrer">
+        <Button as="a" :href="`${githubUrl}/discussions/categories/roadmap`" target="_blank" rel="noopener noreferrer">
           <Icon icon="lucide:construction" class="size-4" aria-hidden="true" />
           Roadmap
         </Button>
