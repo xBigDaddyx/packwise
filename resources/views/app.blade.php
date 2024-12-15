@@ -61,6 +61,15 @@
     <meta name="twitter:image" content="https://larasonic.com/images/og.webp" />
     <meta name="twitter:site" content="@YourTwitterHandle" />
 
+    <!-- Preload critical font -->
+    <link
+        rel="preload"
+        href="{{ Vite::asset('resources/fonts/Geist[wght].woff2') }}"
+        as="font"
+        type="font/woff2"
+        crossorigin
+    >
+
     <!-- Scripts -->
     @routes
     @vite(['resources/js/app.js', "resources/js/Pages/{$page['component']}.vue"])
