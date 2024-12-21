@@ -5,13 +5,25 @@
 
 @layer base {
   :root {
+    --color-primary-50: #f3ecfd;
+  --color-primary-100: #e6dafc;
+  --color-primary-200: #cab0f8;
+  --color-primary-300: #b18af4;
+  --color-primary-400: #9560f0;
+  --color-primary-500: #7c3bed;
+  --color-primary-600: #5b14d7;
+  --color-primary-700: #450fa4;
+  --color-primary-800: #2e0a6b;
+  --color-primary-900: #180538;
+  --color-primary-950: #0c031c;
+
     --background: 0 0% 100%;
     --foreground: 240 10% 3.9%;
     --card: 0 0% 100%;
     --card-foreground: 240 10% 3.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
-    --primary: 240 5.9% 10%;
+    --primary: 262 83% 58%;
     --primary-foreground: 0 0% 98%;
     --secondary: 240 4.8% 95.9%;
     --secondary-foreground: 240 5.9% 10%;
@@ -33,17 +45,17 @@
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
-    --sidebar: 0 0% 100%;
+    --sidebar: 276, 100%, 99%;
   }
 
   .dark {
-    --background: 240 10% 3.9%;
+    --background: 0 0% 14.9%;
     --foreground: 0 0% 98%;
-    --card: 240 10% 3.9%;
+    --card: 0 0% 25.1%;
     --card-foreground: 0 0% 98%;
     --popover: 240 10% 3.9%;
     --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
+    --primary: 262 83% 58%;
     --primary-foreground: 240 5.9% 10%;
     --secondary: 240 3.7% 15.9%;
     --secondary-foreground: 0 0% 98%;
@@ -64,7 +76,7 @@
     --sidebar-accent-foreground: 0 0% 98%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
-    --sidebar: 240 10% 3.9%;
+    --sidebar: 0 0% 9%;
   }
 }
 
@@ -75,4 +87,18 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.suitify-sidebar {
+    @apply bg-transparent border-none !important;
+}
+/* .suitify-sidebar-menu-item {
+    @apply rounded-xl;
+} */
+.suitify-sidebar-menu-item.active {
+    @apply font-bold text-primary bg-primary/10 rounded;
+}
+
+.suitify-sidebar-menu-button {
+    @apply hover:bg-primary/10;
 }

@@ -33,13 +33,13 @@ final class CreateNewUser implements CreatesNewUsers
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['accepted', 'required'] : '',
         ])->validate();
 
-        return DB::transaction(fn () => tap(User::query()->create([
+        return DB::transaction(fn() => tap(User::query()->create([
             'name' => $input['name'],
             'email' => $input['email'],
             'password' => Arr::get($input, 'password') ? Hash::make($input['password']) : Str::random(12),
         ]), function (User $user): void {
             $this->createTeam($user);
-            $this->createCustomer($user);
+            // $this->createCustomer($user);
         }));
     }
 
@@ -50,7 +50,7 @@ final class CreateNewUser implements CreatesNewUsers
     {
         $user->ownedTeams()->save(Team::query()->forceCreate([
             'user_id' => $user->id,
-            'name' => explode(' ', $user->name, 2)[0]."'s Team",
+            'name' => explode(' ', $user->name, 2)[0] . "'s Team",
             'personal_team' => true,
         ]));
     }

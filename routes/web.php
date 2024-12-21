@@ -2,10 +2,13 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\CartonBoxController;
+use App\Http\Controllers\CartonBoxValidationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\HotelController;
 use App\Http\Controllers\User\OauthController;
 use App\Http\Controllers\SubscriptionController;
 
@@ -17,6 +20,10 @@ Route::get('/auth/callback/{provider}', [OauthController::class, 'callback'])->n
 
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
+
+    Route::get('/carton-boxes/search', [CartonBoxController::class, 'search'])->name('carton-boxes.search');
+    Route::post('/carton-boxes/{cartonBox}/validate', [CartonBoxController::class, 'validate'])->name('carton-boxes.validate');
+    Route::get('/carton-boxes/{cartonBox}/verified', [CartonBoxController::class, 'verified'])->name('carton-boxes.verified');
 
     Route::delete('/auth/destroy/{provider}', [OauthController::class, 'destroy'])->name('oauth.destroy');
 

@@ -7,14 +7,16 @@
 
     <title inertia>{{ config('app.name', 'Laravel') }}</title>
 
-    <meta name="description" content="Larasonic is a modern Laravel boilerplate for the VILT stack (Vue, Inertia, Laravel, TailwindCSS). Clone and start building scalable, maintainable, and production-ready applications quickly." />
-    <link rel="canonical" href="https://larasonic.com/" />
+    <meta name="description"
+        content="Suitify, is an innovative hotel management system designed to streamline hotel operations, improve guest satisfaction, and drive efficiency. With a focus on simplicity, adaptability, and cutting-edge features, Suitify empowers hotels to deliver exceptional service in today’s fast-paced, digital world." />
+    <link rel="canonical" href="https://suitify.cloud/" />
 
     <!-- Robots & Indexing -->
     <meta name="robots" content="index, follow" />
 
     <!-- Keyword Tags (Less impactful nowadays, but still can be included) -->
-    <meta name="keywords" content="Larasonic, Laravel boilerplate, Laravel VILT, Vue, Inertia, TailwindCSS, Laravel Octane, Docker, FilamentPHP, OpenAI integration, Laravel Cashier, Laravel Sanctum" />
+    <meta name="keywords"
+        content="Suitify, hotel management system, cloud-based hotel software, hospitality management, hotel booking system, reservation management, property management system, hotel operations software, housekeeping automation, guest communication tools, revenue management, hotel software solution, hotel technology, seamless hotel management, hotel management platform, modern hotel software, online hotel management, hotel business tools, efficient hotel operations, hotel management services" />
 
     <!-- Favicon & App Icons -->
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -28,11 +30,11 @@
         {
             "@context": "https://schema.org",
             "@type": "SoftwareApplication",
-            "name": "Larasonic",
-            "url": "https://larasonic.com/",
-            "image": "https://larasonic.com/images/og.webp",
-            "description": "A modern Laravel SaaS starter kit for the VILT stack. Clone the repo, start building scalable and maintainable applications quickly.",
-            "applicationCategory": "DeveloperTool",
+            "name": "Suitify",
+            "url": "https://suitify.cloud/",
+            "image": "https://suitify.cloud/images/og.webp",
+            "description": "Suitify, is an innovative hotel management system designed to streamline hotel operations, improve guest satisfaction, and drive efficiency. With a focus on simplicity, adaptability, and cutting-edge features, Suitify empowers hotels to deliver exceptional service in today’s fast-paced, digital world.",
+            "applicationCategory": "SoftwareApplication",
             "operatingSystem": "All",
             "offers": {
                 "@type": "Offer",
@@ -44,23 +46,25 @@
     </script>
 
     <!-- Basic OG Tags -->
-    <meta property="og:title" content="Larasonic - Your Laravel VILT Boilerplate" />
-    <meta property="og:description" content="Larasonic is a modern Laravel SaaS starter kit for the VILT stack. Clone the repo, start building scalable and maintainable applications quickly." />
-    <meta property="og:url" content="https://larasonic.com" />
+    <meta property="og:title" content="Suitify - Your hotel management system" />
+    <meta property="og:description"
+        content="Suitify, is an innovative hotel management system designed to streamline hotel operations, improve guest satisfaction, and drive efficiency. With a focus on simplicity, adaptability, and cutting-edge features, Suitify empowers hotels to deliver exceptional service in today’s fast-paced, digital world." />
+    <meta property="og:url" content="https://suitify.cloud" />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://larasonic.com/images/og.webp" />
+    <meta property="og:image" content="https://suitify.cloud/images/og.webp" />
 
     <!-- Optional: Additional Tags -->
-    <meta property="og:site_name" content="Larasonic" />
+    <meta property="og:site_name" content="Suitify" />
     <meta property="og:locale" content="en_US" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Larasonic - Your Laravel VILT Boilerplate" />
-    <meta name="twitter:description" content="A modern Laravel boilerplate that boosts your developer experience with built-in tools and integrations. Clone and start building!" />
-    <meta name="twitter:image" content="https://larasonic.com/images/og.webp" />
+    <meta name="twitter:title" content="Suitify - Your hotel management system" />
+    <meta name="twitter:description"
+        content="Suitify, is an innovative hotel management system designed to streamline hotel operations, improve guest satisfaction, and drive efficiency. With a focus on simplicity, adaptability, and cutting-edge features, Suitify empowers hotels to deliver exceptional service in today’s fast-paced, digital world." />
+    <meta name="twitter:image" content="https://suitify.cloud/images/og.webp" />
     <meta name="twitter:site" content="@YourTwitterHandle" />
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css" />
     <!-- Scripts -->
     @routes
     @vite(['resources/js/app.js', "resources/js/Pages/{$page['component']}.vue"])

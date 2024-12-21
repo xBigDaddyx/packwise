@@ -14,59 +14,61 @@ import SidebarProvider from '@/Components/shadcn/ui/sidebar/SidebarProvider.vue'
 import SidebarTrigger from '@/Components/shadcn/ui/sidebar/SidebarTrigger.vue'
 import Sonner from '@/Components/shadcn/ui/sonner/Sonner.vue'
 import { Head } from '@inertiajs/vue3'
+import Toaster from '@/Components/shadcn/ui/toast/Toaster.vue'
 
 defineProps({
-  title: String,
+    title: String,
 })
 </script>
 
 <template>
-  <div>
-    <Head :title="title" />
-    <Sonner position="top-center" />
-    <SidebarProvider>
-      <Sidebar collapsible="icon">
-        <SidebarHeader>
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <AppTeamManager v-if="$page.props.jetstream.hasTeamFeatures" />
-            </SidebarMenuItem>
-          </SidebarMenu>
-        </SidebarHeader>
+    <div class="bg-muted">
+        <Toaster />
 
-        <AppSidebarContent />
+        <Head :title="title" />
+        <Sonner position="top-center" />
+        <SidebarProvider>
+            <Sidebar collapsible="icon" class='suitify-sidebar' variant="inset">
+                <SidebarHeader>
+                    <SidebarMenu>
+                        <SidebarMenuItem>
+                            <AppTeamManager v-if="$page.props.jetstream.hasTeamFeatures" />
+                        </SidebarMenuItem>
+                    </SidebarMenu>
+                </SidebarHeader>
 
-        <SidebarFooter>
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <AppUserManager />
-            </SidebarMenuItem>
-          </SidebarMenu>
-        </SidebarFooter>
-      </Sidebar>
+                <AppSidebarContent />
 
-      <SidebarInset>
-        <header
-          class="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12"
-        >
-          <div class="flex items-center gap-2 px-4">
-            <SidebarTrigger class="-ml-1" />
-            <Separator orientation="vertical" class="mr-2 h-4 hidden md:block" />
-            <Breadcrumb>
-              <BreadcrumbList>
-                <BreadcrumbItem>
-                  <BreadcrumbLink>
-                    {{ title }}
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
-              </BreadcrumbList>
-            </Breadcrumb>
-          </div>
-        </header>
-        <main class="flex flex-1 flex-col gap-4 p-4 pt-0">
-          <slot />
-        </main>
-      </SidebarInset>
-    </SidebarProvider>
-  </div>
+                <SidebarFooter>
+                    <SidebarMenu>
+                        <SidebarMenuItem>
+                            <AppUserManager />
+                        </SidebarMenuItem>
+                    </SidebarMenu>
+                </SidebarFooter>
+            </Sidebar>
+
+            <SidebarInset>
+                <header
+                    class="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
+                    <div class="flex items-center gap-2 px-4">
+                        <SidebarTrigger class="-ml-1" />
+                        <Separator orientation="vertical" class="mr-2 h-4 hidden md:block" />
+                        <Breadcrumb>
+                            <BreadcrumbList>
+                                <BreadcrumbItem>
+                                    <BreadcrumbLink>
+                                        {{ title }}
+                                    </BreadcrumbLink>
+                                </BreadcrumbItem>
+                            </BreadcrumbList>
+                        </Breadcrumb>
+                    </div>
+                </header>
+                <main class="flex flex-1 flex-col gap-4 p-10">
+                    <slot />
+                </main>
+            </SidebarInset>
+        </SidebarProvider>
+    </div>
 </template>
